@@ -16,11 +16,9 @@ class CreateEmployeesTable extends Migration
             $table->increments('id');
             $table->timestamps();
 
-            $table->string('title');
-            $table->string('author');
-            $table->string('published');
-            $table->string('cover');
-            $table->mediumText('text');
+            $table->string('position');
+            $table->string('company_email');
+            $table->string('company_cellphone');
         });
     }
 
