@@ -30,7 +30,7 @@
         <input type="text" name="email" id="email" class="form-control" placeholder="email" value='{{ old('email') }}'>
 
         <label for="inputPassword" class="sr-only">cellphone</label>
-        <input type="cellphone" name="cellphone" id="cellphone" class="form-control" placeholder="cellphone" value='{{ old('cellphone') }}'>
+        <input type="text" name="cellphone" id="cellphone" class="form-control" placeholder="cellphone" value='{{ old('cellphone') }}'>
 
         <label for="inputPassword" class="sr-only">password</label>
         <input type="password" name="password" id="password" class="form-control" placeholder="password">
