@@ -12,27 +12,12 @@ Route::get('/logout', 'Auth\AuthController@logout');
 
 Route::group(['middleware' => 'auth'], function () {
 
-    Route::get('/show-login-status', function() {
-
-        # You may access the authenticated user via the Auth facade
-        $user = Auth::user();
-
-        if($user) {
-            echo 'You are logged in.';
-            dump($user->toArray());
-        } else {
-            echo 'You are not logged in.';
-        }
-
-        return;
-
-    });
-
 
     Route::get('/', function () {
-        $user = \App\User::where('id', 'LIKE', Auth::id())->first();
-        $username = $user->username;
-        return view('home', compact('username'));
+        $user = \App\User::where('id', '=', Auth::id())->first();
+        $employee = \App\Employee::where('id', '=', $user->id)->first();
+        $privilege = \App\Privilege::where('employee_id', '=', $employee->id)->first();
+        return view('home', compact('user', 'employee', 'privilege'));
     });
 
 
