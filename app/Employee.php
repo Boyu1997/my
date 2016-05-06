@@ -7,14 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Employee extends Model
 {
     public function user() {
-        return $this->hasOne('\App\User');
+        return $this->belongsTo('\App\User');
     }
 
     public function wage() {
-        return $this->belongsTo('\App\Wage');
+        return $this->hasOne('\App\Wage');
     }
 
     public function privilege() {
-        return $this->belongsTo('\App\Privilege');
+        return $this->hasOne('\App\Privilege');
     }
 }

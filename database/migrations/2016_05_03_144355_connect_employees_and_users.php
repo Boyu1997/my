@@ -12,9 +12,9 @@ class ConnectEmployeesAndUsers extends Migration
      */
     public function up()
     {
-        Schema::table('employees', function (Blueprint $table) {
-            $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
+        Schema::table('users', function (Blueprint $table) {
+            $table->integer('employee_id')->unsigned()->nullable();
+            $table->foreign('employee_id')->references('id')->on('employees');
         });
     }
 
@@ -25,9 +25,9 @@ class ConnectEmployeesAndUsers extends Migration
      */
     public function down()
     {
-        Schema::table('employees', function (Blueprint $table) {
-            $table->dropForeign('employees_user_id_foreign');
-            $table->dropColumn('user_id');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign('users_employee_id_foreign');
+            $table->dropColumn('employee_id');
         });
     }
 }

@@ -11,6 +11,6 @@
 
     <p>Here is your profomance on {{ $month }}/{{ $year }}.</p>
 
-    
+
 
 @stop

@@ -26,6 +26,6 @@ class User extends Authenticatable
 
 
     public function employee() {
-        return $this->belongsTo('\App\Employee');
+        return $this->hasOne('\App\Employee');
     }
 }

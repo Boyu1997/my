@@ -12,9 +12,9 @@ class ConnectEmployeesAndWages extends Migration
      */
     public function up()
     {
-        Schema::table('wages', function (Blueprint $table) {
-            $table->integer('employee_id')->unsigned();
-            $table->foreign('employee_id')->references('id')->on('employees');
+        Schema::table('employees', function (Blueprint $table) {
+            $table->integer('wage_id')->unsigned()->nullable();
+            $table->foreign('wage_id')->references('id')->on('wages');
         });
     }
 
@@ -25,9 +25,9 @@ class ConnectEmployeesAndWages extends Migration
      */
     public function down()
     {
-        Schema::table('wages', function (Blueprint $table) {
-            $table->dropForeign('wages_employee_id_foreign');
-            $table->dropColumn('employee_id');
+        Schema::table('employees', function (Blueprint $table) {
+            $table->dropForeign('employees_wage_id_foreign');
+            $table->dropColumn('wage_id');
         });
     }
 }

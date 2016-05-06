@@ -12,17 +12,17 @@ class EmployeesTableSeeder extends Seeder
     public function run()
     {
         $employee = new \App\Employee();
-        $employee->user_id = '1';
-        $employee->position = 'manager';
+        $employee->position = 'admin';
         $employee->company_email = 'Jill@company.com';
         $employee->company_cellphone = '6174605678';
+        $employee->privilege_id = '1';
         $employee->save();
 
         $employee = new \App\Employee();
-        $employee->user_id = '2';
         $employee->position = 'engineer';
         $employee->company_email = 'Jamal@company.com';
         $employee->company_cellphone = '6174608765';
+        $employee->wage_id = '1';
         $employee->save();
     }
 }

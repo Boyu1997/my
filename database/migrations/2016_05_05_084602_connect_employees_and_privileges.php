@@ -12,9 +12,9 @@ class ConnectEmployeesAndPrivileges extends Migration
      */
     public function up()
     {
-        Schema::table('privileges', function (Blueprint $table) {
-            $table->integer('employee_id')->unsigned();
-            $table->foreign('employee_id')->references('id')->on('employees');
+        Schema::table('employees', function (Blueprint $table) {
+            $table->integer('privilege_id')->unsigned()->nullable();
+            $table->foreign('privilege_id')->references('id')->on('privileges');
         });
     }
 
@@ -25,9 +25,9 @@ class ConnectEmployeesAndPrivileges extends Migration
      */
     public function down()
     {
-        Schema::table('privileges', function (Blueprint $table) {
-            $table->dropForeign('privileges_employee_id_foreign');
-            $table->dropColumn('employee_id');
+        Schema::table('employees', function (Blueprint $table) {
+            $table->dropForeign('employees_privilege_id_foreign');
+            $table->dropColumn('privilege_id');
         });
     }
 }

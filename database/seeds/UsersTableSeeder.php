@@ -18,6 +18,7 @@ class UsersTableSeeder extends Seeder
         $user->email = 'Jill@harvard.edu';
         $user->cellphone = '6174601234';
         $user->password = \Hash::make('helloworld');
+        $user->employee_id = '1';
         $user->save();
 
         $user = new \App\User();
@@ -27,6 +28,7 @@ class UsersTableSeeder extends Seeder
         $user->email = 'Jamal@harvard.edu';
         $user->cellphone = '6174604321';
         $user->password = \Hash::make('helloworld');
+        $user->employee_id = '2';
         $user->save();
     }
 }
