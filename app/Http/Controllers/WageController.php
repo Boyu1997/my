@@ -15,5 +15,4 @@ class WageController extends Controller
     public function getMonthly($year = null, $month = null) {
         return view('wage.monthly', compact('year', 'month'));
     }
-
 }

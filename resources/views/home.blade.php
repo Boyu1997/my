@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
-@section('head')
-
+@section('on_home')
+    class="active"
 @stop
 
 @section('content')

@@ -8,7 +8,8 @@
 
         <meta charset='utf-8'>
 
-        <link href="/css/layouts/bootstrap.min.css" type='text/css' rel='stylesheet'>
+        <link href="/css/libraries/bootstrap.min.css" type='text/css' rel='stylesheet'>
+        <link href="/css/libraries/chartist.min.css" type='text/css' rel='stylesheet'>
         <link href="/css/layouts/master.css" type='text/css' rel='stylesheet'>
 
         @yield('head')
@@ -55,31 +56,43 @@
             <div class="row">
                 <div class="col-sm-3 col-md-2 sidebar">
                     <ul class="nav nav-sidebar">
-                        <li class="active"><a href="#">Overview @yield('on_overview')</a></li>
+                        <li @yield('on_home')>
+                            <a href="/">Home<span class="sr-only">(current)</span></a>
+                        </li>
                     </ul>
-                    @if($privilege->master_admin)
-
+                    @if (sizeof($privilege) == 0)
                         <ul class="nav nav-sidebar">
-                            <li><a href="">Nav item</a></li>
-                            <li><a href="">Nav item again</a></li>
-                            <li><a href="">One more nav</a></li>
-                            <li><a href="">Another nav item</a></li>
-                            <li><a href="">More navigation</a></li>
+                            <li><a href="">Apply</a></li>
+                        </ul>
+                    @elseif($privilege->master_admin)
+                        <ul class="nav nav-sidebar">
+                            <li @yield('on_wage')><a href="/wage">Wage</a></li>
+                            <li><a href="/trip">Trip</a></li>
                         </ul>
                         <ul class="nav nav-sidebar">
-                            <li><a href="">Nav item again</a></li>
-                            <li><a href="">One more nav</a></li>
-                            <li><a href="">Another nav item</a></li>
+                            <li @yield('on_produce')><a href="/produce">Produce</a></li>
+                            <li><a href="/install">Install</a></li>
+                            <li><a href="/maintenance">Maintenance</a></li>
+                        </ul>
+                        <ul class="nav nav-sidebar">
+                            <li><a href="/customer">Customer</a></li>
+                        </ul>
+                        <ul class="nav nav-sidebar">
+                            <li><a href="/admin/employee">Employees</a></li>
+                            <li><a href="/admin/user">Users</a></li>
                         </ul>
                     @else
                         <ul class="nav nav-sidebar">
-                            <li><a href="">Nav item</a></li>
-                            <li><a href="">Nav item again</a></li>
-                            <li><a href="">One more nav</a></li>
-                            <li><a href="">Another nav item</a></li>
-                            <li><a href="">More navigation</a></li>
+                            <li @yield('on_wage')><a href="/wage">Wage</a></li>
+                            <li @yield('on_produce')><a href="/produce">Produce</a></li>
+                            <li><a href="/trip">Trip</a></li>
+                            <li><a href="/install">Install</a></li>
+                            <li><a href="/maintenance">Maintenance</a></li>
                         </ul>
                     @endif
+                    <ul class="nav nav-sidebar">
+                        <li><a href="">Account</a></li>
+                    </ul>
 
                 </div>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -92,8 +105,9 @@
             </div>
         </div>
 
-        <script src="/js/jquery.min.js"></script>
-        <script src="/js/bootstrap.min.js"></script>
+        <script src="/js/libraries/jquery.min.js"></script>
+        <script src="/js/libraries/bootstrap.min.js"></script>
+        <script src="/js/libraries/chartist.min.js"></script>
         @yield('body')
 
     </body>

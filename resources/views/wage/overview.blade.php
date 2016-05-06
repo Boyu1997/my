@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
 
-@section('on_overview')
-    <span class="sr-only">(current)</span>
+@section('on_wage')
+    class="active"
 @stop
 
 
 @section('content')
-    <h1 class="page-header">Wage</h1>
+    <h1 class="page-header">Wage Overview</h1>
 
 @stop
