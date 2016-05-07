@@ -33,7 +33,16 @@ class ProduceController extends Controller
     }
 
     public function getMonthly($year = null, $month = null) {
-        return view('produce.monthly', compact('year', 'month'));
+        $user = \Auth::user()->first();
+        $employee = \App\Employee::where('id', '=', $user->employee_id)->first();
+        if($employee->privilege_id)
+        {
+            if($privilege->master_admin)
+            {
+                $produces = \App\Produce::all();
+            }
+        }
+        return view('produce.monthly', compact('year', 'month', 'produces'));
     }
 
     public function getById() {

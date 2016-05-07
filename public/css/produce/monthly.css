@@ -1,0 +1,18 @@
+#calender_nav_left {
+    font-size: 20px;
+    border-bottom-left-radius: 0;
+}
+
+#calender_nav {
+    font-size: 24px;
+    font-weight: 500;
+}
+
+#calender_nav_right {
+    font-size: 20px;
+    border-bottom-right-radius: 0;
+}
+
+#monthlyTable {
+    margin-top: 0px;
+}
