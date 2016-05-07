@@ -61,10 +61,12 @@
                         </li>
                     </ul>
                     @if ($user->employee_id == 0)
+                        <hr class="nav-hr">
                         <ul class="nav nav-sidebar">
                             <li><a href="">Apply</a></li>
                         </ul>
                     @elseif ($employee->privilege_id == 0)
+                        <hr class="nav-hr">
                         <ul class="nav nav-sidebar">
                             <li @yield('on_wage')><a href="/wage">Wage</a></li>
                             <li @yield('on_produce')><a href="/produce">Produce</a></li>
@@ -73,23 +75,28 @@
                             <li><a href="/maintenance">Maintenance</a></li>
                         </ul>
                     @elseif ($privilege->master_admin)
+                        <hr class="nav-hr">
                         <ul class="nav nav-sidebar">
                             <li @yield('on_wage')><a href="/wage">Wage</a></li>
                             <li><a href="/trip">Trip</a></li>
                         </ul>
+                        <hr class="nav-hr">
                         <ul class="nav nav-sidebar">
                             <li @yield('on_produce')><a href="/produce">Produce</a></li>
                             <li><a href="/install">Install</a></li>
                             <li><a href="/maintenance">Maintenance</a></li>
                         </ul>
+                        <hr class="nav-hr">
                         <ul class="nav nav-sidebar">
                             <li><a href="/customer">Customer</a></li>
                         </ul>
+                        <hr class="nav-hr">
                         <ul class="nav nav-sidebar">
                             <li><a href="/admin/employee">Employees</a></li>
                             <li><a href="/admin/user">Users</a></li>
                         </ul>
                     @endif
+                    <hr class="nav-hr">
                     <ul class="nav nav-sidebar">
                         <li><a href="">Account</a></li>
                     </ul>

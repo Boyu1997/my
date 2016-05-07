@@ -86,6 +86,13 @@ body {
   margin-top: 0;
 }
 
+.error {
+    color:red;
+    margin:0;
+    margin-top:5px;
+    padding:0;
+    list-style-type:none;
+}
 
 /*
  * Placeholder dashboard ideas
@@ -104,4 +111,7 @@ body {
 .placeholder img {
   display: inline-block;
   border-radius: 50%;
+}
+.nav-hr {
+    margin-top: 0px;
 }

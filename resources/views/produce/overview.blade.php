@@ -12,7 +12,7 @@
 @section('content')
     <h1 class="page-header">Produce Overview</h1>
 
-    <div class="ct-chart ct-golden-section" id="overview_chart"></div>
+    <div class="ct-chart ct-golden-section"></div>
 
     <hr>
 
@@ -22,19 +22,19 @@
                 <a class="btn btn-default" href="/produce/create">Create New Produce Record</a>
             @endif
         @endif
-        <a class="btn btn-default" href="/produce/{{ date('Y') }}/{{ date('n') }}">View Monthly</a>
+        <a class="btn btn-default" href="/produce/{{ date('Y') }}/{{ date('m') }}">View Monthly</a>
         <a class="btn btn-default disabled" href="#">Search (Comming Soon)</a>
     </div>
-
 
 @stop
 
 @section('body')
     <script>
         var data = {
-            labels: ['Jan', 'Feb', 'March', 'April', 'May'],
+            labels:
+                {{json_encode($recent_month)}},
             series: [
-                [99, 103, 124, 85, 111]
+                {{json_encode($recent_monthly_summery)}}
             ]
         };
         var options = {
@@ -55,6 +55,6 @@
                 }
             }
         };
-        new Chartist.Line('#overview_chart', data, options);
+        new Chartist.Line('.ct-chart', data, options);
     </script>
 @stop

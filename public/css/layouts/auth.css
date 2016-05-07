@@ -44,3 +44,11 @@ h1, h2, h3, h4 {
 .form-signin input.last-of-type {
     margin-bottom: 10px;
 }
+
+.errors {
+    color:red;
+    margin:0;
+    margin-top:5px;
+    padding:0;
+    list-style-type:none;
+}

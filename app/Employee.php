@@ -17,4 +17,8 @@ class Employee extends Model
     public function privilege() {
         return $this->hasOne('\App\Privilege');
     }
+
+    public function produces() {
+        return $this->hasMany('\App\Produce')->withTimestamps();
+    }
 }

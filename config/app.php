@@ -159,6 +159,7 @@ return [
         App\Providers\ComposerServiceProvider::class,
 
         Barryvdh\Debugbar\ServiceProvider::class,
+        Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
 
     ],
 
@@ -207,6 +208,8 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
 
         'Debugbar'  => Barryvdh\Debugbar\Facade::class,
+
+        'JavaScript'=> Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
 
     ],
 

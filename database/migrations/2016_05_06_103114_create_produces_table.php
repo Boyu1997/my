@@ -21,7 +21,6 @@ class CreateProducesTable extends Migration
             $table->text('finished_at');
             $table->text('sold_at');
             $table->text('sold_to');
-            $table->text('customer_id');
         });
     }
 
