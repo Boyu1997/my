@@ -14,9 +14,28 @@ class Produce extends Model
         return $this->belongsTo('\App\Employee')->withTimestamps();
     }
 
+    public function install() {
+        return $this->hasOne('\App\Install');
+    }
+
+    public function maintenances() {
+        return $this->hasMany('\App\Maintenance');
+    }
+
     public static function recentMonthlySummery() {
-        $recent_monthly_summery = [0, 0, 0, 0, 0];
         $recent_month = \App\Produce::recentMonth();
+        $recent_year = [0, 0, 0, 0, 0];
+        $recent_monthly_summery = [0, 0, 0, 0, 0];
+        $recent_year[4] = date('Y');
+        if($recent_month[4]-$recent_month[0]>0) $difference=-1;
+        else $difference = 12 - $recent_month[0];
+        for ($i=0; $i<=4; $i++)
+        {
+            if($i<=$difference) $recent_year[$i] = $recent_year[4] - 1;
+            else $recent_year[$i] = $recent_year[4];
+            if ($recent_month[$i]<10) $recent_month[$i] = $recent_year[$i].'/0'.$recent_month[$i];
+            else $recent_month[$i] = $recent_year[$i].'/'.$recent_month[$i];
+        }
         $user = \Auth::user();
         $employee = \App\Employee::where('id', '=', $user->employee_id)->first();
         if ($employee->privilege_id)
@@ -27,7 +46,7 @@ class Produce extends Model
                 $produces = \App\Produce::all();
                 foreach ($produces as $produce)
                 {
-                    $month = date('n', strtotime($produce->finished_at));
+                    $month = date('Y/m', strtotime($produce->finished_at));
                     foreach ($recent_month as $key=>$the_month)
                     {
                         if ($month==$the_month) {
@@ -41,7 +60,7 @@ class Produce extends Model
                 $produces = \App\Produce::where('employee_id', '=', $employee->id)->get();
                 foreach ($produces as $produce)
                 {
-                    $month = date('n', strtotime($produce->finished_at));
+                    $month = date('Y/m', strtotime($produce->finished_at));
                     foreach ($recent_month as $key=>$the_month)
                     {
                         if ($month==$the_month) {
@@ -56,7 +75,7 @@ class Produce extends Model
             $produces = \App\Produce::where('employee_id', '=', $employee->id)->get();
             foreach ($produces as $produce)
             {
-                $month = date('n', strtotime($produce->finished_at));
+                $month = date('Y/m', strtotime($produce->finished_at));
                 foreach ($recent_month as $key=>$the_month)
                 {
                     if ($month==$the_month) {

@@ -18,6 +18,10 @@
 
     <body>
 
+        @if(Session::get('success')!=null)
+            <div id="flash_success" class="alert alert-success" role="alert">{{Session::get('success')}}</div>
+        @endif
+
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -45,8 +49,9 @@
                         <input type="text" class="form-control" placeholder="Search...">
                     </form>
                 </div>
-              </div>
-          </nav>
+            </div>
+        </nav>
+
 
 
 
@@ -111,6 +116,7 @@
                 </div>
             </div>
         </div>
+
 
         <script src="/js/libraries/jquery.min.js"></script>
         <script src="/js/libraries/bootstrap.min.js"></script>

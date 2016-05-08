@@ -17,6 +17,8 @@
         <a id="calender_nav_left" class="btn btn-default" href=
             @if($month==1)
                 "/produce/{{ $year-1 }}/12"
+            @elseif($month<=10)
+                "/produce/{{ $year }}/0{{ $month-1}}"
             @else
                 "/produce/{{ $year }}/{{ $month-1}}"
             @endif
@@ -24,36 +26,47 @@
         <a id="calender_nav" class="btn btn-default disabled" href="#">{{ $month }}/{{ $year }}</a>
         <a id="calender_nav_right" class="btn btn-default" href=
             @if($month==12)
-                "/produce/{{ $year+1 }}/1"
+                "/produce/{{ $year+1 }}/01"
+            @elseif($month<9)
+                "/produce/{{ $year }}/0{{ $month+1}}"
             @else
                 "/produce/{{ $year }}/{{ $month+1}}"
             @endif
         >&raquo;</a>
     </div>
-
+    @if(sizeof($produces))
         <table id="monthlyTable" class="tablesorter">
 
                     <thead>
                         <tr>
-                            @foreach($produces[0]->toArraY() as $key => $value)
-                                <th>{{ $key }}</th>
+                            @foreach($produces[0] as $key => $value)
+                                @if($key!='id') <th>{{ $key }}</th>
+                                @endif
                             @endforeach
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($produces as $produce)
                             <tr>
-                                @foreach($produce->toArray() as $key => $value)
-                                    @if($key!=$produce->id) <td>{{ $value }}</td>
+                                @foreach($produce as $key => $value)
+                                    @if($key!='id') <td>{{ $value }}</td>
                                     @endif
                                 @endforeach
-                                @if($produce->id) <td><a href="/produce/id/{{ $produce->id }}">View</a></td>
+                                @if($have_id) <td><a href="/produce/id/{{ $produce->id }}">View</a></td>
                                 @endif
                             </tr>
                         @endforeach
 
                     </tbody>
         </table>
+    @else
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <h3>Opps...</h3>
+                <p4>No data found, please try another month.</p4>
+            </div>
+        </div>
+    @endif
 
     </div>
 

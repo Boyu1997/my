@@ -12,7 +12,7 @@
 @section('content')
     <h1 class="page-header">Produce Overview</h1>
 
-    <div class="ct-chart ct-golden-section"></div>
+    <div id="overview_chart" class="ct-chart ct-golden-section"></div>
 
     <hr>
 
@@ -55,6 +55,6 @@
                 }
             }
         };
-        new Chartist.Line('.ct-chart', data, options);
+        new Chartist.Line('#overview_chart', data, options);
     </script>
 @stop

@@ -26,7 +26,7 @@ class ProducesTableSeeder extends Seeder
         $produce->finished_at = '2016/03/01';
         $produce->sold_at = '2016/03/15';
         $produce->sold_to = 'XMZ';
-        $produce->employee_id = '2';
+        $produce->employee_id = '3';
         $produce->save();
 
         $produce = new \App\Produce();
@@ -35,7 +35,7 @@ class ProducesTableSeeder extends Seeder
         $produce->finished_at = '2016/04/14';
         $produce->sold_at = '2016/04/20';
         $produce->sold_to = 'GE';
-        $produce->employee_id = '2';
+        $produce->employee_id = '3';
         $produce->save();
 
         $produce = new \App\Produce();
@@ -53,7 +53,7 @@ class ProducesTableSeeder extends Seeder
         $produce->finished_at = '2016/02/18';
         $produce->sold_at = '2016/03/07';
         $produce->sold_to = 'GE';
-        $produce->employee_id = '1';
+        $produce->employee_id = '3';
         $produce->save();
 
         $produce = new \App\Produce();
@@ -62,6 +62,42 @@ class ProducesTableSeeder extends Seeder
         $produce->finished_at = '2016/04/03';
         $produce->sold_at = '2016/04/10';
         $produce->sold_to = 'XMZ';
+        $produce->employee_id = '2';
+        $produce->save();
+
+        $produce = new \App\Produce();
+        $produce->model = 'M-7';
+        $produce->serial_number = '20160120K';
+        $produce->finished_at = '2016/01/20';
+        $produce->sold_at = '2016/02/08';
+        $produce->sold_to = 'HPT';
+        $produce->employee_id = '4';
+        $produce->save();
+
+        $produce = new \App\Produce();
+        $produce->model = 'M-5';
+        $produce->serial_number = '201504070K';
+        $produce->finished_at = '2015/04/07';
+        $produce->sold_at = '2015/04/13';
+        $produce->sold_to = 'XMZ';
+        $produce->employee_id = '2';
+        $produce->save();
+
+        $produce = new \App\Produce();
+        $produce->model = 'M-0';
+        $produce->serial_number = '20160224';
+        $produce->finished_at = '2016/02/24';
+        $produce->sold_at = '2016/03/17';
+        $produce->sold_to = 'GE';
+        $produce->employee_id = '3';
+        $produce->save();
+
+        $produce = new \App\Produce();
+        $produce->model = 'M-9';
+        $produce->serial_number = '201512180K';
+        $produce->finished_at = '2015/12/18';
+        $produce->sold_at = '2016/01/04';
+        $produce->sold_to = 'HPT';
         $produce->employee_id = '2';
         $produce->save();
     }

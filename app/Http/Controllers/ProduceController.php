@@ -29,20 +29,34 @@ class ProduceController extends Controller
         ]);
         $data = $request->only('model', 'serial_number', 'finished_at', 'sold_at', 'sold_to', 'employee_id');
         $produce = \App\Produce::create($data);
-        return view('produce.overview');
+        \Session::flash('success', 'A new produce record is added.');
+        return redirect('/produce');;
     }
 
     public function getMonthly($year = null, $month = null) {
-        $user = \Auth::user()->first();
+        $formated_date = $year.'/'.$month.'%';
+        $user = \Auth::user();
         $employee = \App\Employee::where('id', '=', $user->employee_id)->first();
         if($employee->privilege_id)
         {
+            $privilege = \App\Privilege::where('id', '=', $employee->privilege_id)->first();
             if($privilege->master_admin)
             {
-                $produces = \App\Produce::all();
+                $produces = \DB::table('produces')->where('finished_at', 'like', $formated_date)->select('model', 'finished_at', 'sold_at', 'sold_to', 'id')->get();
+                $have_id = true;
+            }
+            else
+            {
+                $produces = \DB::table('produces')->where('employee_id', '=', $employee->id)->where('finished_at', 'like', $formated_date)->select('model', 'serial_number', 'finished_at')->get();
+                $have_id = false;
             }
         }
-        return view('produce.monthly', compact('year', 'month', 'produces'));
+        else
+        {
+            $produces = \DB::table('produces')->where('employee_id', '=', $employee->id)->where('finished_at', 'like', $formated_date)->select('model', 'serial_number', 'finished_at')->get();
+            $have_id = false;
+        }
+        return view('produce.monthly', compact('year', 'month', 'produces', 'have_id'));
     }
 
     public function getById() {

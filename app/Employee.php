@@ -21,4 +21,12 @@ class Employee extends Model
     public function produces() {
         return $this->hasMany('\App\Produce')->withTimestamps();
     }
+
+    public function installs() {
+        return $this->hasMany('\App\Install');
+    }
+
+    public function maintenances() {
+        return $this->hasMany('\App\Maintenance');
+    }
 }
