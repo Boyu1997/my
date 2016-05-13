@@ -12,9 +12,9 @@ class ConnectInstallsAndProduces extends Migration
      */
     public function up()
     {
-        Schema::table('installs', function (Blueprint $table) {
-            $table->integer('produce_id')->unsigned();
-            $table->foreign('produce_id')->references('id')->on('produces');
+        Schema::table('produces', function (Blueprint $table) {
+            $table->integer('install_id')->unsigned()->nullable();
+            $table->foreign('install_id')->references('id')->on('installs');
         });
     }
 
@@ -25,9 +25,9 @@ class ConnectInstallsAndProduces extends Migration
      */
     public function down()
     {
-        Schema::table('installs', function (Blueprint $table) {
-            $table->dropForeign('installs_produce_id_foreign');
-            $table->dropColumn('produce_id');
+        Schema::table('produces', function (Blueprint $table) {
+            $table->dropForeign('produces_install_id_foreign');
+            $table->dropColumn('install_id');
         });
     }
 }

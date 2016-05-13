@@ -19,6 +19,7 @@ class CreateInstallsTable extends Migration
             $table->text('specification');
             $table->text('start_at');
             $table->text('end_at');
+            $table->integer('person_hour');
         });
     }
 

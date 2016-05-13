@@ -76,7 +76,7 @@
                             <li @yield('on_wage')><a href="/wage">Wage</a></li>
                             <li @yield('on_produce')><a href="/produce">Produce</a></li>
                             <li><a href="/trip">Trip</a></li>
-                            <li><a href="/install">Install</a></li>
+                            <li @yield('on_install')><a href="/install">Install</a></li>
                             <li><a href="/maintenance">Maintenance</a></li>
                         </ul>
                     @elseif ($privilege->master_admin)
@@ -88,7 +88,7 @@
                         <hr class="nav-hr">
                         <ul class="nav nav-sidebar">
                             <li @yield('on_produce')><a href="/produce">Produce</a></li>
-                            <li><a href="/install">Install</a></li>
+                            <li @yield('on_install')><a href="/install">Install</a></li>
                             <li><a href="/maintenance">Maintenance</a></li>
                         </ul>
                         <hr class="nav-hr">

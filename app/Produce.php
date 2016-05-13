@@ -15,11 +15,7 @@ class Produce extends Model
     }
 
     public function install() {
-        return $this->hasOne('\App\Install');
-    }
-
-    public function maintenances() {
-        return $this->hasMany('\App\Maintenance');
+        return $this->belongsTo('\App\Install');
     }
 
     public static function recentMonthlySummery() {
@@ -98,5 +94,17 @@ class Produce extends Model
         }
         return $recent_month;
     }
+
+    public static function producesSerialNumberForDropdown() {
+        $produces = \App\Produce::whereNull('install_id')->orderBy('serial_number', 'ASC')->get();
+        $produces_for_dropdown = [];
+        $produces_for_dropdown[0] = 'Choose a product...';
+
+        foreach ($produces as $produce) {
+            $produces_for_dropdown[$produce->id] = $produce->serial_number;
+        }
+        return $produces_for_dropdown;
+    }
+
 
 }

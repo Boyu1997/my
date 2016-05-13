@@ -26,7 +26,4 @@ class Employee extends Model
         return $this->hasMany('\App\Install');
     }
 
-    public function maintenances() {
-        return $this->hasMany('\App\Maintenance');
-    }
 }

@@ -18,6 +18,7 @@ class ProducesTableSeeder extends Seeder
         $produce->sold_at = '2016/04/28';
         $produce->sold_to = 'XMZ';
         $produce->employee_id = '1';
+        $produce->install_id = '1';
         $produce->save();
 
         $produce = new \App\Produce();
@@ -27,6 +28,7 @@ class ProducesTableSeeder extends Seeder
         $produce->sold_at = '2016/03/15';
         $produce->sold_to = 'XMZ';
         $produce->employee_id = '3';
+        $produce->install_id = '2';
         $produce->save();
 
         $produce = new \App\Produce();
@@ -36,6 +38,7 @@ class ProducesTableSeeder extends Seeder
         $produce->sold_at = '2016/04/20';
         $produce->sold_to = 'GE';
         $produce->employee_id = '3';
+        $produce->install_id = '4';
         $produce->save();
 
         $produce = new \App\Produce();
@@ -99,6 +102,7 @@ class ProducesTableSeeder extends Seeder
         $produce->sold_at = '2016/01/04';
         $produce->sold_to = 'HPT';
         $produce->employee_id = '2';
+        $produce->install_id = '3';
         $produce->save();
     }
 }
