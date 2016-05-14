@@ -7,7 +7,7 @@
 Business runner's tool, and simple customized OA system.
 
 ## Demo
-Video will be available soon...
+<http://v.youku.com/v_show/id_XMTU2OTI4MTQ1Mg==.html>
 
 ## Details for teaching team
 NONE
