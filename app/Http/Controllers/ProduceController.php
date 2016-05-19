@@ -30,7 +30,7 @@ class ProduceController extends Controller
         $data = $request->only('model', 'serial_number', 'finished_at', 'sold_at', 'sold_to', 'employee_id');
         $produce = \App\Produce::create($data);
         \Session::flash('success', 'A new produce record is added.');
-        return redirect('/produce');;
+        return redirect('/produce');
     }
 
     public function getMonthly($year = null, $month = null) {
@@ -59,7 +59,9 @@ class ProduceController extends Controller
         return view('produce.monthly', compact('year', 'month', 'produces', 'have_id'));
     }
 
-    public function getById() {
-        return view('produce.overview');
+    public function getEditId($id) {
+        $produce = \App\Produce::where('id', '=', $id)->first();
+        $employees_for_dropdown = \App\User::employeesNameForDropdown();
+        return view('produce.edit', compact('produce', 'employees_for_dropdown'));
     }
 }

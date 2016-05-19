@@ -24,7 +24,7 @@ class InstallController extends Controller
         $this->validate($request, [
             'specification' => 'required',
             'start_at' => 'required|date_format:"Y/m/d"',
-            'end_at' => 'required',
+            'end_at' => 'required|date_format:"Y/m/d"',
             'person_hour' => 'required|integer',
             'employee_id' => 'not_in:0',
             'produce_id' => 'not_in:0'
@@ -70,7 +70,9 @@ class InstallController extends Controller
         return view('install.monthly', compact('year', 'month', 'installs', 'have_id'));
     }
 
-    public function getById() {
-        return view('install.overview');
+    public function getIdRedirect($id) {
+        $produce_id = \App\Produce::where('install_id', '=', $id)->pluck('id')->first();
+        $link = '/product/id/'.$produce_id;
+        return redirect($link);
     }
 }

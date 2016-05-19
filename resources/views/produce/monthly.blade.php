@@ -52,7 +52,7 @@
                                     @if($key!='id') <td>{{ $value }}</td>
                                     @endif
                                 @endforeach
-                                @if($have_id) <td><a href="/produce/id/{{ $produce->id }}">View</a></td>
+                                @if($have_id) <td><a href="/product/id/{{ $produce->id }}">View</a></td>
                                 @endif
                             </tr>
                         @endforeach
