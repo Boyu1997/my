@@ -17,13 +17,13 @@
     <hr>
 
     <div aria-label="Justified button group" role="group" class="btn-group btn-group-justified">
-        @if ($employee->privilege_id)
-            @if($privilege->master_admin)
-                <a class="btn btn-default" href="/produce/create">Create New Produce Record</a>
-            @endif
+        @if ($employee->privilege_id && $privilege->master_admin)
+            <a class="btn btn-default" href="/produce/create">Create New Produce Record</a>
         @endif
         <a class="btn btn-default" href="/produce/{{ date('Y') }}/{{ date('m') }}">View Monthly</a>
-        <a class="btn btn-default disabled" href="#">Search (Comming Soon)</a>
+        @if ($employee->privilege_id && $privilege->master_admin)
+            <a class="btn btn-default" href="/produce/search">Search</a>
+        @endif
     </div>
 
 @stop

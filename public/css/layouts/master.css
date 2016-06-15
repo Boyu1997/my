@@ -116,7 +116,7 @@ body {
     margin-top: 0px;
 }
 
-#flash_success {
+#flash_message {
     position: absolute;
     top: 40px;
     margin-left: 30%;

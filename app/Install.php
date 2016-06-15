@@ -18,7 +18,7 @@ class Install extends Model
         return $this->hasOne('\App\Produce');
     }
 
-    public static function recentMonthlySummery() {
+    public static function recentMonthlySummery($user, $employee, $privilege) {
         $recent_month = \App\Install::recentMonth();
         $recent_year = [0, 0, 0, 0, 0];
         $recent_monthly_summery = [0, 0, 0, 0, 0];
@@ -32,43 +32,23 @@ class Install extends Model
             if ($recent_month[$i]<10) $recent_month[$i] = $recent_year[$i].'/0'.$recent_month[$i];
             else $recent_month[$i] = $recent_year[$i].'/'.$recent_month[$i];
         }
-        $user = \Auth::user();
-        $employee = \App\Employee::where('id', '=', $user->employee_id)->first();
-        if ($employee->privilege_id)
+        if (sizeof($privilege)==0 || $privilege->master_admin==0)
         {
-            $privilege = \App\Privilege::where('id', '=', $employee->privilege_id)->first();
-            if ($privilege->master_admin)
+            $installs = \App\Install::where('employee_id', '=', $employee->id)->get();
+            foreach ($installs as $install)
             {
-                $installs = \App\Install::all();
-                foreach ($installs as $install)
+                $month = date('Y/m', strtotime($install->start_at));
+                foreach ($recent_month as $key=>$the_month)
                 {
-                    $month = date('Y/m', strtotime($install->start_at));
-                    foreach ($recent_month as $key=>$the_month)
-                    {
-                        if ($month==$the_month) {
-                            $recent_monthly_summery[$key]++;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                $installs = \App\Install::where('employee_id', '=', $employee->id)->get();
-                foreach ($installs as $install)
-                {
-                    $month = date('Y/m', strtotime($install->start_at));
-                    foreach ($recent_month as $key=>$the_month)
-                    {
-                        if ($month==$the_month) {
-                            $recent_monthly_summery[$key]++;
-                        }
+                    if ($month==$the_month) {
+                        $recent_monthly_summery[$key]++;
                     }
                 }
             }
         }
         else
         {
-            $installs = \App\Install::where('employee_id', '=', $employee->id)->get();
+            $installs = \App\Install::all();
             foreach ($installs as $install)
             {
                 $month = date('Y/m', strtotime($install->start_at));

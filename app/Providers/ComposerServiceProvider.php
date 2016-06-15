@@ -13,6 +13,11 @@ class ComposerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        //$trace=debug_backtrace();
+        //echo "<pre>";
+        //print_r($trace);
+        //echo "</pre>";
+        /*
         \View::composer('*', function($view) {
             if (\Auth::check())
             {
@@ -27,6 +32,7 @@ class ComposerServiceProvider extends ServiceProvider
                     if ($employee->wage_id)
                     {
                         $wage = \App\Wage::where('id', '=', $employee->wage_id)->first();
+                        //$wage = \App\Wage::where('id', '=', 10)->first();
                     }
                     else $wage = [];
                 }
@@ -37,6 +43,8 @@ class ComposerServiceProvider extends ServiceProvider
                 $view->with(compact('user', 'employee', 'privilege', 'wage'));
             }
         });
+        */
+
     }
 
     /**

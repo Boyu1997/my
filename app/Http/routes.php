@@ -10,9 +10,7 @@ Route::get('/logout', 'Auth\AuthController@logout');
 Route::group(['middleware' => 'auth'], function () {
 
 
-    Route::get('/', function () {
-        return view('home');
-    });
+    Route::get('/', 'HomeController@getHome');
 
 
     Route::get('/wage', 'WageController@getOverview');
@@ -21,15 +19,22 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/product/id/{id}', 'ProductController@getById');
 
     Route::get('/produce', 'ProduceController@getOverview');
+    Route::get('/produce/{year}/{month}', 'ProduceController@getMonthly');
     Route::get('/produce/create', 'ProduceController@getCreate');
     Route::post('/produce/create', 'ProduceController@postCreate');
-    Route::get('/produce/{year}/{month}', 'ProduceController@getMonthly');
-    Route::get('/produce/id/{id}/edit', 'ProduceController@getEditId');
+    Route::get('/produce/search', 'ProduceController@getSearch');
+    Route::post('/produce/search', 'ProduceController@postSearch');
+    Route::get('/produce/edit/id/{id}', 'ProduceController@getEditId');
+    Route::post('/produce/edit/id/{id}', 'ProduceController@postEditId');
 
     Route::get('/install', 'InstallController@getOverview');
+    Route::get('/install/{year}/{month}', 'InstallController@getMonthly');
     Route::get('/install/create', 'InstallController@getCreate');
     Route::post('/install/create', 'InstallController@postCreate');
-    Route::get('/install/{year}/{month}', 'InstallController@getMonthly');
+    Route::get('/install/search', 'InstallController@getSearch');
+    Route::post('/install/search', 'InstallController@postSearch');
     Route::get('/install/id/{id}', 'InstallController@getIdRedirect');
-    Route::get('/install/id/{id}/edit', 'InstallController@getEditId');
+    Route::get('/install/edit/id/{id}', 'InstallController@getEditId');
+    Route::post('/install/edit/id/{id}', 'InstallController@postEditId');
+
 });

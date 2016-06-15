@@ -1,16 +1,16 @@
 @extends('layouts.master')
 
 
-@section('on_produce')
-    class="active"
+@section('head')
+    <link href="/css/product/byId.css" type='text/css' rel='stylesheet'>
 @stop
 
-
 @section('content')
-    <h1 class="page-header">View By Id</h1>
-
-    <h2>Produce Information</h2>
-    <a href="/produce/id/{{$produce->id}}/edit">Edit</a>
+    <h1 class="page-header">View All</h1>
+    <div class="headline">
+        <h2>Produce Information</h2>
+        <p> &nbsp; <a href="/produce/edit/id/{{$produce->id}}">Edit</a></p>
+    </div>
     <table class="table table-bordered">
         @foreach($produce as $key => $value)
             @if(!preg_match('/id/', $key))
@@ -21,8 +21,12 @@
             @endif
         @endforeach
     </table>
-
-    <h2>Install Information</h2>
+    <div class="headline">
+        <h2>Install Information</h2>
+        @if(sizeof($install))
+            <p> &nbsp; <a href="/install/edit/id/{{$install->id}}">Edit</a></p>
+        @endif
+    </div>
     @if(sizeof($install))
         <table class="table table-bordered">
             @foreach($install as $key => $value)

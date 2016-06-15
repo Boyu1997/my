@@ -19,7 +19,10 @@
     <body>
 
         @if(Session::get('success')!=null)
-            <div id="flash_success" class="alert alert-success" role="alert">{{Session::get('success')}}</div>
+            <div id="flash_message" class="alert alert-success" role="alert">{{Session::get('success')}}</div>
+        @endif
+        @if(Session::get('danger')!=null)
+            <div id="flash_message" class="alert alert-danger" role="alert">{{Session::get('danger')}}</div>
         @endif
 
         <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -65,35 +68,45 @@
                             <a href="/">Home<span class="sr-only">(current)</span></a>
                         </li>
                     </ul>
-                    @if ($user->employee_id == 0)
+                    @if (!sizeof($employee))
                         <hr class="nav-hr">
                         <ul class="nav nav-sidebar">
                             <li><a href="">Apply</a></li>
                         </ul>
-                    @elseif ($employee->privilege_id == 0)
+                    @elseif ($employee->position == 'engineer')
                         <hr class="nav-hr">
                         <ul class="nav nav-sidebar">
                             <li @yield('on_wage')><a href="/wage">Wage</a></li>
                             <li @yield('on_produce')><a href="/produce">Produce</a></li>
-                            <li><a href="/trip">Trip</a></li>
+                            <li @yield('on_trip')><a href="/trip">Trip</a></li>
                             <li @yield('on_install')><a href="/install">Install</a></li>
-                            <li><a href="/maintenance">Maintenance</a></li>
+                            <li @yield('on_maintenance')><a href="/maintenance">Maintenance</a></li>
+                        </ul>
+                    @elseif ($employee->position == 'sales')
+                        <hr class="nav-hr">
+                        <ul class="nav nav-sidebar">
+                            <li @yield('on_sales')><a href="/sale">Sale</a></li>
+                            <li @yield('on_customer')><a href="/customer">Customer</a></li>
+                            <li @yield('on_contract')><a href="/contract">Contract</a></li>
+                            <li @yield('on_install')><a href="/trip">Trip</a></li>
                         </ul>
                     @elseif ($privilege->master_admin)
                         <hr class="nav-hr">
                         <ul class="nav nav-sidebar">
                             <li @yield('on_wage')><a href="/wage">Wage</a></li>
-                            <li><a href="/trip">Trip</a></li>
+                            <li @yield('on_trip')><a href="/trip">Trip</a></li>
                         </ul>
                         <hr class="nav-hr">
                         <ul class="nav nav-sidebar">
                             <li @yield('on_produce')><a href="/produce">Produce</a></li>
                             <li @yield('on_install')><a href="/install">Install</a></li>
-                            <li><a href="/maintenance">Maintenance</a></li>
+                            <li @yield('on_maintenance')><a href="/maintenance">Maintenance</a></li>
                         </ul>
                         <hr class="nav-hr">
                         <ul class="nav nav-sidebar">
-                            <li><a href="/customer">Customer</a></li>
+                            <li @yield('on_sale')><a href="/sale">Sale</a></li>
+                            <li @yield('on_customer')><a href="/customer">Customer</a></li>
+                            <li @yield('on_contract')><a href="/contract">Contract</a></li>
                         </ul>
                         <hr class="nav-hr">
                         <ul class="nav nav-sidebar">

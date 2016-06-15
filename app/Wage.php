@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Wage extends Model
 {
     public function employee() {
-        return $this->belongsTo('\App\Employee');
+        return $this->hasOne('\App\Employee');
     }
 }

@@ -26,7 +26,7 @@ class User extends Authenticatable
 
 
     public function employee() {
-        return $this->hasOne('\App\Employee');
+        return $this->belongsTo('\App\Employee');
     }
 
     public static function employeesNameForDropdown() {

@@ -7,15 +7,15 @@
 
 
 @section('content')
-    <h1 class="page-header">New Recore</h1>
+    <h1 class="page-header">Search</h1>
 
-    <form class="form-horizontal" method='POST' action='/install/create'>
+    <form class="form-horizontal" method='POST' action='/install/search'>
         {!! csrf_field() !!}
 
         <div class="form-group">
             <label for="specification" class ="col-sm-2 control-label">Specification</label>
             <div class = "col-sm-10 col-md-9">
-                <textarea type="text" class="form-control" name="specification" id="specification" placeholder="Enter Specification" rows="3">{{ old('specification') }}</textarea>
+                <textarea type="text" class="form-control" name="specification" id="specification" value="{{ old('specification') }}" placeholder="Enter Specification" rows="3"></textarea>
                 <div class='error'>{{ $errors->first('specification') }}</div>
             </div>
         </div>
@@ -38,19 +38,6 @@
             <div class="col-sm-10 col-md-9">
                 <input type="text" class="form-control" name="person_hour" id="person_hour" value="{{ old('person_hour') }}" placeholder="Enter Person Hour">
                 <div class='error'>{{ $errors->first('person_hour') }}</div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="produce_id" class="col-sm-2 control-label">Product Information</label>
-            <div class="col-sm-10 col-md-9">
-                <select class = "form-control" name="produce_id" id="produce_id">
-                    @foreach($produces_for_dropdown as $produce_id => $produce_serial_number)
-                        <option value='{{$produce_id}}' @if($produce_id==old('produce_id'))selected="selected"@endif>
-                            {{$produce_serial_number}}
-                        </option>
-                    @endforeach
-                </select>
-                <div class='error'>{{ $errors->first('produce_id') }}</div>
             </div>
         </div>
         <div class="form-group">

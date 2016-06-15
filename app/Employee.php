@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Employee extends Model
 {
     public function user() {
-        return $this->belongsTo('\App\User');
+        return $this->hasOne('\App\User');
     }
 
     public function wage() {
-        return $this->hasOne('\App\Wage');
+        return $this->belongsTo('\App\Wage');
     }
 
     public function privilege() {
-        return $this->hasOne('\App\Privilege');
+        return $this->belongsTo('\App\Privilege');
     }
 
     public function produces() {
@@ -26,4 +26,7 @@ class Employee extends Model
         return $this->hasMany('\App\Install');
     }
 
+    public function sales() {
+        return $this->hasMany('\App\Sale');
+    }
 }

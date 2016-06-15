@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Produce extends Model
 {
     protected $fillable = [
-        'model', 'serial_number', 'finished_at', 'sold_at', 'sold_to', 'employee_id'
+        'model', 'serial_number', 'finished_at', 'contract_id', 'employee_id'
     ];
 
     public function employees() {
@@ -18,7 +18,11 @@ class Produce extends Model
         return $this->belongsTo('\App\Install');
     }
 
-    public static function recentMonthlySummery() {
+    public function contract() {
+        return $this->belongsTo('\App\Contract');
+    }
+
+    public static function recentMonthlySummery($user, $employee, $privilege) {
         $recent_month = \App\Produce::recentMonth();
         $recent_year = [0, 0, 0, 0, 0];
         $recent_monthly_summery = [0, 0, 0, 0, 0];
@@ -32,11 +36,8 @@ class Produce extends Model
             if ($recent_month[$i]<10) $recent_month[$i] = $recent_year[$i].'/0'.$recent_month[$i];
             else $recent_month[$i] = $recent_year[$i].'/'.$recent_month[$i];
         }
-        $user = \Auth::user();
-        $employee = \App\Employee::where('id', '=', $user->employee_id)->first();
-        if ($employee->privilege_id)
+        if (sizeof($privilege))
         {
-            $privilege = \App\Privilege::where('id', '=', $employee->privilege_id)->first();
             if ($privilege->master_admin)
             {
                 $produces = \App\Produce::all();

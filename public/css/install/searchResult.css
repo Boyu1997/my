@@ -1,0 +1,21 @@
+#search_nav {
+    font-size: 24px;
+    font-weight: 500;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+#monthlyTable {
+    text-align:center;
+    margin-top: 0px;
+}
+
+#monthlyTable thead tr th div {
+    text-align:center;
+}
+
+.panel {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    text-align:center;
+}

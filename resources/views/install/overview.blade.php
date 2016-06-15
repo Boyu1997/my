@@ -23,7 +23,7 @@
             @endif
         @endif
         <a class="btn btn-default" href="/install/{{ date('Y') }}/{{ date('m') }}">View Monthly</a>
-        <a class="btn btn-default disabled" href="#">Search (Comming Soon)</a>
+        <a class="btn btn-default" href="/install/search">Search</a>
     </div>
 
 @stop

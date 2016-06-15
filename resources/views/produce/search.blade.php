@@ -7,44 +7,43 @@
 
 
 @section('content')
-    <h1 class="page-header">Edit Recore</h1>
+    <h1 class="page-header">Search</h1>
 
-    <form class="form-horizontal" method='POST' action='/produce/edit/id/{{$produce->id}}'>
+    <form class="form-horizontal" method='POST' action='/produce/search'>
         {!! csrf_field() !!}
-        <input type="hidden" name="id" value="{{ $produce->id }}">
 
         <div class="form-group">
             <label for="model" class ="col-sm-2 control-label">Model</label>
             <div class = "col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="model" id="model" value="{{ $produce->model }}" placeholder="Enter Model">
+                <input type="text" class="form-control" name="model" id="model" value="{{ old('model') }}" placeholder="Enter Model">
                 <div class='error'>{{ $errors->first('model') }}</div>
             </div>
         </div>
         <div class="form-group">
             <label for="serial_number" class="col-sm-2 control-label">Serial Number</label>
             <div class="col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="serial_number" id="serial_number" value="{{ $produce->serial_number }}" placeholder="Enter Serial Number">
+                <input type="text" class="form-control" name="serial_number" id="serial_number" value="{{ old('serial_number') }}" placeholder="Enter Serial Number">
                 <div class='error'>{{ $errors->first('serial_number') }}</div>
             </div>
         </div>
         <div class="form-group">
             <label for="finished_at" class="col-sm-2 control-label">Finished At</label>
             <div class="col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="finished_at" id="finished_at" value="{{ $produce->finished_at }}" placeholder="YYYY/MM/DD">
+                <input type="text" class="form-control" name="finished_at" id="finished_at" value="{{ old('finished_at') }}" placeholder="YYYY/MM/DD">
                 <div class='error'>{{ $errors->first('finished_at') }}</div>
             </div>
         </div>
         <div class="form-group">
             <label for="sold_at" class="col-sm-2 control-label">Sold At</label>
             <div class="col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="sold_at" id="sold_at" value="{{ $produce->sold_at }}" placeholder="YYYY/MM/DD">
+                <input type="text" class="form-control" name="sold_at" id="sold_at" value="{{ old('sold_at') }}" placeholder="YYYY/MM/DD">
                 <div class='error'>{{ $errors->first('sold_at') }}</div>
             </div>
         </div>
         <div class="form-group">
             <label for="sold_to" class="col-sm-2 control-label">Sold To</label>
             <div class="col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="sold_to" id="sold_to" value="{{ $produce->sold_to }}" placeholder="Enter Sold To">
+                <input type="text" class="form-control" name="sold_to" id="sold_to" value="{{ old('sold_to') }}" placeholder="Enter Sold To">
                 <div class='error'>{{ $errors->first('sold_to') }}</div>
             </div>
         </div>
@@ -53,7 +52,7 @@
             <div class="col-sm-10 col-md-9">
                 <select class = "form-control" name="employee_id" id="employee_id">
                     @foreach($employees_for_dropdown as $employee_id => $employee_name)
-                        <option value="{{$employee_id}}" @if($employee_id==$produce->employee_id)selected="selected"@endif>
+                        <option value='{{$employee_id}}' @if($employee_id==old('employee_id'))selected="selected"@endif>
                             {{$employee_name}}
                         </option>
                     @endforeach
@@ -63,7 +62,7 @@
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default">Save Changes</button>
+                <button type="submit" class="btn btn-default">Search</button>
             </div>
         </div>
     </form>
