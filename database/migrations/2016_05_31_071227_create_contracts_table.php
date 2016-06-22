@@ -20,6 +20,7 @@ class CreateContractsTable extends Migration
             $table->text('sold_at');
             $table->text('sold_type');
             $table->integer('amount');
+            $table->integer('total');
         });
     }
 

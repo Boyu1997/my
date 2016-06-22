@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Produce extends Model
 {
     protected $fillable = [
-        'model', 'serial_number', 'finished_at', 'contract_id', 'employee_id'
+        'model', 'serial_number', 'start_at', 'finished_at', 'employee_id'
     ];
 
     public function employees() {
@@ -36,33 +36,16 @@ class Produce extends Model
             if ($recent_month[$i]<10) $recent_month[$i] = $recent_year[$i].'/0'.$recent_month[$i];
             else $recent_month[$i] = $recent_year[$i].'/'.$recent_month[$i];
         }
-        if (sizeof($privilege))
+        if (sizeof($privilege) && $privilege->master_admin)
         {
-            if ($privilege->master_admin)
+            $produces = \App\Produce::all();
+            foreach ($produces as $produce)
             {
-                $produces = \App\Produce::all();
-                foreach ($produces as $produce)
+                $month = date('Y/m', strtotime($produce->finished_at));
+                foreach ($recent_month as $key=>$the_month)
                 {
-                    $month = date('Y/m', strtotime($produce->finished_at));
-                    foreach ($recent_month as $key=>$the_month)
-                    {
-                        if ($month==$the_month) {
-                            $recent_monthly_summery[$key]++;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                $produces = \App\Produce::where('employee_id', '=', $employee->id)->get();
-                foreach ($produces as $produce)
-                {
-                    $month = date('Y/m', strtotime($produce->finished_at));
-                    foreach ($recent_month as $key=>$the_month)
-                    {
-                        if ($month==$the_month) {
-                            $recent_monthly_summery[$key]++;
-                        }
+                    if ($month==$the_month) {
+                        $recent_monthly_summery[$key]++;
                     }
                 }
             }
@@ -94,6 +77,20 @@ class Produce extends Model
             if ($recent_month[$i]>12) $recent_month[$i] -= 12;
         }
         return $recent_month;
+    }
+
+    public static function employeesNameForDropdown() {
+        $employees = \App\User::whereNotNull('employee_id')->orderBy('last_name', 'ASC')->with('employee.privilege')->get();
+        $employees_for_dropdown = [];
+        $employees_for_dropdown[0] = 'Choose a employee...';
+
+        foreach ($employees as $employee) {
+            if ($employee->employee->privilege->create_produce)
+            {
+                $employees_for_dropdown[$employee->employee_id] = $employee->last_name.' '.$employee->first_name;
+            }
+        }
+        return $employees_for_dropdown;
     }
 
     public static function producesSerialNumberForDropdown() {

@@ -12,6 +12,11 @@ class ProduceController extends Controller
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
         $recent_monthly_summery = \App\Produce::recentMonthlySummery($user, $employee, $privilege);
         $recent_month = \App\Produce::recentMonth();
+        if (sizeof($privilege)==0 || $privilege->master_admin==0)
+        {
+            $recent_monthly_summery = [$recent_monthly_summery[2], $recent_monthly_summery[3], $recent_monthly_summery[4]];
+            $recent_month = [$recent_month[2], $recent_month[3], $recent_month[4]];
+        }
         return \View::make('produce.overview', compact('user', 'employee', 'privilege', 'recent_month', 'recent_monthly_summery'));
     }
 
@@ -25,7 +30,7 @@ class ProduceController extends Controller
         }
         else
         {
-            $produces = \DB::table('produces')->where('finished_at', 'like', $formated_date)->select('model', 'serial_number', 'finished_at', 'sold_to', 'id')->get();
+            $produces = \DB::table('produces')->where('finished_at', 'like', $formated_date)->select('model', 'serial_number', 'finished_at', 'id')->get();
             $have_id = true;
         }
         return view('produce.monthly', compact('user', 'employee', 'privilege', 'year', 'month', 'produces', 'have_id'));
@@ -33,18 +38,19 @@ class ProduceController extends Controller
 
     public function getCreate() {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-        if(sizeof($privilege)==0 || $privilege->master_admin==0)
+        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->create_produce==0))
         {
             \Session::flash('danger', '403 Forbidden');
             return redirect('/produce');
         }
-        $employees_for_dropdown = \App\User::employeesNameForDropdown();
+        $employees_for_dropdown = \App\Produce::employeesNameForDropdown();
+
         return view('produce.create', compact('user', 'employee', 'privilege', 'employees_for_dropdown'));
     }
 
     public function postCreate(Request $request) {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-        if(sizeof($privilege)==0 || $privilege->master_admin==0)
+        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->create_produce==0))
         {
             \Session::flash('danger', '403 Forbidden');
             return redirect('/produce');
@@ -52,11 +58,11 @@ class ProduceController extends Controller
         $this->validate($request, [
             'model' => 'required',
             'serial_number' => 'required',
-            'finished_at' => 'required|date_format:"Y/m/d"',
-            'sold_at' => 'date_format:"Y/m/d"',
+            'start_at' => 'required|date_format:"Y/m/d"',
+            'finished_at' => 'date_format:"Y/m/d"',
             'employee_id' => 'not_in:0'
         ]);
-        $data = $request->only('model', 'serial_number', 'finished_at', 'sold_at', 'sold_to', 'employee_id');
+        $data = $request->only('model', 'serial_number', 'start_at', 'finished_at', 'employee_id');
         $produce = \App\Produce::create($data);
         \Session::flash('success', 'A new produce record is added.');
         return redirect('/produce');
@@ -69,7 +75,7 @@ class ProduceController extends Controller
             \Session::flash('danger', '403 Forbidden');
             return redirect('/produce');
         }
-        $employees_for_dropdown = \App\User::employeesNameForDropdown();
+        $employees_for_dropdown = \App\Produce::employeesNameForDropdown();
         return view('produce.search', compact('user', 'employee', 'privilege', 'employees_for_dropdown'));
     }
 
@@ -106,7 +112,7 @@ class ProduceController extends Controller
             return redirect('/produce');
         }
         $produce = \App\Produce::where('id', '=', $id)->first();
-        $employees_for_dropdown = \App\User::employeesNameForDropdown();
+        $employees_for_dropdown = \App\Produce::employeesNameForDropdown();
         return view('produce.edit', compact('user', 'employee', 'privilege', 'produce', 'employees_for_dropdown'));
     }
 

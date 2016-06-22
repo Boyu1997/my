@@ -16,6 +16,13 @@ class CreateHospitalsTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->text('name');
+            $table->text('nation');
+            $table->text('province');
+            $table->text('city');
+            $table->text('address');
+            $table->text('phone_number');
+            $table->text('fax');
+            $table->text('remark');
         });
     }
 

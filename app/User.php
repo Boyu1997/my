@@ -28,15 +28,4 @@ class User extends Authenticatable
     public function employee() {
         return $this->belongsTo('\App\Employee');
     }
-
-    public static function employeesNameForDropdown() {
-        $employees = \App\User::whereNotNull('employee_id')->orderBy('last_name', 'ASC')->get();
-        $employees_for_dropdown = [];
-        $employees_for_dropdown[0] = 'Choose a employee...';
-
-        foreach ($employees as $employee) {
-            $employees_for_dropdown[$employee->employee_id] = $employee->last_name.' '.$employee->first_name;
-        }
-        return $employees_for_dropdown;
-    }
 }
