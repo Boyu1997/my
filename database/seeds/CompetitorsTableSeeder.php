@@ -12,25 +12,25 @@ class CompetitorsTableSeeder extends Seeder
     public function run()
     {
         $competitor = new \App\Competitor();
-        $competitor->name = '对手1';
-        $competitor->nation = '中国';
-        $competitor->province = '河北';
-        $competitor->city = '石家庄';
+        $competitor->name = 'Competitor1';
+        $competitor->nation = 'China';
+        $competitor->province = 'Shanghai';
+        $competitor->city = 'Shanghai';
         $competitor->address = 'jsvbhhbjvknc';
         $competitor->phone_number = '123456';
         $competitor->fax = '123456';
-        $competitor->remark = 'dbjvkdfnsnhgs';
+        $competitor->remark = 'hwrnjvicm';
         $competitor->save();
 
         $competitor = new \App\Competitor();
-        $competitor->name = '对手2';
-        $competitor->nation = '中国';
-        $competitor->province = '湖南';
-        $competitor->city = '长沙';
+        $competitor->name = 'Competitor2';
+        $competitor->nation = 'China';
+        $competitor->province = 'Henan';
+        $competitor->city = 'Zhangzhou';
         $competitor->address = 'jkvdbnj';
         $competitor->phone_number = '123456';
         $competitor->fax = '123456';
-        $competitor->remark = 'skbdcafojtbgn';
+        $competitor->remark = 'kjhbvcfgvcxfbn';
         $competitor->save();
     }
 }
