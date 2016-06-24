@@ -37,4 +37,17 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/install/edit/id/{id}', 'InstallController@getEditId');
     Route::post('/install/edit/id/{id}', 'InstallController@postEditId');
 
+    Route::get('/sale', 'SaleController@getOverview');
+    Route::get('/sale/id/{id}', 'SaleController@getById');
+
+    Route::get('/testing', function () {
+        \Mail::send([], [], function ($message) {
+            $message->to('sherryzhang98@126.com')
+                ->subject('嗨，这就是你要的网站！')
+                ->setBody('是的，我就是邮件推送功能。哈哈哈哈哈！');
+        });
+
+        return 'Basic, plain text email sent.';
+    });
+
 });

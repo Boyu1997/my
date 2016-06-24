@@ -1,0 +1,9 @@
+.panel-heading h4, .panel-heading p {
+    display: inline;
+    vertical-align: bottom;
+    font-family: 'Open Sans', sans-serif;
+}
+
+div.not_found_text {
+    margin:15px;
+}

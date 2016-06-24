@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Agent extends Model
+class Other extends Model
 {
     public function contracts() {
         return $this->hasMany('\App\Contract');

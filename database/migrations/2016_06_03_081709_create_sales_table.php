@@ -15,8 +15,21 @@ class CreateSalesTable extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-
+            $table->text('status');
+            $table->text('classification');
             $table->text('specification');
+
+            $table->text('expect_model');
+            $table->integer('expect_amount');
+            $table->integer('expect_price');
+            $table->text('expect_sold_date');
+            $table->text('bid_date');
+
+            $table->text('result');
+            $table->text('winning_company');
+            $table->text('sold_model');
+            $table->integer('sold_amount');
+            $table->integer('sold_price');
         });
     }
 

@@ -21,4 +21,12 @@ class Sale extends Model
     public function complement() {
         return $this->belongsTo('\App\Complement');
     }
+
+    public function others() {
+        return $this->belongsTo('\App\Other');
+    }
+
+    public function competitors() {
+        return $this->belongsToMany('\App\Competitor')->withTimestamps();
+    }
 }

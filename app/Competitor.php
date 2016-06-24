@@ -4,14 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Agent extends Model
+class Competitor extends Model
 {
-    public function contracts() {
-        return $this->hasMany('\App\Contract');
-    }
-
     public function sales() {
-        return $this->hasMany('\App\Sale');
+        return $this->belongsToMany('\App\Sales')->withTimestamps();
     }
 
     public function contacts() {

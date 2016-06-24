@@ -34,13 +34,12 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Project name</a>
+                    <a class="navbar-brand" href="http://my.aimeikang.cc">艾美康办公系统</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#">Dashboard</a></li>
-                        <li><a href="#">Settings</a></li>
-                        <li><a href="#">Profile</a></li>
+                        <li><a href="http://www.aimeikang.cc">艾美康</a></li>
+                        <li><a href="#">帮助</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $user->username }}<span class="caret"></span></a>
                             <ul class="dropdown-menu">
@@ -48,9 +47,6 @@
                             </ul>
                         </li>
                     </ul>
-                    <form class="navbar-form navbar-right">
-                        <input type="text" class="form-control" placeholder="Search...">
-                    </form>
                 </div>
             </div>
         </nav>
@@ -65,7 +61,7 @@
                 <div class="col-sm-3 col-md-2 sidebar">
                     <ul class="nav nav-sidebar">
                         <li @yield('on_home')>
-                            <a href="/">Home<span class="sr-only">(current)</span></a>
+                            <a href="/">首页<span class="sr-only">(current)</span></a>
                         </li>
                     </ul>
                     @if (!sizeof($employee))

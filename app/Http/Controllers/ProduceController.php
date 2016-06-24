@@ -10,6 +10,11 @@ class ProduceController extends Controller
 {
     public function getOverview() {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->create_produce==0))
+        {
+            \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+            return redirect('/');
+        }
         $recent_monthly_summery = \App\Produce::recentMonthlySummery($user, $employee, $privilege);
         $recent_month = \App\Produce::recentMonth();
         if (sizeof($privilege)==0 || $privilege->master_admin==0)
@@ -22,6 +27,11 @@ class ProduceController extends Controller
 
     public function getMonthly($year = null, $month = null) {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->create_produce==0))
+        {
+            \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+            return redirect('/');
+        }
         $formated_date = $year.'/'.$month.'%';
         if(sizeof($privilege)==0 || $privilege->master_admin==0)
         {
@@ -40,8 +50,8 @@ class ProduceController extends Controller
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
         if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->create_produce==0))
         {
-            \Session::flash('danger', '403 Forbidden');
-            return redirect('/produce');
+            \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+            return redirect('/');
         }
         $employees_for_dropdown = \App\Produce::employeesNameForDropdown();
 
@@ -52,8 +62,8 @@ class ProduceController extends Controller
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
         if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->create_produce==0))
         {
-            \Session::flash('danger', '403 Forbidden');
-            return redirect('/produce');
+            \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+            return redirect('/');
         }
         $this->validate($request, [
             'model' => 'required',
@@ -70,10 +80,10 @@ class ProduceController extends Controller
 
     public function getSearch() {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-        if(sizeof($privilege)==0 || $privilege->master_admin==0)
+        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->create_produce==0))
         {
-            \Session::flash('danger', '403 Forbidden');
-            return redirect('/produce');
+            \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+            return redirect('/');
         }
         $employees_for_dropdown = \App\Produce::employeesNameForDropdown();
         return view('produce.search', compact('user', 'employee', 'privilege', 'employees_for_dropdown'));
@@ -81,35 +91,35 @@ class ProduceController extends Controller
 
     public function postSearch(Request $request) {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-        if(sizeof($privilege)==0 || $privilege->master_admin==0)
+        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->create_produce==0))
         {
-            \Session::flash('danger', '403 Forbidden');
-            return redirect('/produce');
+            \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+            return redirect('/');
         }
         $this->validate($request, [
             'model' => 'max:10',
             'serial_number' => 'max:50',
+            'start_at' => 'date_format:"Y/m/d"',
             'finished_at' => 'date_format:"Y/m/d"',
-            'sold_at' => 'date_format:"Y/m/d"',
             'employee_id' => 'integer'
         ]);
         if($request->employee_id == 0) $request->employee_id = '%';
         $produces = \DB::table('produces')
             ->where('model', 'like', '%'.$request->model.'%')
             ->where('serial_number', 'like', '%'.$request->serial_number.'%')
+            ->where('start_at', 'like', '%'.$request->start_at.'%')
             ->where('finished_at', 'like', '%'.$request->finished_at.'%')
-            ->where('sold_at', 'like', '%'.$request->sold_at.'%')
             ->where('employee_id', 'like', $request->employee_id)
-            ->select('model', 'serial_number', 'finished_at', 'sold_to', 'id')->get();
+            ->select('model', 'serial_number', 'start_at', 'finished_at', 'employee_id', 'id')->get();
         return view('produce.searchResult', compact('user', 'employee', 'privilege', 'produces'));
     }
 
     public function getEditId($id) {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-        if(sizeof($privilege)==0 || $privilege->master_admin==0)
+        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->create_produce==0))
         {
-            \Session::flash('danger', '403 Forbidden');
-            return redirect('/produce');
+            \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+            return redirect('/');
         }
         $produce = \App\Produce::where('id', '=', $id)->first();
         $employees_for_dropdown = \App\Produce::employeesNameForDropdown();
@@ -118,25 +128,24 @@ class ProduceController extends Controller
 
     public function postEditId(Request $request) {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-        if(sizeof($privilege)==0 || $privilege->master_admin==0)
+        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->create_produce==0))
         {
-            \Session::flash('danger', '403 Forbidden');
-            return redirect('/produce');
+            \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+            return redirect('/');
         }
         $this->validate($request, [
             'id' => 'integer',
             'model' => 'required',
             'serial_number' => 'required',
-            'finished_at' => 'required|date_format:"Y/m/d"',
-            'sold_at' => 'date_format:"Y/m/d"',
+            'start_at' => 'required|date_format:"Y/m/d"',
+            'finished_at' => 'date_format:"Y/m/d"',
             'employee_id' => 'not_in:0'
         ]);
         $produce = \App\Produce::find($request->id);
         $produce->model = $request->model;
         $produce->serial_number = $request->serial_number;
+        $produce->start_at = $request->start_at;
         $produce->finished_at = $request->finished_at;
-        $produce->sold_at = $request->sold_at;
-        $produce->sold_to = $request->sold_to;
         $produce->employee_id = $request->employee_id;
         $produce->save();
         \Session::flash('success', 'The produce record for '.$request->serial_number.' is edit.');

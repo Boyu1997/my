@@ -45,7 +45,7 @@
             <div class="form-group">
                 <label for="employee_name" class="col-sm-2 control-label">生产者</label>
                 <div class="col-sm-10 col-md-9">
-                    <select class = "form-control" name="employee_id" id="employee_id" @if(!$privilege->master_admin)value="{{$employee->id}}" disabled @endif>
+                    <select class = "form-control" name="employee_id" id="employee_id" @if(!$privilege->master_admin)value="{{$employee->id}}" readonly @endif>
                         @foreach($employees_for_dropdown as $employee_id => $employee_name)
                             <option value="{{$employee_id}}"
                                 @if(!$privilege->master_admin && $employee_id==$employee->id)selected="selected"

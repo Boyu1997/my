@@ -22,7 +22,6 @@ class CreatePrivilegesTable extends Migration
             $table->boolean('create_install');
             $table->boolean('create_maintenance');
             $table->boolean('create_sale');
-            $table->boolean('create_customer');
             $table->boolean('create_contract');
         });
     }

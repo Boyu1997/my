@@ -20,6 +20,7 @@
             </div>
             <div class="col-md-4">
                 <div id="last_month_info">
+                    <h3>上月任务</h3>
                     @if($recent_monthly_summery[1]>=7)
                         <span id="month_glyphicon_ok" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                         <h2>符合要求！</h2>
@@ -30,17 +31,21 @@
                         <p>完成本月任务，下月就能符合奖励要求！</p>
                     @endif
                 </div>
-                <div>
+                <hr>
+                <div id="this_month_info">
+                    <h3>本月任务</h3>
                     @if($recent_monthly_summery[1]>=7)
                         @if($recent_monthly_summery[2]>=7)
                             <span id="month_glyphicon_ok" class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                             <h2>符合要求！</h2>
-                            <p>本月共额外获得700元奖励！</p>
+                            <h4>已额外获得{{$recent_monthly_summery[2]*$employee->wage->piece_rate_award_stander}}元奖励！</h4>
+                            <p>继续生产，计件工资为增幅后的{{$employee->wage->piece_rate_stander+$employee->wage->piece_rate_award_stander}}元/件！</p>
                         @else
-                            <div id="monthly_pie">
-                                <span class="label label-default">{{$recent_monthly_summery[2]}}/7</span>
+                            <div id="monthly_pie"></div>
+                            <div class="pie_bottom">
+                                <h3><span class="label label-default">{{$recent_monthly_summery[2]}}/7</span></h3>
                                 <h2>加油！</h2>
-                                <p>完成任务计后件工资增幅至400元/件！</p>
+                                <p>完成任务计后件工资增幅至{{$employee->wage->piece_rate_stander+$employee->wage->piece_rate_award_stander}}元/件！</p>
                             </div>
                         @endif
                     @else
@@ -49,10 +54,9 @@
                             <h2>符合要求！</h2>
                             <p>下月继续完成任务就可以获得奖励！</p>
                         @else
-                            <div id="monthly_pie">
-                                <span class="label label-default">{{$recent_monthly_summery[2]}}/7</span>
-                            </div>
-                            <div id="this_month_info">
+                            <div id="monthly_pie"></div>
+                            <div class="pie_bottom">
+                                <h3><span class="label label-default">{{$recent_monthly_summery[2]}}/7</span></h3>
                                 <h2>加油！</h2>
                                 <p>再生产{{7-$recent_monthly_summery[2]}}件就能完成本月任务！</p>
                             </div>
@@ -63,17 +67,21 @@
         </div>
     @endif
 
-
-
     <hr>
 
     <div aria-label="Justified button group" role="group" class="btn-group btn-group-justified">
-        @if ($employee->privilege_id && ($privilege->master_admin || $privilege->create_produce))
-            <a class="btn btn-default" href="/produce/create">Create New Produce Record</a>
+        @if ($privilege->master_admin)
+            <a class="btn btn-default" href="/produce/create">新建记录</a>
+        @elseif ($privilege->create_produce)
+            @if (\App\Produce::where('employee_id', '=', $employee->id)->where('finished_at', '=', '')->count())
+                <a class="btn btn-default" href="/produce/create">当前生产</a>
+            @else
+                <a class="btn btn-default" href="/produce/create">新建记录</a>
+            @endif
         @endif
-        <a class="btn btn-default" href="/produce/{{ date('Y') }}/{{ date('m') }}">View Monthly</a>
-        @if ($employee->privilege_id && $privilege->master_admin)
-            <a class="btn btn-default" href="/produce/search">Search</a>
+        <a class="btn btn-default" href="/produce/{{ date('Y') }}/{{ date('m') }}">按月查看</a>
+        @if ($privilege->master_admin)
+            <a class="btn btn-default" href="/produce/search">搜索</a>
         @endif
     </div>
 

@@ -17,7 +17,6 @@ class PrivilegesTableSeeder extends Seeder
         $privilege->create_produce = '1';
         $privilege->create_install = '1';
         $privilege->create_maintenance = '1';
-        $privilege->create_customer = '1';
         $privilege->save();
 
         $privilege = new \App\Privilege();
@@ -26,7 +25,6 @@ class PrivilegesTableSeeder extends Seeder
         $privilege->create_produce = '1';
         $privilege->create_install = '1';
         $privilege->create_maintenance = '1';
-        $privilege->create_customer = '1';
         $privilege->save();
 
         $privilege = new \App\Privilege();
@@ -35,7 +33,6 @@ class PrivilegesTableSeeder extends Seeder
         $privilege->create_produce = '0';
         $privilege->create_install = '1';
         $privilege->create_maintenance = '1';
-        $privilege->create_customer = '0';
         $privilege->save();
     }
 }
