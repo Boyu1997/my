@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateContactHospitalTable extends Migration
+class CreateContactCustomerTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,14 +12,14 @@ class CreateContactHospitalTable extends Migration
      */
     public function up()
     {
-        Schema::create('contact_hospital', function (Blueprint $table) {
+        Schema::create('contact_customer', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
             $table->integer('contact_id')->unsigned();
-            $table->integer('hospital_id')->unsigned();
+            $table->integer('customer_id')->unsigned();
 
             $table->foreign('contact_id')->references('id')->on('contacts');
-            $table->foreign('hospital_id')->references('id')->on('hospitals');
+            $table->foreign('customer_id')->references('id')->on('customers');
         });
     }
 
@@ -30,6 +30,6 @@ class CreateContactHospitalTable extends Migration
      */
     public function down()
     {
-        Schema::drop('contact_hospital');
+        Schema::drop('contact_customer');
     }
 }

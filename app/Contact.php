@@ -14,8 +14,8 @@ class Contact extends Model
         return $this->belongsToMany('\App\Complement')->withTimestamps();
     }
 
-    public function hospitals() {
-        return $this->belongsToMany('\App\Hospital')->withTimestamps();
+    public function customers() {
+        return $this->belongsToMany('\App\Customer')->withTimestamps();
     }
 
     public function others() {

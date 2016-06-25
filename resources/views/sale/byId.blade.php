@@ -25,7 +25,7 @@
             @endif
         @endforeach
     </table>
-
+    <br>
     <div class="headline">
         <h2>代理商信息</h2>
         @if(sizeof($agent))
@@ -46,7 +46,7 @@
     @else
         <p>没有找到代理商信息，<a href="/sale/agent/create">马上添加</a>。</p>
     @endif
-
+    <br>
     <div class="headline">
         <h2>配套商信息</h2>
         @if(sizeof($complement))
@@ -67,16 +67,16 @@
     @else
         <p>没有找到配套商信息，<a href="/sale/complement/create">马上添加</a>。</p>
     @endif
-
+    <br>
     <div class="headline">
-        <h2>医院信息</h2>
-        @if(sizeof($hospital))
-            <p> &nbsp; <a href="/sale/hospital/edit/id/{{$hospital->id}}">编辑</a></p>
+        <h2>用户信息</h2>
+        @if(sizeof($customer))
+            <p> &nbsp; <a href="/sale/customer/edit/id/{{$customer->id}}">编辑</a></p>
         @endif
     </div>
-    @if(sizeof($hospital))
+    @if(sizeof($customer))
         <table class="table table-bordered">
-            @foreach($hospital as $key => $value)
+            @foreach($customer as $key => $value)
                 @if(!preg_match('/id/', $key))
                     <tr>
                         <th>{{ $key }}</th>
@@ -86,9 +86,9 @@
             @endforeach
         </table>
     @else
-        <p>没有找到医院信息，<a href="/sale/hospital/create">马上添加</a>。</p>
+        <p>没有找到医院信息，<a href="/sale/customer/create">马上添加</a>。</p>
     @endif
-
+    <br>
     <div class="headline">
         <h2>其他信息</h2>
         @if(sizeof($other))

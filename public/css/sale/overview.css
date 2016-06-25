@@ -7,3 +7,12 @@
 div.not_found_text {
     margin:15px;
 }
+
+#infoTable {
+    margin-top: 0px;
+}
+
+.panel-body {
+    height: 500px;
+    padding: 0px;
+}

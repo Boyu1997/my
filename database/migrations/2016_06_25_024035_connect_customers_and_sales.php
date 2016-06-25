@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ConnectHospitalsAndSales extends Migration
+class ConnectCustomersAndSales extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class ConnectHospitalsAndSales extends Migration
     public function up()
     {
         Schema::table('sales', function (Blueprint $table) {
-            $table->integer('hospital_id')->unsigned()->nullable();
-            $table->foreign('hospital_id')->references('id')->on('hospitals');
+            $table->integer('customer_id')->unsigned();
+            $table->foreign('customer_id')->references('id')->on('customers');
         });
     }
 
@@ -26,8 +26,8 @@ class ConnectHospitalsAndSales extends Migration
     public function down()
     {
         Schema::table('sales', function (Blueprint $table) {
-            $table->dropForeign('sales_hospital_id_foreign');
-            $table->dropColumn('hospital_id');
+            $table->dropForeign('sales_customer_id_foreign');
+            $table->dropColumn('customer_id');
         });
     }
 }

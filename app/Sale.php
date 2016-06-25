@@ -14,8 +14,8 @@ class Sale extends Model
         return $this->belongsTo('\App\Agent');
     }
 
-    public function hospital() {
-        return $this->belongsTo('\App\Hospital');
+    public function customer() {
+        return $this->belongsTo('\App\Customer');
     }
 
     public function complement() {
