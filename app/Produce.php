@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Produce extends Model
 {
     protected $fillable = [
-        'model', 'serial_number', 'start_at', 'finished_at', 'employee_id'
+        'model', 'serial_number', 'start_at', 'end_at', 'employee_id'
     ];
 
-    public function employees() {
-        return $this->belongsTo('\App\Employee')->withTimestamps();
+    public function employee() {
+        return $this->belongsTo('\App\Employee');
     }
 
     public function install() {
@@ -41,7 +41,7 @@ class Produce extends Model
             $produces = \App\Produce::all();
             foreach ($produces as $produce)
             {
-                $month = date('Y/m', strtotime($produce->finished_at));
+                $month = date('Y/m', strtotime($produce->end_at));
                 foreach ($recent_month as $key=>$the_month)
                 {
                     if ($month==$the_month) {
@@ -55,7 +55,7 @@ class Produce extends Model
             $produces = \App\Produce::where('employee_id', '=', $employee->id)->get();
             foreach ($produces as $produce)
             {
-                $month = date('Y/m', strtotime($produce->finished_at));
+                $month = date('Y/m', strtotime($produce->end_at));
                 foreach ($recent_month as $key=>$the_month)
                 {
                     if ($month==$the_month) {
@@ -82,10 +82,10 @@ class Produce extends Model
     public static function employeesNameForDropdown() {
         $employees = \App\User::whereNotNull('employee_id')->orderBy('last_name', 'ASC')->with('employee.privilege')->get();
         $employees_for_dropdown = [];
-        $employees_for_dropdown[0] = 'Choose a employee...';
+        $employees_for_dropdown[0] = '请选择';
 
         foreach ($employees as $employee) {
-            if ($employee->employee->privilege->create_produce)
+            if ($employee->employee->privilege->produce)
             {
                 $employees_for_dropdown[$employee->employee_id] = $employee->last_name.' '.$employee->first_name;
             }
@@ -96,7 +96,7 @@ class Produce extends Model
     public static function producesSerialNumberForDropdown() {
         $produces = \App\Produce::whereNull('install_id')->orderBy('serial_number', 'ASC')->get();
         $produces_for_dropdown = [];
-        $produces_for_dropdown[0] = 'Choose a product...';
+        $produces_for_dropdown[0] = '请选择';
 
         foreach ($produces as $produce) {
             $produces_for_dropdown[$produce->id] = $produce->serial_number;

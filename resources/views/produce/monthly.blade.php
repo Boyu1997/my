@@ -6,7 +6,6 @@
 @stop
 
 @section('head')
-    <link href="/css/libraries/theme.metro-dark.min.css" type='text/css' rel='stylesheet'>
     <link href="/css/produce/monthly.css" type='text/css' rel='stylesheet'>
 @stop
 
@@ -23,7 +22,7 @@
                 "/produce/{{ $year }}/{{ $month-1}}"
             @endif
         >&laquo;</a>
-        <a id="calender_nav" class="btn btn-default disabled" href="#">{{ $month }}/{{ $year }}</a>
+        <a id="calender_nav" class="btn btn-default disabled" href="#">{{ $year }}/{{ $month }}</a>
         <a id="calender_nav_right" class="btn btn-default" href=
             @if($month==12)
                 "/produce/{{ $year+1 }}/01"
@@ -38,21 +37,18 @@
         <table id="monthlyTable" class="tablesorter">
             <thead>
                 <tr>
-                    @foreach($produces[0] as $key => $value)
-                        @if($key!='id') <th>{{ $key }}</th>
-                        @endif
-                    @endforeach
+                    <th>型号</th>
+                    <th>序列号</th>
+                    <th>结束时间</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($produces as $produce)
                     <tr>
-                        @foreach($produce as $key => $value)
-                            @if($key!='id') <td>{{ $value }}</td>
-                            @endif
-                        @endforeach
-                        @if($have_id) <td><a href="/product/id/{{ $produce->id }}">View</a></td>
-                        @endif
+                        <td>{{ $produce->model }}</td>
+                        <td>{{ $produce->serial_number }}</td>
+                        <td>{{ $produce->end_at }}</td>
+                        @if($have_id) <td><a href="/product/id/{{ $produce->id }}">查看</a></td> @endif
                     </tr>
                 @endforeach
             </tbody>
@@ -60,8 +56,8 @@
     @else
         <div class="panel panel-default">
             <div class="panel-body">
-                <h3>Opps...</h3>
-                <p4>No data found, please try another month.</p4>
+                <h3>抱歉...</h3>
+                <p4>没有找到任何数据，换一个月试试。</p4>
             </div>
         </div>
     @endif
@@ -81,7 +77,4 @@
             });
         });
     </script>
-    <script src="/js/libraries/jquery-ui.min.js"></script>
-    <script src="/js/libraries/jquery.tablesorter.min.js"></script>
-    <script src="/js/libraries/jquery.tablesorter.widgets.min.js"></script>
 @stop

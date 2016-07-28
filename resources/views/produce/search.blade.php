@@ -34,18 +34,21 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="finished_at" class="col-sm-2 control-label">结束时间</label>
+            <label for="end_at" class="col-sm-2 control-label">结束时间</label>
             <div class="col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="finished_at" id="finished_at" value="{{ old('finished_at') }}" placeholder="年年年年/月月/日日">
-                <div class='error'>{{ $errors->first('finished_at') }}</div>
+                <input type="text" class="form-control" name="end_at" id="end_at" value="{{ old('end_at') }}" placeholder="年年年年/月月/日日">
+                <div class='error'>{{ $errors->first('end_at') }}</div>
             </div>
         </div>
         <div class="form-group">
             <label for="employee_name" class="col-sm-2 control-label">生产者</label>
             <div class="col-sm-10 col-md-9">
-                <select class = "form-control" name="employee_id" id="employee_id">
+                <select class = "form-control" name="employee_id" id="employee_id" @if(!$privilege->master_admin)value="{{$employee->id}}" disabled @endif>
                     @foreach($employees_for_dropdown as $employee_id => $employee_name)
-                        <option value='{{$employee_id}}' @if($employee_id==old('employee_id'))selected="selected"@endif>
+                        <option value="{{$employee_id}}"
+                            @if(!$privilege->master_admin && $employee_id==$employee->id)selected="selected"
+                            @elseif($employee_id==old('employee_id'))selected="selected"
+                            @endif>
                             {{$employee_name}}
                         </option>
                     @endforeach

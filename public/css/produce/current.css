@@ -1,0 +1,21 @@
+#nav_bar {
+    font-size: 24px;
+    font-weight: 500;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+#current_table {
+    text-align:center;
+    margin-top: 0px;
+}
+
+#current_table thead tr th div {
+    text-align:center;
+}
+
+.panel {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    text-align:center;
+}
