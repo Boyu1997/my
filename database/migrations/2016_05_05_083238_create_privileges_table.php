@@ -17,12 +17,12 @@ class CreatePrivilegesTable extends Migration
             $table->timestamps();
 
             $table->boolean('master_admin');
-            $table->boolean('check_trip');
-            $table->boolean('create_produce');
-            $table->boolean('create_install');
-            $table->boolean('create_maintenance');
-            $table->boolean('create_sale');
-            $table->boolean('create_contract');
+            $table->boolean('produce');
+            $table->boolean('install');
+            $table->boolean('maintenance');
+            $table->boolean('sale');
+            $table->boolean('contract');
+            $table->boolean('trip');
         });
     }
 

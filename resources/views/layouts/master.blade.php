@@ -3,7 +3,7 @@
 
     <head>
         <title>
-            @yield('title','p4')
+            @yield('title','艾美康办公系统')
         </title>
 
         <meta charset='utf-8'>
@@ -11,7 +11,7 @@
         <link href="/css/libraries/bootstrap.min.css" type='text/css' rel='stylesheet'>
         <link href="/css/libraries/chartist.min.css" type='text/css' rel='stylesheet'>
         <link href="/css/layouts/master.css" type='text/css' rel='stylesheet'>
-
+        <link href="/css/libraries/theme.metro-dark.min.css" type='text/css' rel='stylesheet'>
         @yield('head')
 
     </head>
@@ -69,21 +69,29 @@
                         <ul class="nav nav-sidebar">
                             <li><a href="">Apply</a></li>
                         </ul>
-                    @elseif ($employee->position == 'engineer')
+                    @elseif ($privilege->produce || $privilege->install || $privilege->maintenance)
                         <hr class="nav-hr">
                         <ul class="nav nav-sidebar">
+                            @if($privilege->produce)
+                                <li @yield('on_produce')><a href="/produce">生产</a></li>
+                            @endif
+                            @if($privilege->install || $produce->maintenance)
+                                @if($privilege->install)
+                                    <li @yield('on_install')><a href="/install">Install</a></li>
+                                @endif
+                                @if($privilege->maintenance)
+                                    <li @yield('on_maintenance')><a href="/maintenance">Maintenance</a></li>
+                                @endif
+                                <li @yield('on_trip')><a href="/trip">Trip</a></li>
+                            @endif
                             <li @yield('on_wage')><a href="/wage">Wage</a></li>
-                            <li @yield('on_produce')><a href="/produce">Produce</a></li>
-                            <li @yield('on_trip')><a href="/trip">Trip</a></li>
-                            <li @yield('on_install')><a href="/install">Install</a></li>
-                            <li @yield('on_maintenance')><a href="/maintenance">Maintenance</a></li>
                         </ul>
                     @elseif ($employee->position == 'sales')
                         <hr class="nav-hr">
                         <ul class="nav nav-sidebar">
-                            <li @yield('on_sales')><a href="/sale">Sale</a></li>
-                            <li @yield('on_customer')><a href="/customer">Customer</a></li>
+                            <li @yield('on_sales')><a href="/sale">销售</a></li>
                             <li @yield('on_contract')><a href="/contract">Contract</a></li>
+                            <li @yield('on_wage')><a href="/wage">Wage</a></li>
                             <li @yield('on_install')><a href="/trip">Trip</a></li>
                         </ul>
                     @elseif ($privilege->master_admin)
@@ -94,25 +102,25 @@
                         </ul>
                         <hr class="nav-hr">
                         <ul class="nav nav-sidebar">
-                            <li @yield('on_produce')><a href="/produce">Produce</a></li>
+                            <li @yield('on_produce')><a href="/produce">生产</a></li>
                             <li @yield('on_install')><a href="/install">Install</a></li>
                             <li @yield('on_maintenance')><a href="/maintenance">Maintenance</a></li>
                         </ul>
                         <hr class="nav-hr">
                         <ul class="nav nav-sidebar">
-                            <li @yield('on_sale')><a href="/sale">Sale</a></li>
+                            <li @yield('on_sale')><a href="/sale">销售</a></li>
                             <li @yield('on_customer')><a href="/customer">Customer</a></li>
                             <li @yield('on_contract')><a href="/contract">Contract</a></li>
                         </ul>
                         <hr class="nav-hr">
                         <ul class="nav nav-sidebar">
-                            <li><a href="/admin/employee">Employees</a></li>
-                            <li><a href="/admin/user">Users</a></li>
+                            <li @yield('on_employee')><a href="/employee">员工</a></li>
+                            <li @yield('on_user')><a href="/user">User</a></li>
                         </ul>
                     @endif
                     <hr class="nav-hr">
                     <ul class="nav nav-sidebar">
-                        <li><a href="">Account</a></li>
+                        <li @yield('on_account')><a href="/account">Account</a></li>
                     </ul>
 
                 </div>
@@ -130,6 +138,9 @@
         <script src="/js/libraries/jquery.min.js"></script>
         <script src="/js/libraries/bootstrap.min.js"></script>
         <script src="/js/libraries/chartist.min.js"></script>
+        <script src="/js/libraries/jquery-ui.min.js"></script>
+        <script src="/js/libraries/jquery.tablesorter.min.js"></script>
+        <script src="/js/libraries/jquery.tablesorter.widgets.min.js"></script>
         @yield('body')
 
     </body>

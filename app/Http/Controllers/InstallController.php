@@ -53,7 +53,7 @@ class InstallController extends Controller
         $produce->install_id = $install->id;
         $produce->save();
 
-        \Session::flash('success', 'A new install record is added.');
+        \Session::flash('success', '成功创建了新的安装记录。');
         return redirect('/install');
     }
 
@@ -116,14 +116,14 @@ class InstallController extends Controller
             'id' => 'integer',
             'model' => 'required',
             'serial_number' => 'required',
-            'finished_at' => 'required|date_format:"Y/m/d"',
+            'end_at' => 'required|date_format:"Y/m/d"',
             'sold_at' => 'date_format:"Y/m/d"',
             'employee_id' => 'not_in:0'
         ]);
         $produce = \App\Produce::find($request->id);
         $produce->model = $request->model;
         $produce->serial_number = $request->serial_number;
-        $produce->finished_at = $request->finished_at;
+        $produce->end_at = $request->end_at;
         $produce->sold_at = $request->sold_at;
         $produce->sold_to = $request->sold_to;
         $produce->employee_id = $request->employee_id;

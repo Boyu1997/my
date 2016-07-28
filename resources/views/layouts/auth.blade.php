@@ -3,7 +3,7 @@
 
     <head>
         <title>
-            @yield('title','p4')
+            @yield('title','艾美康办公系统')
         </title>
 
         <meta charset='utf-8'>

@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
-    public function contracts() {
-        return $this->hasMany('\App\Contract');
-    }
+    protected $fillable = [
+        'name', 'nation', 'province', 'city', 'address', 'phone_number', 'fax', 'remark'
+    ];
 
     public function sales() {
         return $this->hasMany('\App\Sale');

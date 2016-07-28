@@ -10,7 +10,7 @@ class SaleController extends Controller
 {
     public function getOverview() {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->create_sale==0))
+        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
         {
             \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
             return redirect('/');
@@ -31,9 +31,85 @@ class SaleController extends Controller
         return \View::make('sale.overview', compact('user', 'employee', 'privilege', 'new_sales', 'ongoing_sales', 'bid_sales'));
     }
 
+    public function getCreate() {
+        list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+        {
+            \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+            return redirect('/');
+        }
+        $employees_for_dropdown = \App\Sale::employeesNameForDropdown();
+        $customers_nation_for_dropdown = \App\Sale::customersNationForDropdown();
+        return view('sale.create', compact('user', 'employee', 'privilege', 'employees_for_dropdown', 'customers_nation_for_dropdown'));
+    }
+
+    public function postCreate(Request $request) {
+        list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+        {
+            \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+            return redirect('/');
+        }
+
+        $this->validate($request, [
+            'classification' => 'not_in:0',
+            'specification' => 'required',
+            'customer_id' => 'not_in:0',
+            'employee_id' => 'not_in:0'
+        ]);
+        $data = $request->only('classification', 'specification', 'customer_id', 'employee_id');
+        $sale = new \App\Sale();
+        $sale->status = 'new';
+        foreach ($data as $key => $value) {
+            $sale->$key = $value;
+        }
+        $sale->save();
+        \Session::flash('success', '成功创建了新的销售记录。');
+        return redirect('/sale');
+
+
+        $employees_for_dropdown = \App\Sale::employeesNameForDropdown();
+        return view('sale.create', compact('user', 'employee', 'privilege', 'employees_for_dropdown'));
+    }
+
+    public function getCreateCustomer() {
+        list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+        {
+            \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+            return redirect('/');
+        }
+        $employees_for_dropdown = \App\Sale::employeesNameForDropdown();
+        $customers_nation_for_dropdown = \App\Sale::customersNationForDropdown();
+        return view('sale.createCustomer', compact('user', 'employee', 'privilege', 'employees_for_dropdown', 'customers_nation_for_dropdown'));
+    }
+
+    public function postCreateCustomer(Request $request) {
+        list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+        {
+            \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+            return redirect('/');
+        }
+        $this->validate($request, [
+            'name' => 'required',
+            'nation' => 'not_in:0',
+            'province' => 'not_in:0',
+            'city' => 'not_in:0',
+            'address' => 'required',
+            'phone_number' => 'integer',
+            'fax' => 'integer',
+            'remark' => 'required'
+        ]);
+        $data = $request->only('name', 'nation', 'province', 'city', 'address', 'phone_number', 'fax', 'remark');
+        $customer = \App\Customer::create($data);
+        \Session::flash('success', '成功添加了新的顾客信息。');
+        return redirect('/sale');
+    }
+
     public function getById($id = null) {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->create_sale==0))
+        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
         {
             \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
             return redirect('/');
@@ -77,5 +153,41 @@ class SaleController extends Controller
         }
         else $other = null;
         return view('sale.byId', compact('user', 'employee', 'privilege', 'sale', 'agent', 'complement', 'customer', 'other'));
+    }
+
+    public function getCreateNation() {
+        if(\Request::ajax()) {
+            $customers = \App\Customer::where('nation', '=', $_GET["nation"])->get();
+            $data = "<option value='0'>请选择省份</option>";
+            foreach ($customers as $customer) {
+                $data = $data.'<option value="'.$customer->province.'">'.$customer->province.'</option>';
+            }
+            $data = $data."</select>";
+            return $data;
+        }
+    }
+
+    public function getCreateProvince() {
+        if(\Request::ajax()) {
+            $customers = \App\Customer::where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->get();
+            $data = "<option value='0'>请选择城市</option>";
+            foreach ($customers as $customer) {
+                $data = $data.'<option value="'.$customer->city.'">'.$customer->city.'</option>';
+            }
+            $data = $data."</select>";
+            return $data;
+        }
+    }
+
+    public function getCreateCity() {
+        if(\Request::ajax()) {
+            $customers = \App\Customer::where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->where('city', '=', $_GET["city"])->get();
+            $data = "<option value='0'>请选择顾客名称</option>";
+            foreach ($customers as $customer) {
+                $data = $data.'<option value="'.$customer->id.'">'.$customer->name.'</option>';
+            }
+            $data = $data."</select>";
+            return $data;
+        }
     }
 }

@@ -6,7 +6,6 @@
 @stop
 
 @section('head')
-    <link href="/css/libraries/theme.metro-dark.min.css" type='text/css' rel='stylesheet'>
     <link href="/css/sale/overview.css" type='text/css' rel='stylesheet'>
 @stop
 
@@ -19,11 +18,11 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4><strong>新项目</strong></h4>
-                    <p> &nbsp; <a href="/">添加</a></p>
+                    <p> &nbsp; <a href="/sale/create">添加</a></p>
                 </div>
                 <div class="panel-body">
                     @if(sizeof($new_sales))
-                        <table id="infoTable" class="tablesorter">
+                        <table class="tablesorter info_table">
                             <thead>
                                 <tr>
                                     <th>顾客名称</th>
@@ -34,8 +33,8 @@
                                 @foreach($new_sales as $new_sale)
                                     <tr>
                                         <td>{{ $new_sale->customer->name }}</td>
-                                        <td>{{ $new_sale->customer->city }}，{{ $new_sale->customer->province }}</td>
-                                        <td><a href="/sale/id/{{ $new_sale->id }}">View</a></td>
+                                        <td>{{ $new_sale->customer->city.'，'.$new_sale->customer->province }}</td>
+                                        <td><a href="/sale/id/{{ $new_sale->id }}">查看</a></td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -56,7 +55,7 @@
                 </div>
                 <div class="panel-body">
                     @if(sizeof($ongoing_sales))
-                        <table id="infoTable" class="tablesorter">
+                        <table class="tablesorter info_table">
                             <thead>
                                 <tr>
                                     <th>顾客名称</th>
@@ -67,8 +66,8 @@
                                 @foreach($ongoing_sales as $ongoing_sale)
                                     <tr>
                                         <td>{{ $ongoing_sale->customer->name }}</td>
-                                        <td>{{ $ongoing_sale->customer->city }}，{{ $ongoing_sale->customer->province }}</td>
-                                        <td><a href="/sale/id/{{ $ongoing_sale->id }}">View</a></td>
+                                        <td>{{ $ongoing_sale->customer->city.'，'.$ongoing_sale->customer->province }}</td>
+                                        <td><a href="/sale/id/{{ $ongoing_sale->id }}">查看</a></td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -89,7 +88,7 @@
                 </div>
                 <div class="panel-body">
                     @if(sizeof($bid_sales))
-                        <table id="infoTable" class="tablesorter">
+                        <table class="tablesorter info_table">
                             <thead>
                                 <tr>
                                     <th>顾客名称</th>
@@ -100,8 +99,8 @@
                                 @foreach($bid_sales as $bid_sale)
                                     <tr>
                                         <td>{{ $bid_sale->customer->name }}</td>
-                                        <td>{{ $bid_sale->customer->city }}，{{ $bid_sale->customer->province }}</td>
-                                        <td><a href="/sale/id/{{ $bid_sale->id }}">View</a></td>
+                                        <td>{{ $bid_sale->customer->city.'，'.$bid_sale->customer->province }}</td>
+                                        <td><a href="/sale/id/{{ $bid_sale->id }}">查看</a></td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -129,7 +128,4 @@
             });
         });
     </script>
-    <script src="/js/libraries/jquery-ui.min.js"></script>
-    <script src="/js/libraries/jquery.tablesorter.min.js"></script>
-    <script src="/js/libraries/jquery.tablesorter.widgets.min.js"></script>
 @stop

@@ -19,7 +19,7 @@ class CreateProducesTable extends Migration
             $table->text('model');
             $table->text('serial_number');
             $table->text('start_at');
-            $table->text('finished_at');
+            $table->text('end_at');
         });
     }
 

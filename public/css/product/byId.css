@@ -3,3 +3,7 @@
     vertical-align: bottom;
     font-family: 'Open Sans', sans-serif;
 }
+
+.table_head {
+    width: 30%;
+}
