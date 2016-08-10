@@ -6,6 +6,8 @@ Route::get('/register', 'Auth\AuthController@getRegister');
 Route::post('/register', 'Auth\AuthController@postRegister');
 Route::get('/logout', 'Auth\AuthController@logout');
 
+Route::get('data/receive/name={name}', 'HomeController@getData')
+
 
 Route::group(['middleware' => 'auth'], function () {
 
@@ -49,21 +51,33 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/create', 'SaleController@postCreate');
         Route::get('/id/{id}', 'SaleController@getById');
         Route::get('/agent/create', 'SaleController@getCreateAgent');
+        Route::post('/agent/create', 'SaleController@postCreateAgent');
         Route::get('/customer/create', 'SaleController@getCreateCustomer');
         Route::post('/customer/create', 'SaleController@postCreateCustomer');
 
         //ajax rotes
-        Route::get('/getCreateNation', 'SaleController@getCreateNation');
-        Route::get('/getCreateProvince', 'SaleController@getCreateProvince');
-        Route::get('/getCreateCity', 'SaleController@getCreateCity');
-        Route::get('/customer/getCreateNation', 'SaleController@getCreateNation');
-        Route::get('/customer/getCreateProvince', 'SaleController@getCreateProvince');
+        Route::get('/getCreateNation', 'SaleController@getCreateCustomerNation');
+        Route::get('/getCreateProvince', 'SaleController@getCreateCustomerProvince');
+        Route::get('/getCreateCity', 'SaleController@getCreateCustomerCity');
+        Route::get('/customer/getCreateNation', 'SaleController@getCreateCustomerNation');
+        Route::get('/customer/getCreateProvince', 'SaleController@getCreateCustomerProvince');
+        Route::post('/customer/postCreateContact', 'SaleController@postCreateCustomerContact');
+
+        Route::get('/agent/getCreateNation', 'SaleController@getCreateAgentNation');
+        Route::get('/agent/getCreateProvince', 'SaleController@getCreateAgentProvince');
+        Route::post('/agent/postCreateContact', 'SaleController@postCreateAgentContact');
     });
 
     Route::group(['prefix' => 'employee'], function () {
         Route::get('/', 'EmployeeController@getOverview');
+        Route::get('/create', 'EmployeeController@getCreate');
+        Route::post('/create', 'EmployeeController@postCreate');
         Route::get('/edit/id/{id}', 'EmployeeController@getEdit');
         Route::post('/edit/id/{id}', 'EmployeeController@postEdit');
+
+        //ajax rotes
+        Route::get('/getCreateLastName', 'EmployeeController@getCreateLastName');
+        Route::get('/getCreateFirstName', 'EmployeeController@getCreateFirstName');
     });
 
 

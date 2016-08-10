@@ -19,10 +19,14 @@
     <body>
 
         @if(Session::get('success')!=null)
-            <div id="flash_message" class="alert alert-success" role="alert">{{Session::get('success')}}</div>
+            <div class="flash_message alert alert-success" role="alert">
+                {{Session::get('success')}}
+            </div>
         @endif
         @if(Session::get('danger')!=null)
-            <div id="flash_message" class="alert alert-danger" role="alert">{{Session::get('danger')}}</div>
+            <div class="flash_message alert alert-danger" role="alert">
+                {{Session::get('danger')}}
+            </div>
         @endif
 
         <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -86,7 +90,7 @@
                             @endif
                             <li @yield('on_wage')><a href="/wage">Wage</a></li>
                         </ul>
-                    @elseif ($employee->position == 'sales')
+                    @elseif ($privilege->sale)
                         <hr class="nav-hr">
                         <ul class="nav nav-sidebar">
                             <li @yield('on_sales')><a href="/sale">销售</a></li>
@@ -141,6 +145,9 @@
         <script src="/js/libraries/jquery-ui.min.js"></script>
         <script src="/js/libraries/jquery.tablesorter.min.js"></script>
         <script src="/js/libraries/jquery.tablesorter.widgets.min.js"></script>
+        <script>
+            $("div.alert").delay(3000).slideUp();
+        </script>
         @yield('body')
 
     </body>

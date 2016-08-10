@@ -16,3 +16,16 @@ div.not_found_text {
     height: 500px;
     padding: 0px;
 }
+
+table thead tr th div {
+    text-align:center;
+}
+
+table tbody {
+    text-align:center;
+    margin: 0px;
+}
+
+.panel.panel-default {
+    margin-bottom: 0px;
+}

@@ -6,8 +6,8 @@
     <form class="form-signin" method='POST' action='/login'>
         {!! csrf_field() !!}
 
-        <h2 class="form-signin-heading">Login</h2>
-        <p>Don't have an account? <a href='/register'>Register here...</a></p>
+        <h2 class="form-signin-heading">登录</h2>
+        <p>没有账户？<a href='/register'>点击这里注册</a></p>
 
         @if(count($errors) > 0)
             <ul class='errors'>
@@ -17,15 +17,15 @@
             </ul>
         @endif
 
-        <label for="username" class="sr-only">email</label>
-        <input type="text" name="email" id="email" class="form-control first-of-type" placeholder="email" value='{{ old('email') }}'>
+        <label for="username" class="sr-only">邮箱地址</label>
+        <input type="text" name="email" id="email" class="form-control first-of-type" placeholder="邮箱地址" value='{{ old('email') }}'>
 
-        <label for="inputPassword" class="sr-only">password</label>
-        <input type="password" name="password" id="password" class="form-control last-of-type" placeholder="password">
+        <label for="inputPassword" class="sr-only">密码</label>
+        <input type="password" name="password" id="password" class="form-control last-of-type" placeholder="密码">
 
         <div class="checkbox">
             <label>
-                <input type="checkbox" name="remember" id="remember"> Remember me
+                <input type="checkbox" name="remember" id="remember">记住我</input>
             </label>
         </div>
 

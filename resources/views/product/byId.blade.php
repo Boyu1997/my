@@ -30,7 +30,7 @@
         </tr>
         <tr>
             <th class="table_head">成产者</th>
-            <th>{{ $produce->employee->user->last_name.' '.$produce->employee->user->first_name }}</th>
+            <th>{{ $produce->employee->user->last_name.$produce->employee->user->first_name }}</th>
         </tr>
     </table>
 
@@ -61,7 +61,7 @@
             </tr>
             <tr>
                 <th class="table_head">安装者</th>
-                <th>{{ $install->employee->user->last_name.' '.$install->employee->user->first_name }}</th>
+                <th>{{ $install->employee->user->last_name.$install->employee->user->first_name }}</th>
             </tr>
         </table>
     @else
@@ -92,11 +92,11 @@
             </tr>
             <tr>
                 <th class="table_head">安装者</th>
-                <th>{{ $install->employee->user->last_name.' '.$install->employee->user->first_name }}</th>
+                <th>{{ $install->employee->user->last_name.$install->employee->user->first_name }}</th>
             </tr>
         </table>
     @else
-        <p>No install information found, <a href="/install/create">add a record now</a>.</p>
+        <p>没有合同, <a href="/install/create">add a record now</a>.</p>
     @endif
 
 @stop

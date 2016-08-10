@@ -116,12 +116,11 @@ body {
     margin-top: 0px;
 }
 
-#flash_message {
+.flash_message {
     position: absolute;
     top: 40px;
     margin-left: 30%;
     width: 36%;
     padding: 10px;
-
     text-align: center;
 }

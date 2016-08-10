@@ -12,7 +12,7 @@
             <div class="modal-content">
                 <div class="modal-body">
                     <br>
-                    <h4 class="modal-title">删除后记录将无法恢复，您确认要删除吗</h4>
+                    <h4 class="modal-title">删除后记录将无法恢复，您确认要删除吗？</h4>
                 </div>
                 <div class="modal-footer">
                     <form class="form-horizontal" method='POST' action='/produce/delete/id/{{$produce->id}}'>
@@ -21,9 +21,9 @@
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
                         <button type="submit" class="btn btn-danger">确认删除</button>
                     </form>
-          </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
 

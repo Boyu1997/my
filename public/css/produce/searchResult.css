@@ -5,12 +5,12 @@
     border-bottom-right-radius: 0;
 }
 
-#monthlyTable {
+#monthly_table {
     text-align:center;
     margin-top: 0px;
 }
 
-#monthlyTable thead tr th div {
+#monthly_table thead tr th div {
     text-align:center;
 }
 

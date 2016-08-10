@@ -6,7 +6,7 @@
 @stop
 
 @section('head')
-    <link href="/css/sale/createCustomer.css" type='text/css' rel='stylesheet'>
+    <link href="/css/sale/createAgent.css" type='text/css' rel='stylesheet'>
 @stop
 
 @section('content')
@@ -65,9 +65,9 @@
 
 
     <!-- HTML -->
-    <h1 class="page-header">新顾客</h1>
+    <h1 class="page-header">新代理商</h1>
 
-    <form class="form-horizontal" method='POST' action='/sale/customer/create'>
+    <form class="form-horizontal" method='POST' action='/sale/agent/create'>
         {!! csrf_field() !!}
         <div class="form-group">
             <label for="name" class ="col-sm-2 control-label">名称</label>
@@ -80,7 +80,7 @@
             <label for="specification" class="col-sm-2 control-label">顾客</label>
             <div class="col-sm-10 col-md-9">
                 <select class = "form-control" name="nation" id="nation">
-                    @foreach($customers_nation_for_dropdown as $key => $value)
+                    @foreach($agents_nation_for_dropdown as $key => $value)
                         <option value="{{$key}}">{{$value}}</option>
                     @endforeach
                 </select>
@@ -91,7 +91,7 @@
                     <option value='0'>请选择城市</option>
                 </select>
                 <div class='error'>{{ $errors->first('employee_id') }}</div>
-                <div id="not_in_show_customer_input" style="display: none;">
+                <div id="not_in_show_agent_input" style="display: none;">
                     <input type="text" class="form-control" name="nation" id="input_nation" value="{{ old('nation') }}" placeholder="请输入国家" disabled>
                     <input type="text" class="form-control" name="province" id="input_province" value="{{ old('province') }}" placeholder="请输入省份" disabled>
                     <input type="text" class="form-control" name="city" id="input_city" value="{{ old('city') }}" placeholder="请输入城市" disabled>
@@ -102,7 +102,7 @@
                     <div class='error'>{{ $errors->first('city') }}</div>
                 </div>
                 <div class="checkbox">
-                    <label><input id="not_in_customers_select" type="checkbox">没有符合的地址选项</label>
+                    <label><input id="not_in_agents_select" type="checkbox">没有符合的地址选项</label>
                 </div>
             </div>
         </div>
@@ -169,15 +169,15 @@
                 $("#name").html("<option value='0'>请选择名称</option>");
             });
 
-            $("#not_in_customers_select").on("change", function() {
-                if($("#not_in_customers_select").is(':checked')) {  // checked
+            $("#not_in_agents_select").on("change", function() {
+                if($("#not_in_agents_select").is(':checked')) {  // checked
                     $("#nation").attr("disabled", true);
                     $("#province").attr("disabled", true);
                     $("#city").attr("disabled", true);
                     $("#input_nation").attr("disabled", false);
                     $("#input_province").attr("disabled", false);
                     $("#input_city").attr("disabled", false);
-                    $("#not_in_show_customer_input").show();
+                    $("#not_in_show_agent_input").show();
                 }
                 else {  // unchecked
                     $("#nation").attr("disabled", false);
@@ -186,7 +186,7 @@
                     $("#input_nation").attr("disabled", true);
                     $("#input_province").attr("disabled", true);
                     $("#input_city").attr("disabled", true);
-                    $("#not_in_show_customer_input").hide();
+                    $("#not_in_show_agent_input").hide();
                 }
             });
 

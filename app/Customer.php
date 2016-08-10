@@ -10,11 +10,15 @@ class Customer extends Model
         'name', 'nation', 'province', 'city', 'address', 'phone_number', 'fax', 'remark'
     ];
 
+    public function employees() {
+        return $this->belongsToMany('\App\Employee')->withTimestamps();
+    }
+
     public function sales() {
         return $this->hasMany('\App\Sale');
     }
 
     public function contacts() {
-        return $this->belongsToMany('\App\Contract')->withTimestamps();
+        return $this->belongsToMany('\App\Contact')->withTimestamps();
     }
 }

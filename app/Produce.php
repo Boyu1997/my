@@ -87,7 +87,7 @@ class Produce extends Model
         foreach ($employees as $employee) {
             if ($employee->employee->privilege->produce)
             {
-                $employees_for_dropdown[$employee->employee_id] = $employee->last_name.' '.$employee->first_name;
+                $employees_for_dropdown[$employee->employee_id] = $employee->last_name.$employee->first_name;
             }
         }
         return $employees_for_dropdown;

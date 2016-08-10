@@ -65,7 +65,7 @@
 
 
     <!-- HTML -->
-    <h1 class="page-header">新顾客</h1>
+    <h1 class="page-header">新配套商</h1>
 
     <form class="form-horizontal" method='POST' action='/sale/customer/create'>
         {!! csrf_field() !!}

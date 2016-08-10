@@ -21,6 +21,7 @@ class Privilege extends Model
             else $privilege = [];
         }
         else {
+            $employee = [];
             $privilege = [];
         }
 

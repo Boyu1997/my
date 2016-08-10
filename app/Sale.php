@@ -38,19 +38,53 @@ class Sale extends Model
         foreach ($employees as $employee) {
             if ($employee->employee->privilege->sale)
             {
-                $employees_for_dropdown[$employee->employee_id] = $employee->last_name.' '.$employee->first_name;
+                $employees_for_dropdown[$employee->employee_id] = $employee->last_name.$employee->first_name;
             }
         }
         return $employees_for_dropdown;
     }
 
-    public static function customersNationForDropdown() {
-        $customers = \App\Customer::orderBy('nation', 'ASC')->get();
+    public static function agentsNationForDropdown($privilege, $employee) {
+        if($privilege->master_admin) $agents = \App\Agent::orderBy(\DB::raw('convert(nation using gbk)'))->distinct()->get(['nation']);
+        else $agents = $employee->agents()->orderBy(\DB::raw('convert(nation using gbk)'))->distinct()->get(['nation']);
+        $agents_nation_for_dropdown = [];
+        $agents_nation_for_dropdown[0] = "请选择国家";
+        foreach ($agents as $agent) {
+            $agents_nation_for_dropdown[$agent->nation] = $agent->nation;
+        }
+        return $agents_nation_for_dropdown;
+    }
+
+    public static function complementsNationForDropdown($privilege, $employee) {
+        if($privilege->master_admin) $agents = \App\Complement::orderBy(\DB::raw('convert(nation using gbk)'))->distinct()->get(['nation']);
+        else $complements = $employee->complements()->orderBy(\DB::raw('convert(nation using gbk)'))->distinct()->get(['nation']);
+        $complements_nation_for_dropdown = [];
+        $complements_nation_for_dropdown[0] = "请选择国家";
+        foreach ($complements as $complement) {
+            $complements_nation_for_dropdown[$complement->nation] = $complement->nation;
+        }
+        return $complements_nation_for_dropdown;
+    }
+
+    public static function customersNationForDropdown($privilege, $employee) {
+        if($privilege->master_admin) $customers = \App\Customer::orderBy(\DB::raw('convert(nation using gbk)'))->distinct()->get(['nation']);
+        else $customers = $employee->customers()->orderBy(\DB::raw('convert(nation using gbk)'))->distinct()->get(['nation']);
         $customers_nation_for_dropdown = [];
         $customers_nation_for_dropdown[0] = "请选择国家";
         foreach ($customers as $customer) {
             $customers_nation_for_dropdown[$customer->nation] = $customer->nation;
         }
         return $customers_nation_for_dropdown;
+    }
+
+    public static function othersNationForDropdown($privilege, $employee) {
+        if($privilege->master_admin) $others = \App\Other::orderBy(\DB::raw('convert(nation using gbk)'))->distinct()->get(['nation']);
+        else $others = $employee->others()->orderBy(\DB::raw('convert(nation using gbk)'))->distinct()->get(['nation']);
+        $others_nation_for_dropdown = [];
+        $others_nation_for_dropdown[0] = "请选择国家";
+        foreach ($others as $other) {
+            $others_nation_for_dropdown[$other->nation] = $other->nation;
+        }
+        return $others_nation_for_dropdown;
     }
 }

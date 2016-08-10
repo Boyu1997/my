@@ -35,7 +35,7 @@
         >&raquo;</a>
     </div>
     @if(sizeof($installs))
-        <table id="monthlyTable" class="tablesorter">
+        <table id="monthly_table" class="tablesorter">
                     <thead>
                         <tr>
                             @foreach($installs[0] as $key => $value)

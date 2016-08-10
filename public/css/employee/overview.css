@@ -9,7 +9,12 @@ div.not_found_text {
 }
 
 #info_table {
+    text-align:center;
     margin: 0px;
+}
+
+#info_table thead tr th div {
+    text-align:center;
 }
 
 .panel-body {

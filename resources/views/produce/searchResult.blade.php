@@ -16,7 +16,7 @@
         <a id="search_nav" class="btn btn-default disabled" href="#">搜索结果</a>
     </div>
     @if(sizeof($produces))
-        <table id="monthlyTable" class="tablesorter">
+        <table id="monthly_table" class="tablesorter">
 
                     <thead>
                         <tr>
@@ -34,7 +34,7 @@
                                 <td>{{ $produce->serial_number }}</td>
                                 <td>{{ $produce->start_at }}</td>
                                 <td>{{ $produce->end_at }}</td>
-                                <td>{{ $produce->employee->user->last_name.' '.$produce->employee->user->first_name }}</td>
+                                <td>{{ $produce->employee->user->last_name.$produce->employee->user->first_name }}</td>
                                 <td><a href="/product/id/{{ $produce->id }}">查看</a></td>
                             </tr>
                         @endforeach

@@ -22,7 +22,9 @@ class ProductController extends Controller
             else $install = null;
             if($produce->contract_id) $contract = \App\Contract::where('id', '=', $produce->contract_id)->select('id', 'specification', 'start_at', 'end_at', 'person_hour', 'employee_id')->first();
             else $install = null;
+
+            $contract = null;
         }
-        return view('product.byId', compact('user', 'employee', 'privilege', 'produce', 'install'));
+        return view('product.byId', compact('user', 'employee', 'privilege', 'produce', 'install', 'contract'));
     }
 }

@@ -115,6 +115,23 @@
             </div>
         </div>
     </div>
+    <hr>
+    <div aria-label="Justified button group" role="group" class="btn-group btn-group-justified">
+        @if ($privilege->master_admin)
+            <a class="btn btn-default" href="/produce/create">新建记录</a>
+        @else
+            @if (\App\Produce::where('employee_id', '=', $employee->id)->where('end_at', '=', '')->count())
+                <a class="btn btn-default" href="/produce/edit/id/{{ \App\Produce::where('employee_id', '=', $employee->id)->where('end_at', '=', '')->pluck('id')->first() }}">当前生产</a>
+            @else
+                <a class="btn btn-default" href="/produce/create">新建记录</a>
+            @endif
+        @endif
+        <a class="btn btn-default" href="/produce/{{ date('Y') }}/{{ date('m') }}">按月查看</a>
+        @if ($privilege->master_admin)
+            <a class="btn btn-default" href="/produce/current">正在生产</a>
+            <a class="btn btn-default" href="/produce/search">搜索</a>
+        @endif
+    </div>
 @stop
 
 @section('body')

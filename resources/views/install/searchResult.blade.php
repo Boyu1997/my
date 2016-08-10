@@ -17,7 +17,7 @@
         <a id="search_nav" class="btn btn-default disabled" href="#">Search Result</a>
     </div>
     @if(sizeof($installs))
-        <table id="monthlyTable" class="tablesorter">
+        <table id="monthly_table" class="tablesorter">
 
                     <thead>
                         <tr>

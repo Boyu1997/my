@@ -34,7 +34,7 @@
         >&raquo;</a>
     </div>
     @if(sizeof($produces))
-        <table id="monthlyTable" class="tablesorter">
+        <table id="monthly_table" class="tablesorter">
             <thead>
                 <tr>
                     <th>型号</th>

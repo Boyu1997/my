@@ -43,13 +43,13 @@
                     @endforeach
                 </select>
                 <select class = "form-control" id="province">
-                    <option value='0'>请选择</option>
+                    <option value='0'>请选择省份</option>
                 </select>
                 <select class = "form-control" id="city">
-                    <option value='0'>请选择</option>
+                    <option value='0'>请选择城市</option>
                 </select>
                 <select class = "form-control" name="customer_id" id="name">
-                    <option value='0'>请选择</option>
+                    <option value='0'>请选择顾客名称</option>
                 </select>
                 <p id="text_after_input">没有您在找的顾客？那就<a href="/sale/customer/create">马上创建顾客</a>吧。</p>
                 <div class='error'>{{ $errors->first('employee_id') }}</div>

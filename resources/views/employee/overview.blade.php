@@ -15,7 +15,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4><strong>员工信息</strong></h4>
-            <p> &nbsp; <a href="/sale/create">添加</a></p>
+            <p> &nbsp; <a href="/employee/create">添加</a></p>
         </div>
         <div class="panel-body">
             @if(sizeof($employees))
@@ -23,15 +23,19 @@
                     <thead>
                         <tr>
                             <th>姓名</th>
+                            <th>工作邮箱</th>
+                            <th>工作电话</th>
                             <th>职位</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($employees as $employee)
                             <tr>
-                                <td>{{ $employee->user->last_name.' '.$employee->user->first_name }}</td>
+                                <td>{{ $employee->user->last_name.$employee->user->first_name }}</td>
+                                <td>{{ $employee->company_email }}</td>
+                                <td>{{ $employee->company_cellphone }}</td>
                                 <td>{{ $employee->position }}</td>
-                                <td><a href="/employee/edit/id/{{ $employee->id }}">查看</a></td>
+                                <td><a href="/employee/edit/id/{{ $employee->id }}">编辑</a></td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -48,8 +52,7 @@
     <hr>
 
     <div aria-label="Justified button group" role="group" class="btn-group btn-group-justified">
-        <a class="btn btn-default" href="/produce/{{ date('Y') }}/{{ date('m') }}">按月查看</a>
-        <a class="btn btn-default" href="/produce/search">搜索</a>
+        <a class="btn btn-default" href="/employee/search">搜索</a>
     </div>
 
 @stop

@@ -39,7 +39,7 @@ class SaleController extends Controller
             return redirect('/');
         }
         $employees_for_dropdown = \App\Sale::employeesNameForDropdown();
-        $customers_nation_for_dropdown = \App\Sale::customersNationForDropdown();
+        $customers_nation_for_dropdown = \App\Sale::customersNationForDropdown($privilege, $employee);
         return view('sale.create', compact('user', 'employee', 'privilege', 'employees_for_dropdown', 'customers_nation_for_dropdown'));
     }
 
@@ -72,6 +72,56 @@ class SaleController extends Controller
         return view('sale.create', compact('user', 'employee', 'privilege', 'employees_for_dropdown'));
     }
 
+    public function getCreateAgent() {
+        list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+        {
+            \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+            return redirect('/');
+        }
+        $employees_for_dropdown = \App\Sale::employeesNameForDropdown();
+        $agents_nation_for_dropdown = \App\Sale::agentsNationForDropdown($privilege, $employee);
+        return view('sale.createAgent', compact('user', 'employee', 'privilege', 'employees_for_dropdown', 'agents_nation_for_dropdown'));
+    }
+
+    public function postCreateAgent(Request $request) {
+        list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+        {
+            \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+            return redirect('/');
+        }
+        $this->validate($request, [
+            'name' => 'required',
+            'nation' => 'not_in:0',
+            'province' => 'not_in:0',
+            'city' => 'not_in:0',
+            'address' => 'required',
+            'phone_number' => 'integer',
+            'fax' => 'integer',
+            'remark' => 'max:3000'
+        ]);
+        $agent = new \App\Agent();
+        $agent->name = $request->name;
+        $agent->nation = $request->nation;
+        $agent->province = $request->province;
+        $agent->city = $request->city;
+        $agent->address = $request->address;
+        $agent->phone_number = $request->phone_number;
+        $agent->fax = $request->fax;
+        $agent->remark = $request->remark;
+        $agent->save();
+        if(!$privilege->master_admin) $agent->employees()->save($employee);
+        $contacts = \Session::get('agent_contacts');
+        $request->session()->forget('agent_contacts');
+        if(sizeof($contacts)) foreach ($contacts as $key => $value) {
+            $contact = \App\Contact::where('id', '=', $value)->first();
+            $agent->contacts()->save($contact);
+        }
+        \Session::flash('success', '成功添加了新的代理商信息。');
+        return redirect('/sale');
+    }
+
     public function getCreateCustomer() {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
         if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
@@ -80,7 +130,7 @@ class SaleController extends Controller
             return redirect('/');
         }
         $employees_for_dropdown = \App\Sale::employeesNameForDropdown();
-        $customers_nation_for_dropdown = \App\Sale::customersNationForDropdown();
+        $customers_nation_for_dropdown = \App\Sale::customersNationForDropdown($privilege, $employee);
         return view('sale.createCustomer', compact('user', 'employee', 'privilege', 'employees_for_dropdown', 'customers_nation_for_dropdown'));
     }
 
@@ -99,10 +149,25 @@ class SaleController extends Controller
             'address' => 'required',
             'phone_number' => 'integer',
             'fax' => 'integer',
-            'remark' => 'required'
+            'remark' => 'max:3000'
         ]);
-        $data = $request->only('name', 'nation', 'province', 'city', 'address', 'phone_number', 'fax', 'remark');
-        $customer = \App\Customer::create($data);
+        $customer = new \App\Customer();
+        $customer->name = $request->name;
+        $customer->nation = $request->nation;
+        $customer->province = $request->province;
+        $customer->city = $request->city;
+        $customer->address = $request->address;
+        $customer->phone_number = $request->phone_number;
+        $customer->fax = $request->fax;
+        $customer->remark = $request->remark;
+        $customer->save();
+        if(!$privilege->master_admin) $customer->employees()->save($employee);
+        $contacts = \Session::get('customer_contacts');
+        $request->session()->forget('customer_contacts');
+        if(sizeof($contacts)) foreach ($contacts as $key => $value) {
+            $contact = \App\Contact::where('id', '=', $value)->first();
+            $customer->contacts()->save($contact);
+        }
         \Session::flash('success', '成功添加了新的顾客信息。');
         return redirect('/sale');
     }
@@ -123,7 +188,7 @@ class SaleController extends Controller
             return redirect('/');
         }
         $sale_employee = \DB::table('users')->where('employee_id', '=', $sale->employee_id)->select('last_name', 'first_name')->first();
-        $sale->employee_name = $sale_employee->last_name.' '.$sale_employee->first_name;
+        $sale->employee_name = $sale_employee->last_name.$sale_employee->first_name;
         if($sale->agent_id)
         {
             $agent_array = \DB::table('agents')->where('id', '=', $sale->agent_id)->select('id', 'name', 'nation', 'province', 'city', 'address', 'phone_number', 'fax', 'remark')->get();
@@ -155,9 +220,74 @@ class SaleController extends Controller
         return view('sale.byId', compact('user', 'employee', 'privilege', 'sale', 'agent', 'complement', 'customer', 'other'));
     }
 
-    public function getCreateNation() {
+    //ajax functions
+    public function getCreateAgentNation() {
         if(\Request::ajax()) {
-            $customers = \App\Customer::where('nation', '=', $_GET["nation"])->get();
+            list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+            if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+            {
+                \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+                return redirect('/');
+            }
+            if($privilege->master_admin) $agents = \App\Agent::where('nation', '=', $_GET["nation"])->orderBy(\DB::raw('convert(province using gbk)'))->distinct()->get(['province']);
+            else $agents = $employee->agents()->where('nation', '=', $_GET["nation"])->orderBy(\DB::raw('convert(province using gbk)'))->distinct()->get(['nation']);
+            $data = "<option value='0'>请选择省份</option>";
+            foreach ($agents as $agent) {
+                $data = $data.'<option value="'.$agent->province.'">'.$agent->province.'</option>';
+            }
+            $data = $data."</select>";
+            return $data;
+        }
+    }
+
+    public function getCreateAgentProvince() {
+        if(\Request::ajax()) {
+            list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+            if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+            {
+                \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+                return redirect('/');
+            }
+            if($privilege->master_admin) $agents = \App\Agent::where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->orderBy(\DB::raw('convert(city using gbk)'))->distinct()->get(['city']);
+            else $agents = $employee->agents()->where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->orderBy(\DB::raw('convert(city using gbk)'))->distinct()->get(['city']);
+            $data = "<option value='0'>请选择城市</option>";
+            foreach ($agents as $agent) {
+                $data = $data.'<option value="'.$agent->city.'">'.$agent->city.'</option>';
+            }
+            $data = $data."</select>";
+            return $data;
+        }
+    }
+
+    public function getCreateAgentCity() {
+        if(\Request::ajax()) {
+            list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+            if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+            {
+                \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+                return redirect('/');
+            }
+            if($privilege->master_admin) $agents = \App\Agent::where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->where('city', '=', $_GET["city"])->orderBy(\DB::raw('convert(name using gbk)'))->distinct()->get(['name']);
+            else $agents = $employee->agents()->where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->where('city', '=', $_GET["city"])->orderBy(\DB::raw('convert(name using gbk)'))->distinct()->get(['name']);
+            $data = "<option value='0'>请选择顾客名称</option>";
+            foreach ($agents as $agent) {
+                $data = $data.'<option value="'.$agent->id.'">'.$agent->name.'</option>';
+            }
+            $data = $data."</select>";
+            return $data;
+        }
+    }
+
+    public function getCreateCustomerNation() {
+        if(\Request::ajax()) {
+            list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+            if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+            {
+                \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+                return redirect('/');
+            }
+            if($privilege->master_admin) $customers = \App\Customer::where('nation', '=', $_GET["nation"])->orderBy(\DB::raw('convert(province using gbk)'))->distinct()->get(['province']);
+            else $customers = $employee->customers()->where('nation', '=', $_GET["nation"])->orderBy(\DB::raw('convert(province using gbk)'))->distinct()->get(['nation']);
             $data = "<option value='0'>请选择省份</option>";
             foreach ($customers as $customer) {
                 $data = $data.'<option value="'.$customer->province.'">'.$customer->province.'</option>';
@@ -167,9 +297,16 @@ class SaleController extends Controller
         }
     }
 
-    public function getCreateProvince() {
+    public function getCreateCustomerProvince() {
         if(\Request::ajax()) {
-            $customers = \App\Customer::where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->get();
+            list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+            if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+            {
+                \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+                return redirect('/');
+            }
+            if($privilege->master_admin) $customers = \App\Customer::where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->orderBy(\DB::raw('convert(city using gbk)'))->distinct()->get(['city']);
+            else $customers = $employee->customers()->where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->orderBy(\DB::raw('convert(city using gbk)'))->distinct()->get(['city']);
             $data = "<option value='0'>请选择城市</option>";
             foreach ($customers as $customer) {
                 $data = $data.'<option value="'.$customer->city.'">'.$customer->city.'</option>';
@@ -179,14 +316,93 @@ class SaleController extends Controller
         }
     }
 
-    public function getCreateCity() {
+    public function getCreateCustomerCity() {
         if(\Request::ajax()) {
-            $customers = \App\Customer::where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->where('city', '=', $_GET["city"])->get();
+            list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+            if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+            {
+                \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+                return redirect('/');
+            }
+            if($privilege->master_admin) $customers = \App\Customer::where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->where('city', '=', $_GET["city"])->orderBy(\DB::raw('convert(name using gbk)'))->distinct()->get(['name']);
+            else $customers = $employee->customers()->where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->where('city', '=', $_GET["city"])->orderBy(\DB::raw('convert(name using gbk)'))->distinct()->get(['name']);
             $data = "<option value='0'>请选择顾客名称</option>";
             foreach ($customers as $customer) {
                 $data = $data.'<option value="'.$customer->id.'">'.$customer->name.'</option>';
             }
             $data = $data."</select>";
+            return $data;
+        }
+    }
+
+    public function postCreateCustomerContact(Request $request) {
+        if(\Request::ajax()) {
+            list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+            if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+            {
+                \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+                return redirect('/');
+            }
+            $this->validate($request, [
+                'last_name' => 'required|max:30',
+                'first_name' => 'required|max:30',
+                'job_title' => 'required|max:30',
+                'email' => 'required|email|max:100',
+                'cellphone' => 'required|numeric|digits_between:2,30',
+            ]);
+            $contact = new \App\Contact();
+            $contact->last_name = $request->last_name;
+            $contact->first_name = $request->first_name;
+            $contact->job_title = $request->job_title;
+            $contact->email = $request->email;
+            $contact->cellphone = $request->cellphone;
+            $contact->save();
+
+            if(sizeof(\Session::get('customer_contacts'))) $request->session()->regenerate();
+            \Session::push("customer_contacts.".$contact->id, $contact->id);
+
+            $data = "<table class='table table-bordered'>";
+            $data = $data."<tr><th>姓氏</th><th>".$_POST['last_name']."</th></tr>";
+            $data = $data."<tr><th>名字</th><th>".$_POST['first_name']."</th></tr>";
+            $data = $data."<tr><th>职位</th><th>".$_POST['job_title']."</th></tr>";
+            $data = $data."<tr><th>邮箱地址</th><th>".$_POST['email']."</th></tr>";
+            $data = $data."<tr><th>电话号</th><th>".$_POST['cellphone']."</th></tr>";
+            return $data;
+        }
+    }
+
+    public function postCreateAgentContact(Request $request) {
+        if(\Request::ajax()) {
+            list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+            if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+            {
+                \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+                return redirect('/');
+            }
+            $this->validate($request, [
+                'last_name' => 'required|max:30',
+                'first_name' => 'required|max:30',
+                'job_title' => 'required|max:30',
+                'email' => 'required|email|max:100',
+                'cellphone' => 'required|numeric|digits_between:2,30',
+            ]);
+            $contact = new \App\Contact();
+            $contact->last_name = $request->last_name;
+            $contact->first_name = $request->first_name;
+            $contact->job_title = $request->job_title;
+            $contact->email = $request->email;
+            $contact->cellphone = $request->cellphone;
+            $contact->save();
+
+            if(sizeof(\Session::get('agent_contacts'))) $request->session()->regenerate();
+            \Session::push("agent_contacts.".$contact->id, $contact->id);
+
+            $data = "<table class='table table-bordered'>";
+            $data = $data."<tr><th>姓氏</th><th>".$_POST['last_name']."</th></tr>";
+            $data = $data."<tr><th>名字</th><th>".$_POST['first_name']."</th></tr>";
+            $data = $data."<tr><th>职位</th><th>".$_POST['job_title']."</th></tr>";
+            $data = $data."<tr><th>邮箱地址</th><th>".$_POST['email']."</th></tr>";
+            $data = $data."<tr><th>电话号</th><th>".$_POST['cellphone']."</th></tr>";
             return $data;
         }
     }
