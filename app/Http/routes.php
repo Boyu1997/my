@@ -6,7 +6,7 @@ Route::get('/register', 'Auth\AuthController@getRegister');
 Route::post('/register', 'Auth\AuthController@postRegister');
 Route::get('/logout', 'Auth\AuthController@logout');
 
-Route::get('data/receive/name={name}', 'HomeController@getData')
+Route::get('data/receive/name={name}', 'HomeController@getData');
 
 
 Route::group(['middleware' => 'auth'], function () {
