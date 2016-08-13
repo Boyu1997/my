@@ -87,4 +87,15 @@ class Sale extends Model
         }
         return $others_nation_for_dropdown;
     }
+
+    public static function newSalesForDropdown($privilege, $employee) {
+        if($privilege->master_admin) $sales = \App\Sale::where('status', '=', 'new')->with('customer')->get();
+        else $sales = \App\Sale::where('employee_id', '=', $employee->id)->where('status', '=', 'new')->with('customer')->get();
+        $new_sales_for_dropdown = [];
+        $new_sales_for_dropdown[0] = "请选择销售记录";
+        foreach ($sales as $sale) {
+            $new_sales_for_dropdown[$sale->id] = $sale->customer->province.'，'.$sale->customer->city.'，'.$sale->customer->name;
+        }
+        return $new_sales_for_dropdown;
+    }
 }

@@ -6,13 +6,15 @@ Route::get('/register', 'Auth\AuthController@getRegister');
 Route::post('/register', 'Auth\AuthController@postRegister');
 Route::get('/logout', 'Auth\AuthController@logout');
 
-Route::get('data/receive/name={name}', 'HomeController@getData');
+//Testing Routes
+Route::get('/test/data', 'TestController@getData');
 
 
 Route::group(['middleware' => 'auth'], function () {
 
 
     Route::get('/', 'HomeController@getHome');
+
 
 
     Route::get('/wage', 'WageController@getOverview');
@@ -47,8 +49,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['prefix' => 'sale'], function () {
         Route::get('/', 'SaleController@getOverview');
-        Route::get('/create', 'SaleController@getCreate');
-        Route::post('/create', 'SaleController@postCreate');
+        Route::get('/create/new', 'SaleController@getCreateNew');
+        Route::post('/create/new', 'SaleController@postCreateNew');
+        Route::get('/create/ongoing', 'SaleController@getCreateOngoing');
+        Route::post('/create/ongoing', 'SaleController@postCreateOngoing');
         Route::get('/id/{id}', 'SaleController@getById');
         Route::get('/agent/create', 'SaleController@getCreateAgent');
         Route::post('/agent/create', 'SaleController@postCreateAgent');
@@ -56,16 +60,17 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/customer/create', 'SaleController@postCreateCustomer');
 
         //ajax rotes
-        Route::get('/getCreateNation', 'SaleController@getCreateCustomerNation');
-        Route::get('/getCreateProvince', 'SaleController@getCreateCustomerProvince');
-        Route::get('/getCreateCity', 'SaleController@getCreateCustomerCity');
-        Route::get('/customer/getCreateNation', 'SaleController@getCreateCustomerNation');
-        Route::get('/customer/getCreateProvince', 'SaleController@getCreateCustomerProvince');
-        Route::post('/customer/postCreateContact', 'SaleController@postCreateCustomerContact');
+        Route::get('/create/getCreateNewNation', 'SaleController@getCreateCustomerNation');
+        Route::get('/create/getCreateNewProvince', 'SaleController@getCreateCustomerProvince');
+        Route::get('/create/getCreateNewCity', 'SaleController@getCreateCustomerCity');
+        Route::get('/create/getCreateOngoingSale', 'SaleController@getCreateOngoingSale');
 
         Route::get('/agent/getCreateNation', 'SaleController@getCreateAgentNation');
         Route::get('/agent/getCreateProvince', 'SaleController@getCreateAgentProvince');
         Route::post('/agent/postCreateContact', 'SaleController@postCreateAgentContact');
+        Route::get('/customer/getCreateNation', 'SaleController@getCreateCustomerNation');
+        Route::get('/customer/getCreateProvince', 'SaleController@getCreateCustomerProvince');
+        Route::post('/customer/postCreateContact', 'SaleController@postCreateCustomerContact');
     });
 
     Route::group(['prefix' => 'employee'], function () {

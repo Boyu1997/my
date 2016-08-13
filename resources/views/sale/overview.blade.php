@@ -18,7 +18,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4><strong>新项目</strong></h4>
-                    <p> &nbsp; <a href="/sale/create">添加</a></p>
+                    <p> &nbsp; <a href="/sale/create/new">添加</a></p>
                 </div>
                 <div class="panel-body">
                     @if(sizeof($new_sales))
@@ -52,6 +52,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4><strong>追踪项目</strong></h4>
+                    <p> &nbsp; <a href="/sale/create/ongoing">选择</a></p>
                 </div>
                 <div class="panel-body">
                     @if(sizeof($ongoing_sales))

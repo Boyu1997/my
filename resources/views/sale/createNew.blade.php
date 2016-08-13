@@ -6,13 +6,13 @@
 @stop
 
 @section('head')
-    <link href="/css/sale/create.css" type='text/css' rel='stylesheet'>
+    <link href="/css/sale/createNew.css" type='text/css' rel='stylesheet'>
 @stop
 
 @section('content')
     <h1 class="page-header">新记录</h1>
 
-    <form class="form-horizontal" method='POST' action='/sale/create'>
+    <form class="form-horizontal" method='POST' action='/sale/create/new'>
         {!! csrf_field() !!}
         <input type="hidden" name="status" id="status" value="new">
 
@@ -51,8 +51,8 @@
                 <select class = "form-control" name="customer_id" id="name">
                     <option value='0'>请选择顾客名称</option>
                 </select>
+                <div class='error'>{{ $errors->first('customer_id') }}</div>
                 <p id="text_after_input">没有您在找的顾客？那就<a href="/sale/customer/create">马上创建顾客</a>吧。</p>
-                <div class='error'>{{ $errors->first('employee_id') }}</div>
             </div>
         </div>
 
@@ -87,22 +87,22 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $("#nation").on("change", function() {
-                $.get("getCreateNation", {nation: $("#nation").val()}, function(data) {
+                $.get("getCreateNewNation", {nation: $("#nation").val()}, function(data) {
                     $("#province").html(data);
                 });
-                $("#city").html("<option value='0'>请选择</option>");
-                $("#name").html("<option value='0'>请选择</option>");
+                $("#city").html("<option value='0'>请选择城市</option>");
+                $("#name").html("<option value='0'>请选择顾客名称</option>");
             });
 
             $("#province").on("change", function() {
-                $.get("getCreateProvince", {nation: $("#nation").val(), province: $("#province").val()}, function(data) {
+                $.get("getCreateNewProvince", {nation: $("#nation").val(), province: $("#province").val()}, function(data) {
                     $("#city").html(data);
                 });
-                $("#name").html("<option value='0'>请选择</option>");
+                $("#name").html("<option value='0'>请选择顾客名称</option>");
             });
 
             $("#city").on("change", function() {
-                $.get("getCreateCity", {nation: $("#nation").val(), province: $("#province").val(), city: $("#city").val()}, function(data) {
+                $.get("getCreateNewCity", {nation: $("#nation").val(), province: $("#province").val(), city: $("#city").val()}, function(data) {
                     $("#name").html(data);
                 });
             });

@@ -23,15 +23,15 @@ class SaleController extends Controller
         }
         else
         {
-            $new_sales = \DB::table('sales')->where('employee_id', '=', $employee->id)->where('status', '=', 'new')->select('id', 'customer_id')->get();
-            $ongoing_sales = \DB::table('sales')->where('employee_id', '=', $employee->id)->where('status', '=', 'ongoing')->select('id', 'customer_id', 'classification')->get();
-            $bid_sales = \DB::table('sales')->where('employee_id', '=', $employee->id)->where('status', '=', 'bid')->select('id', 'customer_id', 'classification')->get();
+            $new_sales = \App\Sale::where('employee_id', '=', $employee->id)->where('status', '=', 'new')->select('id', 'customer_id')->with('customer')->get();
+            $ongoing_sales = \App\Sale::where('employee_id', '=', $employee->id)->where('status', '=', 'ongoing')->select('id', 'customer_id', 'classification')->with('customer')->get();
+            $bid_sales = \App\Sale::where('employee_id', '=', $employee->id)->where('status', '=', 'bid')->select('id', 'customer_id', 'classification')->with('customer')->get();
 
         }
         return \View::make('sale.overview', compact('user', 'employee', 'privilege', 'new_sales', 'ongoing_sales', 'bid_sales'));
     }
 
-    public function getCreate() {
+    public function getCreateNew() {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
         if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
         {
@@ -40,10 +40,10 @@ class SaleController extends Controller
         }
         $employees_for_dropdown = \App\Sale::employeesNameForDropdown();
         $customers_nation_for_dropdown = \App\Sale::customersNationForDropdown($privilege, $employee);
-        return view('sale.create', compact('user', 'employee', 'privilege', 'employees_for_dropdown', 'customers_nation_for_dropdown'));
+        return view('sale.createNew', compact('user', 'employee', 'privilege', 'employees_for_dropdown', 'customers_nation_for_dropdown'));
     }
 
-    public function postCreate(Request $request) {
+    public function postCreateNew(Request $request) {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
         if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
         {
@@ -66,7 +66,43 @@ class SaleController extends Controller
         $sale->save();
         \Session::flash('success', '成功创建了新的销售记录。');
         return redirect('/sale');
+    }
 
+    public function getCreateOngoing() {
+        list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+        {
+            \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+            return redirect('/');
+        }
+        $new_sales_for_dropdown = \App\Sale::newSalesForDropdown($privilege, $employee);
+        $customers_nation_for_dropdown = \App\Sale::customersNationForDropdown($privilege, $employee);
+        return view('sale.createOngoing', compact('user', 'employee', 'privilege', 'new_sales_for_dropdown', 'customers_nation_for_dropdown'));
+    }
+
+    public function postCreateOngoing(Request $request) {
+        list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+        {
+            \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+            return redirect('/');
+        }
+
+        $this->validate($request, [
+            'classification' => 'not_in:0',
+            'specification' => 'required',
+            'customer_id' => 'not_in:0',
+            'employee_id' => 'not_in:0'
+        ]);
+        $data = $request->only('classification', 'specification', 'customer_id', 'employee_id');
+        $sale = new \App\Sale();
+        $sale->status = 'new';
+        foreach ($data as $key => $value) {
+            $sale->$key = $value;
+        }
+        $sale->save();
+        \Session::flash('success', '成功创建了新的销售记录。');
+        return redirect('/sale');
 
         $employees_for_dropdown = \App\Sale::employeesNameForDropdown();
         return view('sale.create', compact('user', 'employee', 'privilege', 'employees_for_dropdown'));
@@ -221,6 +257,27 @@ class SaleController extends Controller
     }
 
     //ajax functions
+    public function getCreateOngoingSale() {
+        if(\Request::ajax()) {
+            list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+            if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+            {
+                \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+                return redirect('/');
+            }
+            if($privilege->master_admin) $sale = \App\Sale::where('id', '=', $_GET["sale_id"])->first();
+            else $sale = \App\Sale::where('employee_id', '=', $employee->id)->where('id', '=', $_GET["sale_id"])->first();
+            if (sizeof($sale) == 0)
+            {
+                \Session::flash('danger', '危险的操作！(Error: 401 Unauthorized)');
+                return redirect('/sale');
+            }
+            $data['classification'] = $sale->classification;
+            $data['specification'] = $sale->specification;
+            return $data;
+        }
+    }
+
     public function getCreateAgentNation() {
         if(\Request::ajax()) {
             list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
@@ -292,7 +349,7 @@ class SaleController extends Controller
             foreach ($customers as $customer) {
                 $data = $data.'<option value="'.$customer->province.'">'.$customer->province.'</option>';
             }
-            $data = $data."</select>";
+
             return $data;
         }
     }
@@ -311,7 +368,7 @@ class SaleController extends Controller
             foreach ($customers as $customer) {
                 $data = $data.'<option value="'.$customer->city.'">'.$customer->city.'</option>';
             }
-            $data = $data."</select>";
+
             return $data;
         }
     }
@@ -324,13 +381,14 @@ class SaleController extends Controller
                 \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
                 return redirect('/');
             }
-            if($privilege->master_admin) $customers = \App\Customer::where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->where('city', '=', $_GET["city"])->orderBy(\DB::raw('convert(name using gbk)'))->distinct()->get(['name']);
-            else $customers = $employee->customers()->where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->where('city', '=', $_GET["city"])->orderBy(\DB::raw('convert(name using gbk)'))->distinct()->get(['name']);
+            if($privilege->master_admin) $customers = \App\Customer::where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->where('city', '=', $_GET["city"])->orderBy(\DB::raw('convert(name using gbk)'))->get();
+            else $customers = $employee->customers()->where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->where('city', '=', $_GET["city"])->orderBy(\DB::raw('convert(name using gbk)'))->get();
             $data = "<option value='0'>请选择顾客名称</option>";
+
             foreach ($customers as $customer) {
                 $data = $data.'<option value="'.$customer->id.'">'.$customer->name.'</option>';
             }
-            $data = $data."</select>";
+
             return $data;
         }
     }
@@ -350,23 +408,29 @@ class SaleController extends Controller
                 'email' => 'required|email|max:100',
                 'cellphone' => 'required|numeric|digits_between:2,30',
             ]);
-            $contact = new \App\Contact();
-            $contact->last_name = $request->last_name;
-            $contact->first_name = $request->first_name;
-            $contact->job_title = $request->job_title;
-            $contact->email = $request->email;
-            $contact->cellphone = $request->cellphone;
-            $contact->save();
+
+            $contact = \App\Contact::where('last_name', '=', $request->last_name)->where('first_name', '=', $request->first_name)
+                ->where('job_title', '=', $request->job_title)->where('email', '=', $request->email)->where('cellphone', '=', $request->cellphone)->first();
+            if(sizeof($contact) == 0) {
+                $contact = new \App\Contact();
+                $contact->last_name = $request->last_name;
+                $contact->first_name = $request->first_name;
+                $contact->job_title = $request->job_title;
+                $contact->email = $request->email;
+                $contact->cellphone = $request->cellphone;
+                $contact->save();
+            }
+
 
             if(sizeof(\Session::get('customer_contacts'))) $request->session()->regenerate();
             \Session::push("customer_contacts.".$contact->id, $contact->id);
-
             $data = "<table class='table table-bordered'>";
             $data = $data."<tr><th>姓氏</th><th>".$_POST['last_name']."</th></tr>";
             $data = $data."<tr><th>名字</th><th>".$_POST['first_name']."</th></tr>";
             $data = $data."<tr><th>职位</th><th>".$_POST['job_title']."</th></tr>";
             $data = $data."<tr><th>邮箱地址</th><th>".$_POST['email']."</th></tr>";
             $data = $data."<tr><th>电话号</th><th>".$_POST['cellphone']."</th></tr>";
+
             return $data;
         }
     }
