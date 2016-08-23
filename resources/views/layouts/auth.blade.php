@@ -24,8 +24,8 @@
 
         </div> <!-- /container -->
 
-        <script src="/js/libraries/jquery.min.js"></script>
-        <script src="/js/libraries/bootstrap.min.js"></script>
+        <script src="/js/libraries/jquery.min.js"> </script>
+        <script src="/js/libraries/bootstrap.min.js"> </script>
         @yield('body')
 
     </body>

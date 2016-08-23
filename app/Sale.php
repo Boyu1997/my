@@ -22,7 +22,7 @@ class Sale extends Model
         return $this->belongsTo('\App\Complement');
     }
 
-    public function others() {
+    public function other() {
         return $this->belongsTo('\App\Other');
     }
 
@@ -56,7 +56,7 @@ class Sale extends Model
     }
 
     public static function complementsNationForDropdown($privilege, $employee) {
-        if($privilege->master_admin) $agents = \App\Complement::orderBy(\DB::raw('convert(nation using gbk)'))->distinct()->get(['nation']);
+        if($privilege->master_admin) $complements = \App\Complement::orderBy(\DB::raw('convert(nation using gbk)'))->distinct()->get(['nation']);
         else $complements = $employee->complements()->orderBy(\DB::raw('convert(nation using gbk)'))->distinct()->get(['nation']);
         $complements_nation_for_dropdown = [];
         $complements_nation_for_dropdown[0] = "请选择国家";

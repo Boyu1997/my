@@ -10,8 +10,11 @@ class TestController extends Controller
 {
     public function getData(Request $request) {
         $test = new \App\Test();
-        $test->data = $_GET['data'];
+        $test->type = $_GET['type'];
+        $test->temp_1 = $_GET['temp_1'];
+        $test->humi_1 = $_GET['humi_1'];
+
         $test->save();
-        return $_GET['data'];
+        return '200';
     }
 }

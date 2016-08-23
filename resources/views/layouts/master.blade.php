@@ -139,12 +139,12 @@
         </div>
 
 
-        <script src="/js/libraries/jquery.min.js"></script>
-        <script src="/js/libraries/bootstrap.min.js"></script>
-        <script src="/js/libraries/chartist.min.js"></script>
-        <script src="/js/libraries/jquery-ui.min.js"></script>
-        <script src="/js/libraries/jquery.tablesorter.min.js"></script>
-        <script src="/js/libraries/jquery.tablesorter.widgets.min.js"></script>
+        <script src="/js/libraries/jquery.min.js"> </script>
+        <script src="/js/libraries/bootstrap.min.js"> </script>
+        <script src="/js/libraries/chartist.min.js"> </script>
+        <script src="/js/libraries/jquery-ui.min.js"> </script>
+        <script src="/js/libraries/jquery.tablesorter.min.js"> </script>
+        <script src="/js/libraries/jquery.tablesorter.widgets.min.js"> </script>
         <script>
             $("div.alert").delay(3000).slideUp();
         </script>

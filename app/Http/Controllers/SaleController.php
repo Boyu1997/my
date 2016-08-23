@@ -76,8 +76,11 @@ class SaleController extends Controller
             return redirect('/');
         }
         $new_sales_for_dropdown = \App\Sale::newSalesForDropdown($privilege, $employee);
+        $agents_nation_for_dropdown = \App\Sale::agentsNationForDropdown($privilege, $employee);
+        $complements_nation_for_dropdown = \App\Sale::complementsNationForDropdown($privilege, $employee);
         $customers_nation_for_dropdown = \App\Sale::customersNationForDropdown($privilege, $employee);
-        return view('sale.createOngoing', compact('user', 'employee', 'privilege', 'new_sales_for_dropdown', 'customers_nation_for_dropdown'));
+        $others_nation_for_dropdown = \App\Sale::othersNationForDropdown($privilege, $employee);
+        return view('sale.createOngoing', compact('user', 'employee', 'privilege', 'new_sales_for_dropdown', 'agents_nation_for_dropdown', 'complements_nation_for_dropdown', 'customers_nation_for_dropdown', 'others_nation_for_dropdown'));
     }
 
     public function postCreateOngoing(Request $request) {
@@ -215,45 +218,19 @@ class SaleController extends Controller
             \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
             return redirect('/');
         }
-        $sale_array = \DB::table('sales')->where('id', '=', $id)->select('id', 'status', 'classification', 'specification', 'expect_model', 'expect_amount', 'expect_price', 'expect_sold_date',
-            'bid_date', 'result', 'winning_company', 'sold_model', 'sold_amount', 'sold_price', 'agent_id', 'complement_id', 'customer_id', 'other_id', 'employee_id')->get();
-        $sale = collect($sale_array)->first();
-        if($privilege->master_admin==0 && $sale->employee_id!=$employee->id)
+        if($privilege->master_admin) $sale = \App\Sale::where('id', '=', $id)->with('agent.contacts', 'complement.contacts', 'customer.contacts', 'other.contacts')->first();
+        else $sale = \App\Sale::where('id', '=', $id)->where('employee_id', '=', $employee->id)->with('agent.contacts', 'complement.contacts', 'customer.contacts', 'other.contacts')->first();
+        if(sizeof($sale) == 0)
         {
             \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
             return redirect('/');
         }
-        $sale_employee = \DB::table('users')->where('employee_id', '=', $sale->employee_id)->select('last_name', 'first_name')->first();
-        $sale->employee_name = $sale_employee->last_name.$sale_employee->first_name;
-        if($sale->agent_id)
-        {
-            $agent_array = \DB::table('agents')->where('id', '=', $sale->agent_id)->select('id', 'name', 'nation', 'province', 'city', 'address', 'phone_number', 'fax', 'remark')->get();
-            $agent = collect($agent_array)->first();
-            //agent's contact info need to add to $agent object.
-        }
-        else $agent = null;
-        if($sale->complement_id)
-        {
-            $complement_array = \DB::table('complements')->where('id', '=', $sale->complement_id)->select('id', 'name', 'nation', 'province', 'city', 'address', 'phone_number', 'fax', 'remark')->get();
-            $complement = collect($complement_array)->first();
-            //agent's contact info need to add to $agent object.
-        }
-        else $complement = null;
-        if($sale->customer_id)
-        {
-            $customer_array = \DB::table('customers')->where('id', '=', $sale->customer_id)->select('id', 'name', 'nation', 'province', 'city', 'address', 'phone_number', 'fax', 'remark')->get();
-            $customer = collect($customer_array)->first();
-            //agent's contact info need to add to $agent object.
-        }
-        else $hospital = null;
-        if($sale->other_id)
-        {
-            $other_array = \DB::table('others')->where('id', '=', $sale->other_id)->select('id', 'name', 'nation', 'province', 'city', 'address', 'phone_number', 'fax', 'remark')->get();
-            $other = collect($other_array)->first();
-            //agent's contact info need to add to $agent object.
-        }
-        else $other = null;
-        return view('sale.byId', compact('user', 'employee', 'privilege', 'sale', 'agent', 'complement', 'customer', 'other'));
+        $agents_nation_for_dropdown = \App\Sale::agentsNationForDropdown($privilege, $employee);
+        $complements_nation_for_dropdown = \App\Sale::complementsNationForDropdown($privilege, $employee);
+        $customers_nation_for_dropdown = \App\Sale::customersNationForDropdown($privilege, $employee);
+        $others_nation_for_dropdown = \App\Sale::othersNationForDropdown($privilege, $employee);
+
+        return view('sale.byId', compact('id', 'user', 'employee', 'privilege', 'sale', 'agents_nation_for_dropdown', 'complements_nation_for_dropdown', 'customers_nation_for_dropdown', 'others_nation_for_dropdown'));
     }
 
     //ajax functions
@@ -265,15 +242,20 @@ class SaleController extends Controller
                 \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
                 return redirect('/');
             }
-            if($privilege->master_admin) $sale = \App\Sale::where('id', '=', $_GET["sale_id"])->first();
+            if($privilege->master_admin) $sale = \App\Sale::where('id', '=', $_GET["sale_id"])->with('agent', 'complement', 'customer', 'other')->first();
             else $sale = \App\Sale::where('employee_id', '=', $employee->id)->where('id', '=', $_GET["sale_id"])->first();
             if (sizeof($sale) == 0)
             {
                 \Session::flash('danger', '危险的操作！(Error: 401 Unauthorized)');
                 return redirect('/sale');
             }
+
             $data['classification'] = $sale->classification;
             $data['specification'] = $sale->specification;
+            $data['agent'] = $sale->agent()->select('nation', 'province', 'city', 'name')->first();
+            $data['complement'] = $sale->complement()->select('nation', 'province', 'city', 'name')->first();
+            $data['customer'] = $sale->customer()->select('nation', 'province', 'city', 'name')->first();
+            $data['other'] = $sale->other()->select('nation', 'province', 'city', 'name')->first();
             return $data;
         }
     }
@@ -326,9 +308,66 @@ class SaleController extends Controller
             }
             if($privilege->master_admin) $agents = \App\Agent::where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->where('city', '=', $_GET["city"])->orderBy(\DB::raw('convert(name using gbk)'))->distinct()->get(['name']);
             else $agents = $employee->agents()->where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->where('city', '=', $_GET["city"])->orderBy(\DB::raw('convert(name using gbk)'))->distinct()->get(['name']);
-            $data = "<option value='0'>请选择顾客名称</option>";
+            $data = "<option value='0'>请选择代理商名称</option>";
             foreach ($agents as $agent) {
                 $data = $data.'<option value="'.$agent->id.'">'.$agent->name.'</option>';
+            }
+            $data = $data."</select>";
+            return $data;
+        }
+    }
+
+    public function getCreateComplementNation() {
+        if(\Request::ajax()) {
+            list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+            if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+            {
+                \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+                return redirect('/');
+            }
+            if($privilege->master_admin) $complements = \App\Complement::where('nation', '=', $_GET["nation"])->orderBy(\DB::raw('convert(province using gbk)'))->distinct()->get(['province']);
+            else $complements = $employee->complements()->where('nation', '=', $_GET["nation"])->orderBy(\DB::raw('convert(province using gbk)'))->distinct()->get(['nation']);
+            $data = "<option value='0'>请选择省份</option>";
+            foreach ($complements as $complement) {
+                $data = $data.'<option value="'.$complement->province.'">'.$complement->province.'</option>';
+            }
+            $data = $data."</select>";
+            return $data;
+        }
+    }
+
+    public function getCreateComplementProvince() {
+        if(\Request::ajax()) {
+            list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+            if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+            {
+                \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+                return redirect('/');
+            }
+            if($privilege->master_admin) $complements = \App\Complement::where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->orderBy(\DB::raw('convert(city using gbk)'))->distinct()->get(['city']);
+            else $complements = $employee->complements()->where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->orderBy(\DB::raw('convert(city using gbk)'))->distinct()->get(['city']);
+            $data = "<option value='0'>请选择城市</option>";
+            foreach ($complements as $complement) {
+                $data = $data.'<option value="'.$complement->city.'">'.$complement->city.'</option>';
+            }
+            $data = $data."</select>";
+            return $data;
+        }
+    }
+
+    public function getCreateComplementCity() {
+        if(\Request::ajax()) {
+            list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+            if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+            {
+                \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+                return redirect('/');
+            }
+            if($privilege->master_admin) $complements = \App\Complement::where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->where('city', '=', $_GET["city"])->orderBy(\DB::raw('convert(name using gbk)'))->distinct()->get(['name']);
+            else $complements = $employee->complements()->where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->where('city', '=', $_GET["city"])->orderBy(\DB::raw('convert(name using gbk)'))->distinct()->get(['name']);
+            $data = "<option value='0'>请选择配套商名称</option>";
+            foreach ($complements as $complement) {
+                $data = $data.'<option value="'.$complement->id.'">'.$complement->name.'</option>';
             }
             $data = $data."</select>";
             return $data;
@@ -431,6 +470,63 @@ class SaleController extends Controller
             $data = $data."<tr><th>邮箱地址</th><th>".$_POST['email']."</th></tr>";
             $data = $data."<tr><th>电话号</th><th>".$_POST['cellphone']."</th></tr>";
 
+            return $data;
+        }
+    }
+
+    public function getCreateOtherNation() {
+        if(\Request::ajax()) {
+            list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+            if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+            {
+                \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+                return redirect('/');
+            }
+            if($privilege->master_admin) $others = \App\Other::where('nation', '=', $_GET["nation"])->orderBy(\DB::raw('convert(province using gbk)'))->distinct()->get(['province']);
+            else $others = $employee->others()->where('nation', '=', $_GET["nation"])->orderBy(\DB::raw('convert(province using gbk)'))->distinct()->get(['nation']);
+            $data = "<option value='0'>请选择省份</option>";
+            foreach ($others as $other) {
+                $data = $data.'<option value="'.$other->province.'">'.$other->province.'</option>';
+            }
+            $data = $data."</select>";
+            return $data;
+        }
+    }
+
+    public function getCreateOtherProvince() {
+        if(\Request::ajax()) {
+            list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+            if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+            {
+                \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+                return redirect('/');
+            }
+            if($privilege->master_admin) $others = \App\Other::where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->orderBy(\DB::raw('convert(city using gbk)'))->distinct()->get(['city']);
+            else $others = $employee->others()->where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->orderBy(\DB::raw('convert(city using gbk)'))->distinct()->get(['city']);
+            $data = "<option value='0'>请选择城市</option>";
+            foreach ($others as $other) {
+                $data = $data.'<option value="'.$other->city.'">'.$other->city.'</option>';
+            }
+            $data = $data."</select>";
+            return $data;
+        }
+    }
+
+    public function getCreateOtherCity() {
+        if(\Request::ajax()) {
+            list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+            if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+            {
+                \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+                return redirect('/');
+            }
+            if($privilege->master_admin) $others = \App\Other::where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->where('city', '=', $_GET["city"])->orderBy(\DB::raw('convert(name using gbk)'))->distinct()->get(['name']);
+            else $others = $employee->others()->where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->where('city', '=', $_GET["city"])->orderBy(\DB::raw('convert(name using gbk)'))->distinct()->get(['name']);
+            $data = "<option value='0'>请选择代理商名称</option>";
+            foreach ($others as $other) {
+                $data = $data.'<option value="'.$other->id.'">'.$other->name.'</option>';
+            }
+            $data = $data."</select>";
             return $data;
         }
     }

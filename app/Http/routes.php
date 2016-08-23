@@ -65,6 +65,20 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/create/getCreateNewCity', 'SaleController@getCreateCustomerCity');
         Route::get('/create/getCreateOngoingSale', 'SaleController@getCreateOngoingSale');
 
+        Route::get('/create/getCreateOngoingAgentNation', 'SaleController@getCreateAgentNation');
+        Route::get('/create/getCreateOngoingAgentProvince', 'SaleController@getCreateAgentProvince');
+        Route::get('/create/getCreateOngoingAgentCity', 'SaleController@getCreateAgentCity');
+        Route::get('/create/getCreateOngoingComplementNation', 'SaleController@getCreateComplementNation');
+        Route::get('/create/getCreateOngoingComplementProvince', 'SaleController@getCreateComplementProvince');
+        Route::get('/create/getCreateOngoingComplementCity', 'SaleController@getCreateComplementCity');
+        Route::get('/create/getCreateOngoingCustomerNation', 'SaleController@getCreateCustomerNation');
+        Route::get('/create/getCreateOngoingCustomerProvince', 'SaleController@getCreateCustomerProvince');
+        Route::get('/create/getCreateOngoingCustomerCity', 'SaleController@getCreateCustomerCity');
+        Route::get('/create/getCreateOngoingOtherNation', 'SaleController@getCreateOtherNation');
+        Route::get('/create/getCreateOngoingOtherProvince', 'SaleController@getCreateOtherProvince');
+        Route::get('/create/getCreateOngoingOtherCity', 'SaleController@getCreateOtherCity');
+
+
         Route::get('/agent/getCreateNation', 'SaleController@getCreateAgentNation');
         Route::get('/agent/getCreateProvince', 'SaleController@getCreateAgentProvince');
         Route::post('/agent/postCreateContact', 'SaleController@postCreateAgentContact');
