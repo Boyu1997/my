@@ -8,6 +8,7 @@ Route::get('/logout', 'Auth\AuthController@logout');
 
 //Testing Routes
 Route::get('/test/data', 'TestController@getData');
+//Testing Routes End
 
 
 Route::group(['middleware' => 'auth'], function () {
@@ -15,6 +16,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/', 'HomeController@getHome');
 
+    //Testing Routes
+    Route::get('/test/read', 'TestController@getRead');
+    //Testing Routes End
 
 
     Route::get('/wage', 'WageController@getOverview');
