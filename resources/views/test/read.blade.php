@@ -101,7 +101,7 @@
                 $('table.tablesorter').tablesorter({
                     'theme': 'metro-dark',
                     'widgets':['zebra'],
-                    'sortList' : [[0,0]]
+                    'sortList' : [[0,1]]
                 });
             });
         </script>
