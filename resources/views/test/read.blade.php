@@ -29,6 +29,7 @@
                                 <th>id</th>
                                 <th>创建时间</th>
                                 <th>种类</th>
+                                <th>停机保护</th>
                                 <th>温度</th>
                                 <th>湿度</th>
                                 <th>压缩机</th>
@@ -43,12 +44,30 @@
                                     <td>{{ $data->id }}</td>
                                     <td>{{ $data->created_at }}</td>
                                     <td>{{ $data->type }}</td>
-                                    <td>{{ $data->temperature_1 }}</td>
-                                    <td>{{ $data->humidity_1 }}</td>
-                                    <td>{{ $data->compressor_1 }}</td>
-                                    <td>{{ $data->fan_1 }}</td>
-                                    <td>{{ $data->heater_1 }}</td>
-                                    <td>{{ $data->humidifier }}</td>
+                                    @if($data->critical_error > 0) <td style="background-color: red;">是</td>
+                                    @else <td>否</td>
+                                    @endif
+                                    <td>{{ $data->temperature_1 }}℃</td>
+                                    <td>{{ $data->humidity_1 }}%</td>
+                                    @if($data->compressor_1 == 0) <td>关闭</td>
+                                    @elseif($data->compressor_1 == 1) <td style="background-color: green;">运行</td>
+                                    @elseif($data->compressor_1 == 2 || $data->compressor_1 == 4) <td style="background-color: red;">故障</td>
+                                    @elseif($data->compressor_1 == 3) <td style="background-color: yellow;">预运行</td>
+                                    @endif
+                                    @if($data->fan_1 == 0) <td>关闭</td>
+                                    @elseif($data->fan_1 == 1) <td style="background-color: green;">运行</td>
+                                    @elseif($data->fan_1 == 2) <td style="background-color: red;">故障</td>
+                                    @elseif($data->fan_1 == 3) <td style="background-color: yellow;">预运行</td>
+                                    @endif
+                                    @if($data->heater_1 == 0) <td>关闭</td>
+                                    @elseif($data->heater_1 == 1) <td style="background-color: green;">运行</td>
+                                    @elseif($data->heater_1 == 2) <td style="background-color: red;">故障</td>
+                                    @elseif($data->heater_1 == 3) <td style="background-color: yellow;">预运行</td>
+                                    @endif
+                                    @if($data->humidifier == 0) <td>关闭</td>
+                                    @elseif($data->humidifier == 1) <td style="background-color: green;">运行</td>
+                                    @elseif($data->humidifier == 2) <td style="background-color: red;">故障</td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>

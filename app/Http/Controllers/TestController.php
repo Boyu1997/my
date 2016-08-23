@@ -26,7 +26,7 @@ class TestController extends Controller
     }
 
     public function getRead() {
-        $datas = \App\Test::orderBy('id', 'DESC')->select('id', 'created_at', 'type', 'temperature_1', 'humidity_1', 'compressor_1', 'fan_1', 'heater_1', 'humidifier')->get();
+        $datas = \App\Test::orderBy('id', 'DESC')->select('id', 'created_at', 'type', 'critical_error', 'temperature_1', 'humidity_1', 'compressor_1', 'fan_1', 'heater_1', 'humidifier')->get();
         return view('test.read', compact('datas'));
     }
 }
