@@ -17,7 +17,7 @@ class ProduceController extends Controller
         }
         $recent_monthly_summery = \App\Produce::recentMonthlySummery($user, $employee, $privilege);
         $recent_month = \App\Produce::recentMonth();
-        if (sizeof($privilege)==0 || $privilege->master_admin==0)
+        if ($privilege->master_admin==0)
         {
             $recent_monthly_summery = [$recent_monthly_summery[2], $recent_monthly_summery[3], $recent_monthly_summery[4]];
             $recent_month = [$recent_month[2], $recent_month[3], $recent_month[4]];
@@ -33,7 +33,7 @@ class ProduceController extends Controller
             return redirect('/');
         }
         $formated_date = $year.'/'.$month.'%';
-        if(sizeof($privilege)==0 || $privilege->master_admin==0)
+        if($privilege->master_admin==0)
         {
             $produces = \DB::table('produces')->where('employee_id', '=', $employee->id)->where('end_at', 'like', $formated_date)->select('model', 'serial_number', 'end_at')->get();
             $have_id = false;
