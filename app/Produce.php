@@ -22,6 +22,10 @@ class Produce extends Model
         return $this->belongsTo('\App\Contract');
     }
 
+    public function stocks() {
+        return $this->belongsToMany('\App\Stock')->withTimestamps();
+    }
+
     public static function recentMonthlySummery($user, $employee, $privilege) {
         $recent_month = \App\Produce::recentMonth();
         $recent_year = [0, 0, 0, 0, 0];

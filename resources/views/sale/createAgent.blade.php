@@ -6,7 +6,7 @@
 @stop
 
 @section('head')
-    <link href="/css/sale/createAgent.css" type='text/css' rel='stylesheet'>
+    <link href="/css/sale/inputForm.css" type='text/css' rel='stylesheet'>
 @stop
 
 @section('content')
@@ -77,12 +77,10 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="specification" class="col-sm-2 control-label">顾客</label>
+            <label for="specification" class="col-sm-2 control-label">城市</label>
             <div class="col-sm-10 col-md-9">
                 <select class = "form-control" name="nation" id="nation">
-                    @foreach($agents_nation_for_dropdown as $key => $value)
-                        <option value="{{$key}}">{{$value}}</option>
-                    @endforeach
+                    <option value='0'>请选择国家</option>
                 </select>
                 <select class = "form-control" name="province" id="province">
                     <option value='0'>请选择省份</option>
@@ -154,19 +152,27 @@
 @section('body')
     <script type="text/javascript">
         $(document).ready(function() {
+
+            $("#nation").on("click", function() {
+                $("#province").html("<option value='0'>加载中...</option>");
+                $.get("getNation", function(data) {
+                    $("#nation").html(data);
+                });
+                $("#province").html("<option value='0'>请选择省份</option>");
+                $("#city").html("<option value='0'>请选择城市</option>");
+            });
+
             $("#nation").on("change", function() {
-                $.get("getCreateNation", {nation: $("#nation").val()}, function(data) {
+                $.get("getProvince", {nation: $("#nation").val()}, function(data) {
                     $("#province").html(data);
                 });
                 $("#city").html("<option value='0'>请选择城市</option>");
-                $("#name").html("<option value='0'>请选择名称</option>");
             });
 
             $("#province").on("change", function() {
-                $.get("getCreateProvince", {nation: $("#nation").val(), province: $("#province").val()}, function(data) {
+                $.get("getCity", {nation: $("#nation").val(), province: $("#province").val()}, function(data) {
                     $("#city").html(data);
                 });
-                $("#name").html("<option value='0'>请选择名称</option>");
             });
 
             $("#not_in_agents_select").on("change", function() {

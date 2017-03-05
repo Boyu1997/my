@@ -6,7 +6,7 @@
 @stop
 
 @section('head')
-    <link href="/css/sale/createCustomer.css" type='text/css' rel='stylesheet'>
+    <link href="/css/sale/inputForm.css" type='text/css' rel='stylesheet'>
 @stop
 
 @section('content')

@@ -17,6 +17,7 @@ class CreatePrivilegesTable extends Migration
             $table->timestamps();
 
             $table->boolean('master_admin');
+            $table->boolean('stock');
             $table->boolean('produce');
             $table->boolean('install');
             $table->boolean('maintenance');

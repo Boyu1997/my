@@ -146,7 +146,7 @@
         <div class="form-group">
             <label for="model" class ="col-sm-2 control-label">管理员权限</label>
             <div class = "col-sm-10 col-md-9">
-                <select class = "form-control" name="master_admin" id="master_admin" value="{{ $the_employee->privilege->master_admin }}" placeholder="请输入办公手机">
+                <select class = "form-control" name="master_admin" id="master_admin" value="{{ $the_employee->privilege->master_admin }}">
                     <option value=0 @if(!$the_employee->privilege->master_admin)selected="selected"@endif>否</option>
                     <option value=1 @if($the_employee->privilege->master_admin)selected="selected"@endif>是</option>
                 </select>
@@ -154,9 +154,19 @@
             </div>
         </div>
         <div class="form-group sub_privilege_div">
+            <label for="model" class ="col-sm-2 control-label">库存权限</label>
+            <div class = "col-sm-10 col-md-9">
+                <select class = "form-control sub_privilege" name="stock" id="stock" value="{{ $the_employee->privilege->stock }}">
+                    <option value=0 @if(!$the_employee->privilege->stock)selected="selected"@endif>否</option>
+                    <option value=1 @if($the_employee->privilege->stock)selected="selected"@endif>是</option>
+                </select>
+                <div class='error'>{{ $errors->first('stock') }}</div>
+            </div>
+        </div>
+        <div class="form-group sub_privilege_div">
             <label for="model" class ="col-sm-2 control-label">生产权限</label>
             <div class = "col-sm-10 col-md-9">
-                <select class = "form-control sub_privilege" name="produce" id="produce" value="{{ $the_employee->privilege->produce }}" placeholder="请输入办公手机">
+                <select class = "form-control sub_privilege" name="produce" id="produce" value="{{ $the_employee->privilege->produce }}">
                     <option value=0 @if(!$the_employee->privilege->produce)selected="selected"@endif>否</option>
                     <option value=1 @if($the_employee->privilege->produce)selected="selected"@endif>是</option>
                 </select>
@@ -166,7 +176,7 @@
         <div class="form-group sub_privilege_div">
             <label for="model" class ="col-sm-2 control-label">安装权限</label>
             <div class = "col-sm-10 col-md-9">
-                <select class = "form-control sub_privilege" name="install" id="install" value="{{ $the_employee->privilege->install }}" placeholder="请输入办公手机">
+                <select class = "form-control sub_privilege" name="install" id="install" value="{{ $the_employee->privilege->install }}">
                     <option value=0 @if(!$the_employee->privilege->install)selected="selected"@endif>否</option>
                     <option value=1 @if($the_employee->privilege->install)selected="selected"@endif>是</option>
                 </select>

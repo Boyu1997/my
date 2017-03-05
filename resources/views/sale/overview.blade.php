@@ -119,7 +119,7 @@
     <hr>
     <div aria-label="Justified button group" role="group" class="btn-group btn-group-justified">
         @if ($privilege->master_admin)
-            <a class="btn btn-default" href="/produce/create">新建记录</a>
+            <a class="btn btn-default" href="/produce/create" target="_blank">新建记录</a>
         @else
             @if (\App\Produce::where('employee_id', '=', $employee->id)->where('end_at', '=', '')->count())
                 <a class="btn btn-default" href="/produce/edit/id/{{ \App\Produce::where('employee_id', '=', $employee->id)->where('end_at', '=', '')->pluck('id')->first() }}">当前生产</a>

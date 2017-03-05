@@ -6,7 +6,7 @@
 @stop
 
 @section('head')
-    <link href="/css/sale/createNew.css" type='text/css' rel='stylesheet'>
+    <link href="/css/sale/inputForm.css" type='text/css' rel='stylesheet'>
 @stop
 
 @section('content')
@@ -38,9 +38,7 @@
             <label for="specification" class="col-sm-2 control-label">顾客</label>
             <div class="col-sm-10 col-md-9">
                 <select class = "form-control" id="nation">
-                    @foreach($customers_nation_for_dropdown as $key => $value)
-                        <option value="{{$key}}">{{$value}}</option>
-                    @endforeach
+                    <option value='0'>请选择国家</option>
                 </select>
                 <select class = "form-control" id="province">
                     <option value='0'>请选择省份</option>
@@ -52,12 +50,9 @@
                     <option value='0'>请选择顾客名称</option>
                 </select>
                 <div class='error'>{{ $errors->first('customer_id') }}</div>
-                <p id="text_after_input">没有您在找的顾客？那就<a href="/sale/customer/create">马上创建顾客</a>吧。</p>
+                <p id="text_after_input">没有您在找的顾客？那就<a href="/sale/customer/create" target="_blank">马上创建顾客</a>吧。</p>
             </div>
         </div>
-
-        <!-- Large modal -->
-
 
         <div class="form-group">
             <label for="employee_name" class="col-sm-2 control-label">销售员</label>
@@ -86,8 +81,18 @@
 @section('body')
     <script type="text/javascript">
         $(document).ready(function() {
+            $("#nation").on("click", function() {
+                $("#nation").html("<option value='0'>加载中...</option>");
+                $.get("getCreateNewNation", function(data) {
+                    $("#nation").html(data);
+                });
+                $("#province").html("<option value='0'>请选择省份</option>");
+                $("#city").html("<option value='0'>请选择城市</option>");
+                $("#name").html("<option value='0'>请选择顾客名称</option>");
+            });
+
             $("#nation").on("change", function() {
-                $.get("getCreateNewNation", {nation: $("#nation").val()}, function(data) {
+                $.get("getCreateNewProvince", {nation: $("#nation").val()}, function(data) {
                     $("#province").html(data);
                 });
                 $("#city").html("<option value='0'>请选择城市</option>");
@@ -95,16 +100,23 @@
             });
 
             $("#province").on("change", function() {
-                $.get("getCreateNewProvince", {nation: $("#nation").val(), province: $("#province").val()}, function(data) {
+                $.get("getCreateNewCity", {nation: $("#nation").val(), province: $("#province").val()}, function(data) {
                     $("#city").html(data);
                 });
                 $("#name").html("<option value='0'>请选择顾客名称</option>");
             });
 
             $("#city").on("change", function() {
-                $.get("getCreateNewCity", {nation: $("#nation").val(), province: $("#province").val(), city: $("#city").val()}, function(data) {
+                $.get("getCreateNewName", {nation: $("#nation").val(), province: $("#province").val(), city: $("#city").val()}, function(data) {
                     $("#name").html(data);
                 });
+            });
+
+            $("#text_after_input a").on("click", function() {
+                $("#nation").html("<option value='0'>请选择国家</option>");
+                $("#province").html("<option value='0'>请选择省份</option>");
+                $("#city").html("<option value='0'>请选择城市</option>");
+                $("#name").html("<option value='0'>请选择顾客名称</option>");
             });
         });
     </script>

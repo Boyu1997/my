@@ -147,9 +147,19 @@
             </div>
         </div>
         <div class="form-group sub_privilege_div">
+            <label for="model" class ="col-sm-2 control-label">库存权限</label>
+            <div class = "col-sm-10 col-md-9">
+                <select class = "form-control sub_privilege" name="stock" id="stock" value="{{ old('stock') }}">
+                    <option value=0>否</option>
+                    <option value=1>是</option>
+                </select>
+                <div class='error'>{{ $errors->first('stock') }}</div>
+            </div>
+        </div>
+        <div class="form-group sub_privilege_div">
             <label for="model" class ="col-sm-2 control-label">生产权限</label>
             <div class = "col-sm-10 col-md-9">
-                <select class = "form-control sub_privilege" name="produce" id="produce" value="{{ old('produce') }}" placeholder="请输入办公手机">
+                <select class = "form-control sub_privilege" name="produce" id="produce" value="{{ old('produce') }}">
                     <option value=0>否</option>
                     <option value=1>是</option>
                 </select>
@@ -159,7 +169,7 @@
         <div class="form-group sub_privilege_div">
             <label for="model" class ="col-sm-2 control-label">安装权限</label>
             <div class = "col-sm-10 col-md-9">
-                <select class = "form-control sub_privilege" name="install" id="install" value="{{ old('install') }}" placeholder="请输入办公手机">
+                <select class = "form-control sub_privilege" name="install" id="install" value="{{ old('install') }}">
                     <option value=0>否</option>
                     <option value=1>是</option>
                 </select>
@@ -169,7 +179,7 @@
         <div class="form-group sub_privilege_div">
             <label for="model" class ="col-sm-2 control-label">维护权限</label>
             <div class = "col-sm-10 col-md-9">
-                <select class = "form-control sub_privilege" name="maintenance" id="maintenance" value="{{ old('maintenance') }}" placeholder="请输入办公手机">
+                <select class = "form-control sub_privilege" name="maintenance" id="maintenance" value="{{ old('maintenance') }}">
                     <option value=0>否</option>
                     <option value=1>是</option>
                 </select>

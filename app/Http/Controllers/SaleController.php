@@ -39,8 +39,7 @@ class SaleController extends Controller
             return redirect('/');
         }
         $employees_for_dropdown = \App\Sale::employeesNameForDropdown();
-        $customers_nation_for_dropdown = \App\Sale::customersNationForDropdown($privilege, $employee);
-        return view('sale.createNew', compact('user', 'employee', 'privilege', 'employees_for_dropdown', 'customers_nation_for_dropdown'));
+        return view('sale.createNew', compact('user', 'employee', 'privilege', 'employees_for_dropdown'));
     }
 
     public function postCreateNew(Request $request) {
@@ -119,8 +118,7 @@ class SaleController extends Controller
             return redirect('/');
         }
         $employees_for_dropdown = \App\Sale::employeesNameForDropdown();
-        $agents_nation_for_dropdown = \App\Sale::agentsNationForDropdown($privilege, $employee);
-        return view('sale.createAgent', compact('user', 'employee', 'privilege', 'employees_for_dropdown', 'agents_nation_for_dropdown'));
+        return view('sale.createAgent', compact('user', 'employee', 'privilege', 'employees_for_dropdown'));
     }
 
     public function postCreateAgent(Request $request) {
@@ -161,6 +159,64 @@ class SaleController extends Controller
         return redirect('/sale');
     }
 
+    public function getEditAgentId($id) {
+        list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+        $agent = \App\Agent::where('id', '=', $id)->with('contacts')->first();
+        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+        {
+            \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+            return redirect('/');
+        }
+        $employees_for_dropdown = \App\Sale::employeesNameForDropdown();
+        return view('sale.editAgent', compact('user', 'employee', 'privilege', 'id', 'agent'));
+    }
+
+    public function postEditAgentId($id, Request $request) {
+        list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+        {
+            \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+            return redirect('/');
+        }
+        $this->validate($request, [
+            'name' => 'required',
+            'nation' => 'not_in:0',
+            'province' => 'not_in:0',
+            'city' => 'not_in:0',
+            'address' => 'required',
+            'phone_number' => 'integer',
+            'fax' => 'integer',
+            'remark' => 'max:3000'
+        ]);
+        if ($request->id != $id)
+        {
+            \Session::flash('danger', '危险的操作！(Error: 401 Unauthorized)');
+            return redirect('/sale');
+        }
+        $agent = \App\Agent::find($request->id);
+        $agent->name = $request->name;
+        if(sizeof($request->nation) && sizeof($request->province) && sizeof($request->city))
+        {
+            $agent->nation = $request->nation;
+            $agent->province = $request->province;
+            $agent->city = $request->city;
+        }
+        $agent->address = $request->address;
+        $agent->phone_number = $request->phone_number;
+        $agent->fax = $request->fax;
+        $agent->remark = $request->remark;
+        $agent->save();
+        if(!$privilege->master_admin) $agent->employees()->save($employee);
+        $contacts = \Session::get('agent_contacts');
+        $request->session()->forget('agent_contacts');
+        if(sizeof($contacts)) foreach ($contacts as $key => $value) {
+            $contact = \App\Contact::where('id', '=', $value)->first();
+            $agent->contacts()->save($contact);
+        }
+        \Session::flash('success', '代理商'.$request->name.'的信息已经成功修改。');
+        return redirect('/sale');
+    }
+
     public function getCreateCustomer() {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
         if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
@@ -169,8 +225,7 @@ class SaleController extends Controller
             return redirect('/');
         }
         $employees_for_dropdown = \App\Sale::employeesNameForDropdown();
-        $customers_nation_for_dropdown = \App\Sale::customersNationForDropdown($privilege, $employee);
-        return view('sale.createCustomer', compact('user', 'employee', 'privilege', 'employees_for_dropdown', 'customers_nation_for_dropdown'));
+        return view('sale.createCustomer', compact('user', 'employee', 'privilege', 'employees_for_dropdown'));
     }
 
     public function postCreateCustomer(Request $request) {
@@ -211,6 +266,64 @@ class SaleController extends Controller
         return redirect('/sale');
     }
 
+    public function getEditCustomerId($id) {
+        list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+        $customer = \App\Customer::find($id)->with('contacts')->first();
+        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+        {
+            \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+            return redirect('/');
+        }
+        $employees_for_dropdown = \App\Sale::employeesNameForDropdown();
+        return view('sale.editCustomer', compact('user', 'employee', 'privilege', 'id', 'customer'));
+    }
+
+    public function postEditCustomerId($id, Request $request) {
+        list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+        {
+            \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+            return redirect('/');
+        }
+        $this->validate($request, [
+            'name' => 'required',
+            'nation' => 'not_in:0',
+            'province' => 'not_in:0',
+            'city' => 'not_in:0',
+            'address' => 'required',
+            'phone_number' => 'integer',
+            'fax' => 'integer',
+            'remark' => 'max:3000'
+        ]);
+        if ($request->id != $id)
+        {
+            \Session::flash('danger', '危险的操作！(Error: 401 Unauthorized)');
+            return redirect('/sale');
+        }
+        $customer = \App\Customer::find($request->id);
+        $customer->name = $request->name;
+        if(sizeof($request->nation) && sizeof($request->province) && sizeof($request->city))
+        {
+            $customer->nation = $request->nation;
+            $customer->province = $request->province;
+            $customer->city = $request->city;
+        }
+        $customer->address = $request->address;
+        $customer->phone_number = $request->phone_number;
+        $customer->fax = $request->fax;
+        $customer->remark = $request->remark;
+        $customer->save();
+        if(!$privilege->master_admin) $customer->employees()->save($employee);
+        $contacts = \Session::get('customer_contacts');
+        $request->session()->forget('customer_contacts');
+        if(sizeof($contacts)) foreach ($contacts as $key => $value) {
+            $contact = \App\Contact::find($value);
+            $customer->contacts()->save($contact);
+        }
+        \Session::flash('success', '用户'.$request->name.'的信息已经成功修改。');
+        return redirect('/sale');
+    }
+
     public function getById($id = null) {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
         if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
@@ -225,13 +338,13 @@ class SaleController extends Controller
             \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
             return redirect('/');
         }
-        $agents_nation_for_dropdown = \App\Sale::agentsNationForDropdown($privilege, $employee);
         $complements_nation_for_dropdown = \App\Sale::complementsNationForDropdown($privilege, $employee);
-        $customers_nation_for_dropdown = \App\Sale::customersNationForDropdown($privilege, $employee);
         $others_nation_for_dropdown = \App\Sale::othersNationForDropdown($privilege, $employee);
 
-        return view('sale.byId', compact('id', 'user', 'employee', 'privilege', 'sale', 'agents_nation_for_dropdown', 'complements_nation_for_dropdown', 'customers_nation_for_dropdown', 'others_nation_for_dropdown'));
+        return view('sale.byId', compact('id', 'user', 'employee', 'privilege', 'sale', 'complements_nation_for_dropdown', 'others_nation_for_dropdown'));
     }
+
+
 
     //ajax functions
     public function getCreateOngoingSale() {
@@ -260,7 +373,26 @@ class SaleController extends Controller
         }
     }
 
-    public function getCreateAgentNation() {
+    public function getAgentNation() {
+        if(\Request::ajax()) {
+            list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+            if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+            {
+                \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+                return redirect('/');
+            }
+            if($privilege->master_admin) $agents = \App\Agent::orderBy(\DB::raw('convert(nation using gbk)'))->distinct()->get(['nation']);
+            else $agents = $employee->agents()->orderBy(\DB::raw('convert(nation using gbk)'))->distinct()->get(['nation']);
+            $data = "<option value='0'>请选择国家</option>";
+            foreach ($agents as $agent) {
+                $data = $data.'<option value="'.$agent->nation.'">'.$agent->nation.'</option>';
+            }
+            $data = $data."</select>";
+            return $data;
+        }
+    }
+
+    public function getAgentProvince() {
         if(\Request::ajax()) {
             list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
             if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
@@ -269,7 +401,7 @@ class SaleController extends Controller
                 return redirect('/');
             }
             if($privilege->master_admin) $agents = \App\Agent::where('nation', '=', $_GET["nation"])->orderBy(\DB::raw('convert(province using gbk)'))->distinct()->get(['province']);
-            else $agents = $employee->agents()->where('nation', '=', $_GET["nation"])->orderBy(\DB::raw('convert(province using gbk)'))->distinct()->get(['nation']);
+            else $agents = $employee->agents()->where('nation', '=', $_GET["nation"])->orderBy(\DB::raw('convert(province using gbk)'))->distinct()->get(['province']);
             $data = "<option value='0'>请选择省份</option>";
             foreach ($agents as $agent) {
                 $data = $data.'<option value="'.$agent->province.'">'.$agent->province.'</option>';
@@ -279,7 +411,7 @@ class SaleController extends Controller
         }
     }
 
-    public function getCreateAgentProvince() {
+    public function getAgentCity() {
         if(\Request::ajax()) {
             list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
             if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
@@ -298,7 +430,7 @@ class SaleController extends Controller
         }
     }
 
-    public function getCreateAgentCity() {
+    public function getAgentName() {
         if(\Request::ajax()) {
             list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
             if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
@@ -306,8 +438,8 @@ class SaleController extends Controller
                 \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
                 return redirect('/');
             }
-            if($privilege->master_admin) $agents = \App\Agent::where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->where('city', '=', $_GET["city"])->orderBy(\DB::raw('convert(name using gbk)'))->distinct()->get(['name']);
-            else $agents = $employee->agents()->where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->where('city', '=', $_GET["city"])->orderBy(\DB::raw('convert(name using gbk)'))->distinct()->get(['name']);
+            if($privilege->master_admin) $agents = \App\Agent::where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->where('city', '=', $_GET["city"])->orderBy(\DB::raw('convert(city using gbk)'))->distinct()->get(['id', 'name']);
+            else $agents = $employee->agents()->where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->where('city', '=', $_GET["city"])->orderBy(\DB::raw('convert(city using gbk)'))->distinct()->get(['id', 'name']);
             $data = "<option value='0'>请选择代理商名称</option>";
             foreach ($agents as $agent) {
                 $data = $data.'<option value="'.$agent->id.'">'.$agent->name.'</option>';
@@ -382,11 +514,11 @@ class SaleController extends Controller
                 \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
                 return redirect('/');
             }
-            if($privilege->master_admin) $customers = \App\Customer::where('nation', '=', $_GET["nation"])->orderBy(\DB::raw('convert(province using gbk)'))->distinct()->get(['province']);
-            else $customers = $employee->customers()->where('nation', '=', $_GET["nation"])->orderBy(\DB::raw('convert(province using gbk)'))->distinct()->get(['nation']);
-            $data = "<option value='0'>请选择省份</option>";
+            if($privilege->master_admin) $customers = \App\Customer::orderBy(\DB::raw('convert(nation using gbk)'))->distinct()->get(['nation']);
+            else $customers = $employee->customers()->orderBy(\DB::raw('convert(nation using gbk)'))->distinct()->get(['nation']);
+            $data = "<option value='0'>请选择国家</option>";
             foreach ($customers as $customer) {
-                $data = $data.'<option value="'.$customer->province.'">'.$customer->province.'</option>';
+                $data = $data.'<option value="'.$customer->nation.'">'.$customer->nation.'</option>';
             }
 
             return $data;
@@ -401,18 +533,35 @@ class SaleController extends Controller
                 \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
                 return redirect('/');
             }
+            if($privilege->master_admin) $customers = \App\Customer::where('nation', '=', $_GET["nation"])->orderBy(\DB::raw('convert(province using gbk)'))->distinct()->get(['province']);
+            else $customers = $employee->customers()->where('nation', '=', $_GET["nation"])->orderBy(\DB::raw('convert(province using gbk)'))->distinct()->get(['nation']);
+            $data = "<option value='0'>请选择省份</option>";
+            foreach ($customers as $customer) {
+                $data = $data.'<option value="'.$customer->province.'">'.$customer->province.'</option>';
+            }
+            return $data;
+        }
+    }
+
+    public function getCreateCustomerCity() {
+        if(\Request::ajax()) {
+            list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+            if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+            {
+                \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+                return redirect('/');
+            }
             if($privilege->master_admin) $customers = \App\Customer::where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->orderBy(\DB::raw('convert(city using gbk)'))->distinct()->get(['city']);
             else $customers = $employee->customers()->where('nation', '=', $_GET["nation"])->where('province', '=', $_GET["province"])->orderBy(\DB::raw('convert(city using gbk)'))->distinct()->get(['city']);
             $data = "<option value='0'>请选择城市</option>";
             foreach ($customers as $customer) {
                 $data = $data.'<option value="'.$customer->city.'">'.$customer->city.'</option>';
             }
-
             return $data;
         }
     }
 
-    public function getCreateCustomerCity() {
+    public function getCreateCustomerName() {
         if(\Request::ajax()) {
             list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
             if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
@@ -427,7 +576,6 @@ class SaleController extends Controller
             foreach ($customers as $customer) {
                 $data = $data.'<option value="'.$customer->id.'">'.$customer->name.'</option>';
             }
-
             return $data;
         }
     }
@@ -563,7 +711,52 @@ class SaleController extends Controller
             $data = $data."<tr><th>职位</th><th>".$_POST['job_title']."</th></tr>";
             $data = $data."<tr><th>邮箱地址</th><th>".$_POST['email']."</th></tr>";
             $data = $data."<tr><th>电话号</th><th>".$_POST['cellphone']."</th></tr>";
+            $data = $data."</table>";
             return $data;
+        }
+    }
+
+    public function postDeleteAgentContact($id, Request $request) {
+        list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+        {
+            \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+            return redirect('/');
+        }
+        $this->validate($request, [
+            'agent_id' => 'required|integer',
+            'contact_id' => 'required|integer'
+        ]);
+        $agent = \App\Agent::find($request->agent_id);
+        $contact = \App\Agent::find($request->contact_id);
+        if ($request->id != $id || (!$privilege->master_admin && $produce->employee_id != $employee->id))
+        {
+            \Session::flash('danger', '危险的操作！(Error: 401 Unauthorized)');
+            return redirect('/produce');
+        }
+        $produce = \App\Produce::find($request->id);
+        $produce->delete();
+        \Session::flash('success', '序列号为'.$produce->serial_number.'的生产记录已经成功删除。');
+        return redirect('/produce');
+    }
+
+    public function postSaleAddAgent(Request $request) {
+        if(\Request::ajax()) {
+            list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+            if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+            {
+                \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+                return redirect('/');
+            }
+            $this->validate($request, [
+                'agent_id' => 'not_in:0',
+                'sale_id' => 'required|integer'
+            ]);
+            $sale = \App\Sale::find($request->sale_id);
+            $sale->agent_id = $request->agent_id;
+            $sale->save();
+
+            return "Success.";
         }
     }
 }

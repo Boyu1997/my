@@ -51,7 +51,7 @@ class EmployeeController extends Controller
             'piece_rate_stander' => 'integer|max:1000000',
             'piece_rate_award_stander' => 'integer|max:1000000',
             'piece_rate_award_requirement' => 'integer|max:1000000',
-            'master_admin' => 'required|boolean',
+            'master_admin' => 'required|boolean'
         ]);
         if ($request->master_admin) {
             $request->produce = 0;
@@ -63,12 +63,13 @@ class EmployeeController extends Controller
         }
         else {
             $this->validate($request, [
-                'produce' => 'boolean',
-                'install' => 'boolean',
-                'maintenance' => 'boolean',
-                'sale' => 'boolean',
-                'contract' => 'boolean',
-                'trip' => 'boolean'
+                'stock' => 'required|boolean',
+                'produce' => 'required|boolean',
+                'install' => 'required|boolean',
+                'maintenance' => 'required|boolean',
+                'sale' => 'required|boolean',
+                'contract' => 'required|boolean',
+                'trip' => 'required|boolean'
             ]);
         }
         $the_user = \App\User::where('username', '=', $request->username)->first();
@@ -89,6 +90,7 @@ class EmployeeController extends Controller
         $the_wage->save();
         $the_privilege = new \App\Privilege();
         $the_privilege->master_admin = $request->master_admin;
+        $the_privilege->stock = $request->stock;
         $the_privilege->produce = $request->produce;
         $the_privilege->install = $request->install;
         $the_privilege->maintenance = $request->maintenance;
@@ -137,7 +139,7 @@ class EmployeeController extends Controller
             'piece_rate_stander' => 'integer|max:1000000',
             'piece_rate_award_stander' => 'integer|max:1000000',
             'piece_rate_award_requirement' => 'integer|max:1000000',
-            'master_admin' => 'required|boolean',
+            'master_admin' => 'required|boolean'
         ]);
         if ($request->master_admin) {
             $request->produce = 0;
@@ -149,6 +151,7 @@ class EmployeeController extends Controller
         }
         else {
             $this->validate($request, [
+                'stock' => 'required|boolean',
                 'produce' => 'required|boolean',
                 'install' => 'required|boolean',
                 'maintenance' => 'required|boolean',
@@ -180,6 +183,7 @@ class EmployeeController extends Controller
         $the_wage->save();
         $the_privilege = \App\Privilege::find($the_employee->privilege_id);
         $the_privilege->master_admin = $request->master_admin;
+        $the_privilege->stock = $request->stock;
         $the_privilege->produce = $request->produce;
         $the_privilege->install = $request->install;
         $the_privilege->maintenance = $request->maintenance;

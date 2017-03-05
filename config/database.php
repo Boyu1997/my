@@ -63,6 +63,21 @@ return [
             'prefix'    => '',
             'strict'    => false,
             'engine'    => null,
+            'unix_socket' => env('DB_UNIX_SOCKET', ''),
+        ],
+
+        'mysql2' => [
+            'driver'    => 'mysql2',
+            'host'      => env('DB_HOST', 'localhost'),
+            'database'  => env('DB_DATABASE_2', 'forge'),
+            'username'  => env('DB_USERNAME_2', 'forge'),
+            'password'  => env('DB_PASSWORD_2', ''),
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+            'strict'    => false,
+            'engine'    => null,
+            'unix_socket' => env('DB_UNIX_SOCKET', ''),
         ],
 
         'pgsql' => [

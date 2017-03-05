@@ -20,28 +20,26 @@
                         <div class="form-group">
                             <label for="specification" class="col-sm-2 control-label">代理商</label>
                             <div class="col-sm-10 col-md-9">
-                                <select class = "form-control nation" class="nation" id="agent_nation">
-                                    @foreach($agents_nation_for_dropdown as $key => $value)
-                                        <option value="{{$key}}">{{$value}}</option>
-                                    @endforeach
+                                <select class = "form-control nation" class="nation">
+                                    <option value='0'>请选择国家</option>
                                 </select>
-                                <select class = "form-control province" class="province" id="agent_province">
+                                <select class = "form-control province" class="province">
                                     <option value='0'>请选择省份</option>
                                 </select>
-                                <select class = "form-control city" class="city" id="agent_city">
+                                <select class = "form-control city" class="city">
                                     <option value='0'>请选择城市</option>
                                 </select>
                                 <select class = "form-control name" name="agent_id" class="name">
                                     <option value='0'>请选择代理商名称</option>
                                 </select>
-                                <div class='error'>{{ $errors->first('agent_id') }}</div>
-                                <p class="text_after_input">没有您在找的代理商？那就<a href="/sale/agent/create">马上创建代理商</a>吧。</p>
+                                <div class="error agent_id_error"></div>
+                                <p class="text_after_input">没有您在找的代理商？那就<a href="/sale/agent/create" target="_blank">马上创建代理商</a>吧。</p>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="button" id="add_agent_submit" class="btn btn-primary">添加</button>
+                        <button type="button" class="btn btn-primary" id="add_agent_submit">确认</button>
                     </div>
                 </form>
             </div>
@@ -111,15 +109,56 @@
     <div class="headline">
         <h2>代理商信息</h2>
         @if(sizeof($sale->agent))
-            <p> &nbsp; <a href="/sale/agent/edit/id/{{$sale->agent->id}}">编辑</a></p>
+            <p> &nbsp; <a href="/sale/agent/edit/id/{{$sale->agent->id}}">编辑</a> &nbsp; <a href="#" data-toggle="modal" data-target="#add_agent">更换</a></p>
         @endif
     </div>
     @if(sizeof($sale->agent))
         <table class="table table-bordered">
             <tr>
                 <th class="table_head">名称</th>
-                <th class="table_head">{{ $sale->agent->name }}</th>
+                <th>{{ $sale->agent->name }}</th>
             </tr>
+            <tr>
+                <th class="table_head">地址</th>
+                <th>{{ $sale->agent->nation."，".$sale->agent->province."，".$sale->agent->city."，".$sale->agent->address }}</th>
+            </tr>
+            <tr>
+                <th class="table_head">电话号</th>
+                <th>{{ $sale->agent->phone_number }}</th>
+            </tr>
+            <tr>
+                <th class="table_head">传真</th>
+                <th>{{ $sale->agent->fax }}</th>
+            </tr>
+            <tr>
+                <th class="table_head">备注</th>
+                <th>{{ $sale->agent->remark }}</th>
+            </tr>
+            @if(sizeof($sale->agent->contacts))
+                @foreach($sale->agent->contacts as $order => $contact)
+                    <tr>
+                        <th class="table_head">联系人{{ $order+1 }} 姓名</th>
+                        <th>{{ $contact->last_name.$contact->first_name }}</th>
+                    </tr>
+                    <tr>
+                        <th class="table_head">联系人{{ $order+1 }} 职位</th>
+                        <th>{{ $contact->job_title }}</th>
+                    </tr>
+                    <tr>
+                        <th class="table_head">联系人{{ $order+1 }} 邮箱</th>
+                        <th>{{ $contact->email }}</th>
+                    </tr>
+                    <tr>
+                        <th class="table_head">联系人{{ $order+1 }} 电话</th>
+                        <th>{{ $contact->cellphone }}</th>
+                    </tr>
+                @endforeach
+            @else
+                <tr>
+                    <th class="table_head">联系人</th>
+                    <th>无</th>
+                </tr>
+            @endif
         </table>
     @else
         <p>没有找到代理商信息，<a href="#" data-toggle="modal" data-target="#add_agent">马上添加</a>。</p>
@@ -206,4 +245,66 @@
     @else
         <p>没有找到其他信息，<a href="/sale/other/create">马上添加</a>。</p>
     @endif
+@stop
+
+@section('body')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#add_agent .nation").on("click", function() {
+                $("#add_agent .nation").html("<option value='0'>加载中...</option>");
+                $.get("getAgentNation", function(data) {
+                    $("#add_agent .nation").html(data);
+                });
+                $("#add_agent .province").html("<option value='0'>请选择省份</option>");
+                $("#add_agent .city").html("<option value='0'>请选择城市</option>");
+                $("#add_agent .name").html("<option value='0'>请选择代理商名称</option>");
+            });
+
+            $("#add_agent .nation").on("change", function() {
+                $.get("getAgentProvince", {nation: $("#add_agent .nation").val()}, function(data) {
+                    $("#add_agent .province").html(data);
+                });
+                $("#add_agent .city").html("<option value='0'>请选择城市</option>");
+                $("#add_agent .name").html("<option value='0'>请选择代理商名称</option>");
+            });
+
+            $("#add_agent .province").on("change", function() {
+                $.get("getAgentCity", {nation: $("#add_agent .nation").val(), province: $("#add_agent .province").val()}, function(data) {
+                    $("#add_agent .city").html(data);
+                });
+                $("#add_agent .name").html("<option value='0'>请选择代理商名称</option>");
+            });
+
+            $("#add_agent .city").on("change", function() {
+                $.get("getAgentName", {nation: $("#add_agent .nation").val(), province: $("#add_agent .province").val(), city: $("#add_agent .city").val()}, function(data) {
+                    $("#add_agent .name").html(data);
+                });
+            });
+
+            $("#add_agent .text_after_input a").on("click", function() {
+                $("#add_agent .nation").html("<option value='0'>请选择国家</option>");
+                $("#add_agent .province").html("<option value='0'>请选择省份</option>");
+                $("#add_agent .city").html("<option value='0'>请选择城市</option>");
+                $("#add_agent .name").html("<option value='0'>请选择代理商名称</option>");
+            });
+
+            $("#add_agent_submit").on("click", function() {
+                $.ajax({
+                    method: "POST",
+                    url: "postSaleAddAgent",
+                    data: {_token: '{{ csrf_token() }}', sale_id: '{{ $id }}', agent_id: $("#add_agent .name").val()},
+                    statusCode: {
+                        200: function(data) {
+                            location.reload(true);
+                        },
+                        422: function(data) {
+                            var errors = jQuery.parseJSON(data.responseText);
+                            if($(errors.agent_id).length) $("#add_agent .agent_id_error").html(errors.agent_id);
+                            else $("#add_agent .agent_id_error").empty();
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 @stop

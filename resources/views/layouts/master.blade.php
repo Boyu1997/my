@@ -55,11 +55,6 @@
             </div>
         </nav>
 
-
-
-
-
-
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-3 col-md-2 sidebar">
@@ -106,6 +101,7 @@
                         </ul>
                         <hr class="nav-hr">
                         <ul class="nav nav-sidebar">
+                            <li @yield('on_stock')><a href="/stock">库存</a></li>
                             <li @yield('on_produce')><a href="/produce">生产</a></li>
                             <li @yield('on_install')><a href="/install">Install</a></li>
                             <li @yield('on_maintenance')><a href="/maintenance">Maintenance</a></li>
