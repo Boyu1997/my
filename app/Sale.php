@@ -76,4 +76,23 @@ class Sale extends Model
         }
         return $new_sales_for_dropdown;
     }
+
+    public static function showContactData($contact) {
+        $data = "<div class='row'>";
+            $data = $data."<div class='col-md-10'>";
+                $data = $data."<table class='table table-bordered'>";
+                    $data = $data."<tr><th>姓氏</th><th>".$contact->last_name."</th></tr>";
+                    $data = $data."<tr><th>名字</th><th>".$contact->first_name."</th></tr>";
+                    $data = $data."<tr><th>职位</th><th>".$contact->job_title."</th></tr>";
+                    $data = $data."<tr><th>邮箱地址</th><th>".$contact->email."</th></tr>";
+                    $data = $data."<tr><th>电话号</th><th>".$contact->cellphone."</th></tr>";
+                $data = $data."</table>";
+            $data = $data."</div>";
+            $data = $data."<div class='col-md-2'>";
+                $data = $data."<button type='button' class='btn btn-danger del_contact_btn' value='".$contact->id."'>删除</button>";
+            $data = $data."</div>";
+        $data = $data."</div>";
+
+        return $data;
+    }
 }

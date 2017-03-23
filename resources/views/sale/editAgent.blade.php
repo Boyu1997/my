@@ -194,6 +194,21 @@
 
 @section('body')
     <script type="text/javascript">
+        function deleteContact() {
+            var self = this;
+            $.ajax({
+                method: "POST",
+                url: "postDeleteAgentContact",
+                data: {_token: '{{ csrf_token() }}', agent_id: '{{ $agent->id }}', contact_id: this.value},
+                statusCode: {
+                    200: function() {
+                        $("#create_contact").modal("hide");
+                        $(self).parent().parent().remove();
+                    },
+                }
+            });
+        }
+
         $(document).ready(function() {
             $("#nation").on("click", function() {
                 $("#province").html("<option value='0'>加载中...</option>");
@@ -280,6 +295,9 @@
                         200: function(data) {
                             $("#contact_info").append(data);
                             $("#create_contact").modal("hide");
+                            $(".del_contact_btn").click(function() {
+                                deleteContact.call(this);
+                            });
                         },
                         422: function(data) {
                             var errors = jQuery.parseJSON(data.responseText);
@@ -299,34 +317,9 @@
             });
 
             $(".del_contact_btn").click(function() {
-                $.ajax({
-                    method: "POST",
-                    url: "postDeleteAgentContact",
-                    data: {_token: '{{ csrf_token() }}', last_name: $("#last_name").val(), first_name: $("#first_name").val(), job_title: $("#job_title").val(), email: $("#email").val(), cellphone: $("#cellphone").val()},
-                    statusCode: {
-                        200: function(data) {
-                            $("#contact_info").append(data);
-                            $("#create_contact").modal("hide");
-                        },
-                        422: function(data) {
-                            var errors = jQuery.parseJSON(data.responseText);
-                            if($(errors.last_name).length) $("#last_name_error").html(errors.last_name);
-                            else $("#last_name_error").empty();
-                            if($(errors.first_name).length) $("#first_name_error").html(errors.first_name);
-                            else $("#first_name_error").empty();
-                            if($(errors.job_title).length) $("#job_title_error").html(errors.job_title);
-                            else $("#job_title_error").empty();
-                            if($(errors.email).length) $("#email_error").html(errors.email);
-                            else $("#email_error").empty();
-                            if($(errors.cellphone).length) $("#cellphone_error").html(errors.cellphone);
-                            else $("#cellphone_error").empty();
-                        }
-                    }
-                });
-
-
-                alert(this.value);
+                deleteContact.call(this);
             });
         });
+
     </script>
 @stop

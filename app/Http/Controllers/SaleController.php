@@ -149,17 +149,23 @@ class SaleController extends Controller
         $agent->remark = $request->remark;
         $agent->save();
         if(!$privilege->master_admin) $agent->employees()->save($employee);
-        $contacts = \Session::get('agent_contacts');
-        $request->session()->forget('agent_contacts');
-        if(sizeof($contacts)) foreach ($contacts as $key => $value) {
+        $add_contacts = $request->session()->get('add_contact');
+        $request->session()->forget('add_contact');
+        if(sizeof($add_contacts)) foreach ($add_contacts as $key => $value) {
             $contact = \App\Contact::where('id', '=', $value)->first();
             $agent->contacts()->save($contact);
+        }
+        $delete_contacts = $request->session()->get('delete_contact');
+        $request->session()->forget('delete_contact');
+        if(sizeof($delete_contacts)) foreach ($delete_contacts as $key => $value) {
+            $contact = \App\Contact::where('id', '=', $value)->first();
+            $agent->contacts()->detach($contact);
         }
         \Session::flash('success', '成功添加了新的代理商信息。');
         return redirect('/sale');
     }
 
-    public function getEditAgentId($id) {
+    public function getEditAgentId($id, Request $request) {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
         $agent = \App\Agent::where('id', '=', $id)->with('contacts')->first();
         if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
@@ -168,6 +174,8 @@ class SaleController extends Controller
             return redirect('/');
         }
         $employees_for_dropdown = \App\Sale::employeesNameForDropdown();
+        $request->session()->forget('add_contact');
+        $request->session()->forget('delete_contact');
         return view('sale.editAgent', compact('user', 'employee', 'privilege', 'id', 'agent'));
     }
 
@@ -207,11 +215,17 @@ class SaleController extends Controller
         $agent->remark = $request->remark;
         $agent->save();
         if(!$privilege->master_admin) $agent->employees()->save($employee);
-        $contacts = \Session::get('agent_contacts');
-        $request->session()->forget('agent_contacts');
-        if(sizeof($contacts)) foreach ($contacts as $key => $value) {
+        $add_contacts = $request->session()->get('add_contact');
+        $request->session()->forget('add_contact');
+        if(sizeof($add_contacts)) foreach ($add_contacts as $key => $value) {
             $contact = \App\Contact::where('id', '=', $value)->first();
             $agent->contacts()->save($contact);
+        }
+        $delete_contacts = $request->session()->get('delete_contact');
+        $request->session()->forget('delete_contact');
+        if(sizeof($delete_contacts)) foreach ($delete_contacts as $key => $value) {
+            $contact = \App\Contact::where('id', '=', $value)->first();
+            $agent->contacts()->detach($contact);
         }
         \Session::flash('success', '代理商'.$request->name.'的信息已经成功修改。');
         return redirect('/sale');
@@ -608,16 +622,10 @@ class SaleController extends Controller
                 $contact->save();
             }
 
-
             if(sizeof(\Session::get('customer_contacts'))) $request->session()->regenerate();
             \Session::push("customer_contacts.".$contact->id, $contact->id);
-            $data = "<table class='table table-bordered'>";
-            $data = $data."<tr><th>姓氏</th><th>".$_POST['last_name']."</th></tr>";
-            $data = $data."<tr><th>名字</th><th>".$_POST['first_name']."</th></tr>";
-            $data = $data."<tr><th>职位</th><th>".$_POST['job_title']."</th></tr>";
-            $data = $data."<tr><th>邮箱地址</th><th>".$_POST['email']."</th></tr>";
-            $data = $data."<tr><th>电话号</th><th>".$_POST['cellphone']."</th></tr>";
 
+            $data = \App\Sale::showContactData($contact);
             return $data;
         }
     }
@@ -694,6 +702,7 @@ class SaleController extends Controller
                 'email' => 'required|email|max:100',
                 'cellphone' => 'required|numeric|digits_between:2,30',
             ]);
+
             $contact = new \App\Contact();
             $contact->last_name = $request->last_name;
             $contact->first_name = $request->first_name;
@@ -702,42 +711,37 @@ class SaleController extends Controller
             $contact->cellphone = $request->cellphone;
             $contact->save();
 
-            if(sizeof(\Session::get('agent_contacts'))) $request->session()->regenerate();
-            \Session::push("agent_contacts.".$contact->id, $contact->id);
+            if($request->session()->has('add_contact')) $request->session()->regenerate();
+            $request->session()->push('add_contact.'.md5($contact->id), $contact->id);
 
-            $data = "<table class='table table-bordered'>";
-            $data = $data."<tr><th>姓氏</th><th>".$_POST['last_name']."</th></tr>";
-            $data = $data."<tr><th>名字</th><th>".$_POST['first_name']."</th></tr>";
-            $data = $data."<tr><th>职位</th><th>".$_POST['job_title']."</th></tr>";
-            $data = $data."<tr><th>邮箱地址</th><th>".$_POST['email']."</th></tr>";
-            $data = $data."<tr><th>电话号</th><th>".$_POST['cellphone']."</th></tr>";
-            $data = $data."</table>";
+            $data = \App\Sale::showContactData($contact);
             return $data;
         }
     }
 
-    public function postDeleteAgentContact($id, Request $request) {
-        list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
-        {
-            \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
-            return redirect('/');
+    public function postDeleteAgentContact(Request $request) {
+        if(\Request::ajax()) {
+            list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
+            if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->sale==0))
+            {
+                \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
+                return redirect('/');
+            }
+            $this->validate($request, [
+                'agent_id' => 'required|integer',
+                'contact_id' => 'required|integer'
+            ]);
+
+            if($request->session()->has('add_contact.'.md5($request->contact_id)))
+            {
+                $request->session()->forget('add_contact.'.md5($request->contact_id));
+            }
+            else
+            {
+                $request->session()->push('delete_contact.'.md5($request->contact_id), $request->contact_id);
+            }
+            return "Success.";
         }
-        $this->validate($request, [
-            'agent_id' => 'required|integer',
-            'contact_id' => 'required|integer'
-        ]);
-        $agent = \App\Agent::find($request->agent_id);
-        $contact = \App\Agent::find($request->contact_id);
-        if ($request->id != $id || (!$privilege->master_admin && $produce->employee_id != $employee->id))
-        {
-            \Session::flash('danger', '危险的操作！(Error: 401 Unauthorized)');
-            return redirect('/produce');
-        }
-        $produce = \App\Produce::find($request->id);
-        $produce->delete();
-        \Session::flash('success', '序列号为'.$produce->serial_number.'的生产记录已经成功删除。');
-        return redirect('/produce');
     }
 
     public function postSaleAddAgent(Request $request) {

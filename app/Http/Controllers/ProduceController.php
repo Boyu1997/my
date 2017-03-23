@@ -84,17 +84,22 @@ class ProduceController extends Controller
         $this->validate($request, [
             'model' => 'required',
             'serial_number' => 'required',
-            'start_at' => 'required|date_format:"Y/m/d"',
+            'start_at' => 'date_format:"Y/m/d"',
             'end_at' => 'date_format:"Y/m/d"',
             'employee_id' => 'not_in:0'
         ]);
         $data = $request->only('model', 'serial_number', 'start_at', 'end_at', 'employee_id');
-        if (!$privilege->master_admin && sizeof($data['employee_id']))
+        if (!$privilege->master_admin)
         {
-            \Session::flash('danger', '危险的操作！(Error: 401 Unauthorized)');
-            return redirect('/produce');
+            if (sizeof($data['start_at']) || sizeof($data['end_at']) || sizeof($data['employee_id']))
+            {
+                \Session::flash('danger', '危险的操作！(Error: 401 Unauthorized)');
+                return redirect('/produce');
+            }
+            $data['start_at'] = date('Y/m/d');
+            $data['end_at'] = "";
+            $data['employee_id'] = $employee->id;
         }
-        $data['employee_id'] = $employee->id;
         $produce = \App\Produce::create($data);
         \Session::flash('success', '成功创建了新的生产记录。');
         return redirect('/produce');
@@ -165,21 +170,28 @@ class ProduceController extends Controller
             'id' => 'integer',
             'model' => 'required',
             'serial_number' => 'required',
-            'start_at' => 'required|date_format:"Y/m/d"',
+            'start_at' => 'date_format:"Y/m/d"',
             'end_at' => 'date_format:"Y/m/d"',
             'employee_id' => 'not_in:0'
         ]);
-        if ((!$privilege->master_admin && sizeof($request->employee_id)) || $request->id != $id)
-        {
-            \Session::flash('danger', '危险的操作！(Error: 401 Unauthorized)');
-            return redirect('/produce');
-        }
+        $data = $request->only('model', 'serial_number', 'start_at', 'end_at', 'employee_id');
         $produce = \App\Produce::find($request->id);
-        $produce->model = $request->model;
-        $produce->serial_number = $request->serial_number;
-        $produce->start_at = $request->start_at;
-        $produce->end_at = $request->end_at;
-        if (sizeof($request->employee_id)) $produce->employee_id = $request->employee_id;
+        if ($request->id != $id || !$privilege->master_admin)
+        {
+            if ($request->id != $id || sizeof($request->start_at) || sizeof($request->end_at) || sizeof($request->employee_id))
+            {
+                \Session::flash('danger', '危险的操作！(Error: 401 Unauthorized)');
+                return redirect('/produce');
+            }
+            $data['start_at'] = $produce->start_at;
+            $data['end_at'] = date('Y/m/d');
+            $data['employee_id'] = $employee->id;
+        }
+        $produce->model = $data['model'];
+        $produce->serial_number = $data['serial_number'];
+        $produce->start_at = $data['start_at'];
+        $produce->end_at = $data['end_at'];
+        $produce->employee_id = $data['employee_id'];
         $produce->save();
         \Session::flash('success', '序列号为'.$request->serial_number.'的生产记录已经成功变更。');
         return redirect('/produce');

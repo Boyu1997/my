@@ -51,14 +51,19 @@
         <div class="form-group">
             <label for="start_at" class="col-sm-2 control-label">开始时间</label>
             <div class="col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="start_at" id="start_at" value="{{ $produce->start_at }}" placeholder="YYYY/MM/DD">
+                <input type="text" class="form-control" name="start_at" id="start_at" value="{{ $produce->start_at }}" placeholder="YYYY/MM/DD" @if(!$privilege->master_admin) disabled @endif>
                 <div class='error'>{{ $errors->first('start_at') }}</div>
             </div>
         </div>
         <div class="form-group">
             <label for="end_at" class="col-sm-2 control-label">结束时间</label>
             <div class="col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="end_at" id="end_at" value="{{ $produce->end_at }}" placeholder="YYYY/MM/DD">
+                <input type="text" class="form-control" name="end_at" id="end_at" placeholder="YYYY/MM/DD"
+                    @if(!$privilege->master_admin)
+                        value="{{ date('Y/m/d') }}" disabled
+                    @else
+                        value="{{ $produce->end_at }}"
+                    @endif>
                 <div class='error'>{{ $errors->first('end_at') }}</div>
             </div>
         </div>

@@ -94,11 +94,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/agent/getProvince', 'SaleController@getAgentProvince');
         Route::get('/agent/getCity', 'SaleController@getAgentCity');
         Route::post('/agent/postCreateContact', 'SaleController@postCreateAgentContact');
-        Route::post('/agent/postDeleteAgentContact', 'SaleController@postDeleteAgentContact');
         Route::get('/agent/edit/id/getNation', 'SaleController@getAgentNation');
         Route::get('/agent/edit/id/getProvince', 'SaleController@getAgentProvince');
         Route::get('/agent/edit/id/getCity', 'SaleController@getAgentCity');
         Route::post('/agent/edit/id/postCreateContact', 'SaleController@postCreateAgentContact');
+        Route::post('/agent/edit/id/postDeleteAgentContact', 'SaleController@postDeleteAgentContact');
 
         Route::get('/customer/getCreateNation', 'SaleController@getCreateCustomerNation');
         Route::get('/customer/getCreateProvince', 'SaleController@getCreateCustomerProvince');

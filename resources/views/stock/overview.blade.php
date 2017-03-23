@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 
-@section('on_produce')
+@section('on_stock')
     class="active"
 @stop
 
