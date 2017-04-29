@@ -15,7 +15,7 @@ class StockController extends Controller
             \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
             return redirect('/');
         }
-        $current_stocks = \App\Stock::where('remain_ammount', '>', 0)->get();
+        $current_stocks = \App\Stock::where('remain_amount', '>', 0)->get();
         return \View::make('stock.overview', compact('user', 'employee', 'privilege', 'current_stocks'));
     }
 }

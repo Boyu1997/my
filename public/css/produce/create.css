@@ -1,0 +1,9 @@
+#stock_category {
+    width: 33%;
+    display: inline-block;
+}
+
+#stock_id {
+    width: 66%;
+    display: inline-block;
+}

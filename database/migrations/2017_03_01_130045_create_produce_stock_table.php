@@ -17,6 +17,7 @@ class CreateProduceStockTable extends Migration
             $table->timestamps();
             $table->integer('produce_id')->unsigned();
             $table->integer('stock_id')->unsigned();
+            $table->integer('use_amount');
 
             $table->foreign('produce_id')->references('id')->on('produces');
             $table->foreign('stock_id')->references('id')->on('stocks');

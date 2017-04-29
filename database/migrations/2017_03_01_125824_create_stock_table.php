@@ -21,8 +21,8 @@ class CreateStockTable extends Migration
             $table->text('brand');
             $table->text('serial_number');
             $table->text('purchase_day');
-            $table->integer('purchase_ammount');
-            $table->integer('remain_ammount');
+            $table->integer('purchase_amount');
+            $table->integer('remain_amount');
         });
     }
 

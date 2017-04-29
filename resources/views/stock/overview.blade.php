@@ -36,7 +36,7 @@
                                 <td>{{ $current_stock->category }}</td>
                                 <td>{{ $current_stock->brand }}</td>
                                 <td>{{ $current_stock->serial_number }}</td>
-                                <td>{{ $current_stock->remain_ammount }}</td>
+                                <td>{{ $current_stock->remain_amount }}</td>
                                 <td><a href="/stock/id/{{ $current_stock->id }}">查看</a></td>
                             </tr>
                         @endforeach

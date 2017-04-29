@@ -23,7 +23,7 @@ class Produce extends Model
     }
 
     public function stocks() {
-        return $this->belongsToMany('\App\Stock')->withTimestamps();
+        return $this->belongsToMany('\App\Stock')->withPivot('use_amount')->withTimestamps();
     }
 
     public static function recentMonthlySummery($user, $employee, $privilege) {
