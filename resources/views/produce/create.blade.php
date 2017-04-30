@@ -29,11 +29,9 @@
                                 </select>
                                 <div class="error stock_id_error"></div>
                             </div>
-                        </div>
-                        <div class="form-group">
                             <label for="use_amount" class="col-sm-2 control-label">使用数量</label>
                             <div class="col-sm-10 col-md-9">
-                                <input type="text" class="form-control" name="use_amount" id="use_amount" value="{{ old('use_amount') }}" placeholder="请输入使用数量">
+                                <input type="number" class="form-control" name="use_amount" id="use_amount" value="{{ old('use_amount') }}" placeholder="请输入使用数量">
                                 <div class="error use_amount_error"></div>
                                 <p class="text_after_input">没有您在找的零件 ？请与库管人员联系或联系网站管理员。</p>
                             </div>
