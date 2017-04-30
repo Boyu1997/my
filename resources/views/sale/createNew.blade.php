@@ -25,16 +25,12 @@
                 </select>
                 <div class='error'>{{ $errors->first('classification') }}</div>
             </div>
-        </div>
-        <div class="form-group">
+
             <label for="specification" class="col-sm-2 control-label">详情</label>
             <div class="col-sm-10 col-md-9">
                 <textarea type="text" class="form-control" name="specification" id="specification" value="{{ old('specification') }}" placeholder="请输入详情"></textarea>
                 <div class='error'>{{ $errors->first('specification') }}</div>
             </div>
-        </div>
-
-        <div class="form-group">
             <label for="specification" class="col-sm-2 control-label">顾客</label>
             <div class="col-sm-10 col-md-9">
                 <select class = "form-control" id="nation">
@@ -52,9 +48,6 @@
                 <div class='error'>{{ $errors->first('customer_id') }}</div>
                 <p id="text_after_input">没有您在找的顾客？那就<a href="/sale/customer/create" target="_blank">马上创建顾客</a>吧。</p>
             </div>
-        </div>
-
-        <div class="form-group">
             <label for="employee_name" class="col-sm-2 control-label">销售员</label>
             <div class="col-sm-10 col-md-9">
                 <select class = "form-control" name="employee_id" id="employee_id" @if(!$privilege->master_admin)value="{{$employee->id}}" readonly @endif>
@@ -69,8 +62,6 @@
                 </select>
                 <div class='error'>{{ $errors->first('employee_id') }}</div>
             </div>
-        </div>
-        <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-default">提交</button>
             </div>

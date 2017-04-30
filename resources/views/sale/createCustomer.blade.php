@@ -23,29 +23,24 @@
                                 <input type="text" class="form-control" name="last_name" id="last_name" placeholder="请输入姓氏">
                                 <div id="last_name_error" class="error"></div>
                             </div>
-                        </div>
-                        <div class="form-group">
+
                             <label for="name" class ="col-sm-2 control-label">名字</label>
                             <div class = "col-sm-10 col-md-9">
                                 <input type="text" class="form-control" name="first_name" id="first_name" placeholder="请输入名字">
                                 <div id="first_name_error" class="error"></div>
                             </div>
-                        </div>
-                        <div class="form-group">
+
                             <label for="name" class ="col-sm-2 control-label">职位</label>
                             <div class = "col-sm-10 col-md-9">
                                 <input type="text" class="form-control" name="job_title" id="job_title" placeholder="请输入职位">
                                 <div id="job_title_error" class="error"></div>
                             </div>
-                        </div>
-                        <div class="form-group">
+
                             <label for="name" class ="col-sm-2 control-label">邮箱地址</label>
                             <div class = "col-sm-10 col-md-9">
                                 <input type="text" class="form-control" name="email" id="email" placeholder="请输入邮箱地址">
                                 <div id="email_error" class="error"></div>
                             </div>
-                        </div>
-                        <div class="form-group">
                             <label for="name" class ="col-sm-2 control-label">电话号</label>
                             <div class = "col-sm-10 col-md-9">
                                 <input type="text" class="form-control" name="cellphone" id="cellphone" placeholder="请输入手机号">
@@ -103,45 +98,33 @@
                     <label><input id="not_in_customers_select" type="checkbox">没有符合的地址选项</label>
                 </div>
             </div>
-        </div>
-        <div class="form-group">
             <label for="address" class ="col-sm-2 control-label">地址</label>
             <div class = "col-sm-10 col-md-9">
                 <input type="text" class="form-control" name="address" id="address" value="{{ old('address') }}" placeholder="请输入顾客地址">
                 <div class='error'>{{ $errors->first('address') }}</div>
             </div>
-        </div>
-        <div class="form-group">
             <label for="phone_number" class ="col-sm-2 control-label">电话</label>
             <div class = "col-sm-10 col-md-9">
                 <input type="text" class="form-control" name="phone_number" id="phone_number" value="{{ old('phone_number') }}" placeholder="请输入顾客电话">
                 <div class='error'>{{ $errors->first('phone_number') }}</div>
             </div>
-        </div>
-        <div class="form-group">
             <label for="fax" class ="col-sm-2 control-label">传真</label>
             <div class = "col-sm-10 col-md-9">
                 <input type="text" class="form-control" name="fax" id="fax" value="{{ old('fax') }}" placeholder="请输入顾客传真">
                 <div class='error'>{{ $errors->first('fax') }}</div>
             </div>
-        </div>
-        <div class="form-group">
             <label for="remark" class ="col-sm-2 control-label">备注</label>
             <div class = "col-sm-10 col-md-9">
                 <input type="text" class="form-control" name="remark" id="remark" value="{{ old('remark') }}" placeholder="请输入备注">
                 <div class='error'>{{ $errors->first('remark') }}</div>
             </div>
-        </div>
         <hr>
-        <div class="form-group">
             <label for="remark" class ="col-sm-2 control-label">联系人</label>
             <div class = "col-sm-10 col-md-9">
                 <div id="contact_info"></div>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create_contact">添加联系人</button>
             </div>
-        </div>
         <hr>
-        <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-default">创建</button>
             </div>

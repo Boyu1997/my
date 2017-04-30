@@ -20,35 +20,27 @@
                         <div class="form-group">
                             <label for="name" class ="col-sm-2 control-label">姓氏</label>
                             <div class = "col-sm-10 col-md-9">
-                                <input type="text" class="form-control" name="last_name" id="last_name" placeholder="请输入姓氏">
+                                <input type="text" class="form-control" name="last_name" id="last_name" placeholder="请输入姓氏" required>
                                 <div id="last_name_error" class="error"></div>
                             </div>
-                        </div>
-                        <div class="form-group">
                             <label for="name" class ="col-sm-2 control-label">名字</label>
                             <div class = "col-sm-10 col-md-9">
-                                <input type="text" class="form-control" name="first_name" id="first_name" placeholder="请输入名字">
+                                <input type="text" class="form-control" name="first_name" id="first_name" placeholder="请输入名字" required>
                                 <div id="first_name_error" class="error"></div>
                             </div>
-                        </div>
-                        <div class="form-group">
                             <label for="name" class ="col-sm-2 control-label">职位</label>
                             <div class = "col-sm-10 col-md-9">
-                                <input type="text" class="form-control" name="job_title" id="job_title" placeholder="请输入职位">
+                                <input type="text" class="form-control" name="job_title" id="job_title" placeholder="请输入职位" required>
                                 <div id="job_title_error" class="error"></div>
                             </div>
-                        </div>
-                        <div class="form-group">
                             <label for="name" class ="col-sm-2 control-label">邮箱地址</label>
                             <div class = "col-sm-10 col-md-9">
-                                <input type="text" class="form-control" name="email" id="email" placeholder="请输入邮箱地址">
+                                <input type="email" class="form-control" name="email" id="email" placeholder="请输入邮箱地址" required>
                                 <div id="email_error" class="error"></div>
                             </div>
-                        </div>
-                        <div class="form-group">
                             <label for="name" class ="col-sm-2 control-label">电话号</label>
                             <div class = "col-sm-10 col-md-9">
-                                <input type="text" class="form-control" name="cellphone" id="cellphone" placeholder="请输入手机号">
+                                <input type="tel" class="form-control" name="cellphone" id="cellphone" placeholder="请输入手机号" required>
                                 <div id="cellphone_error" class="error"></div>
                             </div>
                         </div>
@@ -72,11 +64,9 @@
         <div class="form-group">
             <label for="name" class ="col-sm-2 control-label">名称</label>
             <div class = "col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="name" id="name" value="{{ old('name') }}" placeholder="请输入顾客名称">
+                <input type="text" class="form-control" name="name" id="name" value="{{ old('name') }}" placeholder="请输入顾客名称" required>
                 <div class='error'>{{ $errors->first('name') }}</div>
             </div>
-        </div>
-        <div class="form-group">
             <label for="specification" class="col-sm-2 control-label">顾客</label>
             <div class="col-sm-10 col-md-9">
                 <select class = "form-control" name="nation" id="nation">
@@ -116,14 +106,14 @@
         <div class="form-group">
             <label for="phone_number" class ="col-sm-2 control-label">电话</label>
             <div class = "col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="phone_number" id="phone_number" value="{{ old('phone_number') }}" placeholder="请输入顾客电话">
+                <input type="tel" class="form-control" name="phone_number" id="phone_number" value="{{ old('phone_number') }}" placeholder="请输入顾客电话">
                 <div class='error'>{{ $errors->first('phone_number') }}</div>
             </div>
         </div>
         <div class="form-group">
             <label for="fax" class ="col-sm-2 control-label">传真</label>
             <div class = "col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="fax" id="fax" value="{{ old('fax') }}" placeholder="请输入顾客传真">
+                <input type="tel" class="form-control" name="fax" id="fax" value="{{ old('fax') }}" placeholder="请输入顾客传真">
                 <div class='error'>{{ $errors->first('fax') }}</div>
             </div>
         </div>
