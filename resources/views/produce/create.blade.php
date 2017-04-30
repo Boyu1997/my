@@ -123,7 +123,6 @@
                     <div class='col-md-2' id="stock_button">
                     </div>
                 </div>
-                <div id="contact_info"></div>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create_stock">添加零件</button>
             </div>
         </div>
@@ -175,7 +174,8 @@
                     data: {_token: '{{ csrf_token() }}', stock_id: $("#stock_id").val(), use_amount: $("#use_amount").val()},
                     statusCode: {
                         200: function(data) {
-                            $("#contact_info").append(data);
+                            $("#stock_table").append(data['context']);
+                            $("#stock_button").append(data['button']);
                             $("#create_stock").modal("hide");
                             $(".del_contact_btn").click(function() {
                                 deleteContact.call(this);

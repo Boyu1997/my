@@ -282,7 +282,7 @@ class ProduceController extends Controller
             ]);
             if($request->session()->has('add_stock')) $request->session()->regenerate();
             $request->session()->push('add_stock.'.$request->stock_id, (int)$request->use_amount);
-            $context_html = '<tr><th>'.$stock->name.'</th><th>'.$request->use_amount.'</th></tr>';
+            $context_html = '<tr><th>'.$stock->category.'</th><th>'.$stock->name.'</th><th>'.$request->use_amount.'</th></tr>';
             $button_html = "<button type='button' class='btn btn-danger del_contact_btn' value='".$stock->id."'>删除</button>";
             $data = array('context' => $context_html, 'button' => $button_html);
             return $data;
