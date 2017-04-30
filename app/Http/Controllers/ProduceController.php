@@ -153,7 +153,7 @@ class ProduceController extends Controller
         return view('produce.searchResult', compact('user', 'employee', 'privilege', 'produces'));
     }
 
-    public function getEditId($id) {
+    public function getEditId($id, Request $request) {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
         $produce = \App\Produce::where('id', '=', $id)->first();
         if(sizeof($privilege)==0 || (!$privilege->master_admin && !$privilege->produce) || (!$privilege->master_admin && $produce->employee_id != $employee->id))
