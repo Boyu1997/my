@@ -22,14 +22,14 @@
                             <label for="stock_id" class="col-sm-2 control-label">零件</label>
                             <div class="col-sm-10 col-md-9">
                                 <select class = "form-control" id="stock_category">
-                                    <option value='0'>请选择分类</option>
+                                    <option value='0' required>请选择分类</option>
                                 </select>
                                 <select class = "form-control" id="stock_id">
-                                    <option value='0'>请选择零件</option>
+                                    <option value='0' required>请选择零件</option>
                                 </select>
                                 <div class="error stock_id_error"></div>
                             </div>
-                            <label for="use_amount" class="col-sm-2 control-label">使用数量</label>
+                            <label for="use_amount" class="col-sm-2 control-label" required>使用数量</label>
                             <div class="col-sm-10 col-md-9">
                                 <input type="number" class="form-control" name="use_amount" id="use_amount" value="{{ old('use_amount') }}" placeholder="请输入使用数量">
                                 <div class="error use_amount_error"></div>
@@ -58,21 +58,19 @@
         <div class="form-group">
             <label for="model" class ="col-sm-2 control-label">型号</label>
             <div class = "col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="model" id="model" value="{{ old('model') }}" placeholder="请输入型号">
+                <input type="text" class="form-control" name="model" id="model" value="{{ old('model') }}" placeholder="请输入型号" required>
                 <div class='error'>{{ $errors->first('model') }}</div>
             </div>
-        </div>
-        <div class="form-group">
+
             <label for="serial_number" class="col-sm-2 control-label">序列号</label>
             <div class="col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="serial_number" id="serial_number" value="{{ old('serial_number') }}" placeholder="请输入序列号">
+                <input type="text" class="form-control" name="serial_number" id="serial_number" value="{{ old('serial_number') }}" placeholder="请输入序列号" required>
                 <div class='error'>{{ $errors->first('serial_number') }}</div>
             </div>
-        </div>
-        <div class="form-group">
+
             <label for="end_at" class="col-sm-2 control-label">开始时间</label>
             <div class="col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="start_at" id="start_at" placeholder="年年年年/月月/日日"
+                <input type="date" class="form-control" name="start_at" id="start_at" placeholder="年年年年/月月/日日"
                     @if(!$privilege->master_admin)
                         value="{{ date('Y/m/d') }}" disabled
                     @else
@@ -80,8 +78,7 @@
                     @endif>
                 <div class='error'>{{ $errors->first('end_at') }}</div>
             </div>
-        </div>
-        <div class="form-group">
+
             <label for="end_at" class="col-sm-2 control-label">结束时间</label>
             <div class="col-sm-10 col-md-9">
                 <input type="text" class="form-control" name="end_at" id="end_at" value="{{ old('end_at') }}"
@@ -92,8 +89,7 @@
                     @endif>
                 <div class='error'>{{ $errors->first('end_at') }}</div>
             </div>
-        </div>
-        <div class="form-group">
+
             <label for="employee_name" class="col-sm-2 control-label">生产者</label>
             <div class="col-sm-10 col-md-9">
                 <select class = "form-control" name="employee_id" id="employee_id" @if(!$privilege->master_admin)value="{{$employee->id}}" disabled @endif>
@@ -108,9 +104,9 @@
                 </select>
                 <div class='error'>{{ $errors->first('employee_id') }}</div>
             </div>
-        </div>
+
         <hr>
-        <div class="form-group">
+
             <label for="remark" class ="col-sm-2 control-label">零件</label>
             <div class = "col-sm-10 col-md-9">
                 <div class='row'>
@@ -123,9 +119,8 @@
                 </div>
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create_stock">添加零件</button>
             </div>
-        </div>
         <hr>
-        <div class="form-group">
+
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-default">创建</button>
             </div>

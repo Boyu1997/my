@@ -37,15 +37,12 @@
                     </select>
                     <div class='error'>{{ $errors->first('classification') }}</div>
                 </div>
-            </div>
-            <div class="form-group">
+
                 <label for="specification" class="col-sm-2 control-label">详情</label>
                 <div class="col-sm-10 col-md-9">
                     <textarea type="text" class="form-control" name="specification" id="specification" value="{{ old('specification') }}" placeholder="请输入详情" disabled></textarea>
                     <div class='error'>{{ $errors->first('specification') }}</div>
                 </div>
-            </div>
-            <div class="form-group">
                 <label for="specification" class="col-sm-2 control-label">代理商</label>
                 <div class="col-sm-10 col-md-9">
                     <select class = "form-control nation" class="nation" id="agent_nation">
