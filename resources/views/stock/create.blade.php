@@ -9,17 +9,34 @@
 @section('content')
     <h1 class="page-header">新记录</h1>
 
-    <form class="form-horizontal" method='POST' action='/produce/create'>
+    <form class="form-horizontal" method='POST' action='/stock/create'>
         {!! csrf_field() !!}
 
 
         <div class="form-group">
-            <label for="model" class ="col-sm-2 control-label">型号</label>
+            <label for="name" class ="col-sm-2 control-label">名称</label>
             <div class = "col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="model" id="model" value="{{ old('model') }}" placeholder="请输入型号">
-                <div class='error'>{{ $errors->first('model') }}</div>
+                <input type="text" class="form-control" name="name" id="name" value="{{ old('name') }}" placeholder="请输入名称">
+                <div class='error'>{{ $errors->first('name') }}</div>
             </div>
         </div>
+
+        <div class="form-group">
+            <label for="category" class ="col-sm-2 control-label">类别</label>
+            <div class = "col-sm-10 col-md-9">
+                <input type="text" class="form-control" name="category" id="category" value="{{ old('category') }}" placeholder="请输入类别">
+                <div class='error'>{{ $errors->first('category') }}</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="brand" class ="col-sm-2 control-label">品牌</label>
+            <div class = "col-sm-10 col-md-9">
+                <input type="text" class="form-control" name="brand" id="brand" value="{{ old('brand') }}" placeholder="请输入品牌">
+                <div class='error'>{{ $errors->first('brand') }}</div>
+            </div>
+        </div>
+
         <div class="form-group">
             <label for="serial_number" class="col-sm-2 control-label">序列号</label>
             <div class="col-sm-10 col-md-9">
@@ -28,36 +45,21 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="end_at" class="col-sm-2 control-label">开始时间</label>
+            <label for="end_at" class="col-sm-2 control-label">购买日期</label>
             <div class="col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="start_at" id="start_at" value="{{ old('start_at') }}" placeholder="年年年年/月月/日日">
-                <div class='error'>{{ $errors->first('end_at') }}</div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="end_at" class="col-sm-2 control-label">结束时间</label>
-            <div class="col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="end_at" id="end_at" value="{{ old('end_at') }}" placeholder="年年年年/月月/日日">
-                <div class='error'>{{ $errors->first('end_at') }}</div>
+                <input type="text" class="form-control" name="purchase_day" id="purchase_day" value="{{ old('purchase_day') }}" placeholder="年年年年/月月/日日">
+                <div class='error'>{{ $errors->first('purchase_day') }}</div>
             </div>
         </div>
 
-            <div class="form-group">
-                <label for="employee_name" class="col-sm-2 control-label">生产者</label>
-                <div class="col-sm-10 col-md-9">
-                    <select class = "form-control" name="employee_id" id="employee_id" @if(!$privilege->master_admin)value="{{$employee->id}}" disabled @endif>
-                        @foreach($employees_for_dropdown as $employee_id => $employee_name)
-                            <option value="{{$employee_id}}"
-                                @if(!$privilege->master_admin && $employee_id==$employee->id)selected="selected"
-                                @elseif($employee_id==old('employee_id'))selected="selected"
-                                @endif>
-                                {{$employee_name}}
-                            </option>
-                        @endforeach
-                    </select>
-                    <div class='error'>{{ $errors->first('employee_id') }}</div>
-                </div>
+        <div class="form-group">
+            <label for="purchase_amount" class="col-sm-2 control-label">购买数量</label>
+            <div class="col-sm-10 col-md-9">
+                <input type="number" class="form-control" name="purchase_amount" id="spurchase_amount" value="{{ old('purchase_amount') }}" placeholder="购买数量">
+                <div class='error'>{{ $errors->first('purchase_amount') }}</div>
             </div>
+        </div>
+
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-default">创建</button>
