@@ -227,7 +227,7 @@ class ProduceController extends Controller
 
 
     //ajax functions
-    public function getCreateStockCategory() {
+    public function ajaxGetCreateStock() {
         if(\Request::ajax()) {
             list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
             if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->produce==0))
@@ -235,37 +235,14 @@ class ProduceController extends Controller
                 \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
                 return redirect('/');
             }
-            $stocks = \App\Stock::where('remain_amount', '>', 0)->orderBy(\DB::raw('convert(category using gbk)'))->distinct()->get(['category']);
-            $data = "<option value='0'>请选择分类</option>";
-            foreach ($stocks as $stock) {
-                $data = $data.'<option value="'.$stock->category.'">'.$stock->category.'</option>';
-            }
-            $data = $data."</select>";
-            return $data;
+            $stocks = \App\Stock::orderBy(\DB::raw('convert(category using gbk)'))->distinct()->get(['id', 'category', 'name', 'serial_number']);
+            return response()->json([
+                $stocks
+            ]);
         }
     }
 
-    public function getCreateStockId() {
-        if(\Request::ajax()) {
-            list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-            if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->produce==0))
-            {
-                \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
-                return redirect('/');
-            }
-            $stocks = \App\Stock::where('remain_amount', '>', 0)->where('category', '=', $_GET['category'])->orderBy(\DB::raw('convert(category using gbk)'))->distinct()->get();
-            $select_html = "<option value='0'>请选择零件</option>";
-            foreach ($stocks as $stock) {
-                $select_html = $select_html.'<option value="'.$stock->id.'">'.$stock->name.'</option>';
-            }
-            $select_html = $select_html."</select>";
-            $button_html = 'NA';
-            $data = array('select' => $select_html, 'button' => $button_html);
-            return $data;
-        }
-    }
-
-    public function postCreateStock(Request $request) {
+    public function ajaxPostCreateStock(Request $request) {
         if(\Request::ajax()) {
             list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
             if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->produce==0))
@@ -282,10 +259,10 @@ class ProduceController extends Controller
             ]);
             if($request->session()->has('add_stock')) $request->session()->regenerate();
             $request->session()->push('add_stock.'.$request->stock_id, (int)$request->use_amount);
-            $context_html = '<tr><th>'.$stock->category.'</th><th>'.$stock->name.'</th><th>'.$request->use_amount.'</th></tr>';
-            $button_html = "<button type='button' class='btn btn-danger del_contact_btn' value='".$stock->id."'>删除</button>";
-            $data = array('context' => $context_html, 'button' => $button_html);
-            return $data;
+            return response()->json([
+                'stock' => (object)array('id' => $stock['id'], 'category' => $stock['category'], 'name' => $stock['name'], 'serial_number' => $stock['serial_number']),
+                'amount' => (int)$request->use_amount
+            ]);
         }
     }
 }

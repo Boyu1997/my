@@ -39,9 +39,8 @@ Route::group(['middleware' => 'auth'], function () {
         # Route::post('/delete/id/{id}', 'ProduceController@postDeleteId');
 
         //ajax rotes
-        Route::get('/getCreateStockCategory', 'ProduceController@getCreateStockCategory');
-        Route::get('/getCreateStockId', 'ProduceController@getCreateStockId');
-        Route::post('/postCreateStock', 'ProduceController@postCreateStock');
+        Route::get('/getCreateStockCategory', 'ProduceController@ajaxGetCreateStock');
+        Route::post('/postCreateStock', 'ProduceController@ajaxPostCreateStock');
         Route::post('/postDeleteStock', 'ProduceController@postDeleteStock');
     });
 
