@@ -148,7 +148,7 @@
         $(document).ready(function() {
             $("#stock_category").on("click", function() {
                 $("#stock_category").html("<option value='0'>加载中...</option>");
-                $.get("getCreateStockCategory", function(data) {
+                $.get("ajaxGetCreateStock", function(data) {
                     $("#stock_category").html(data);
                 });
                 $("#stock_id").html("<option value='0'>请选择零件</option>");
@@ -163,7 +163,7 @@
             $("#create_stock_submit").click(function() {
                 $.ajax({
                     method: "POST",
-                    url: "postCreateStock",
+                    url: "ajaxPostCreateStock",
                     data: {_token: '{{ csrf_token() }}', stock_id: $("#stock_id").val(), use_amount: $("#use_amount").val()},
                     statusCode: {
                         200: function(data) {
