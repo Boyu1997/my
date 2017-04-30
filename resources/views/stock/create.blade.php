@@ -19,48 +19,34 @@
                 <input type="text" class="form-control" name="name" id="name" value="{{ old('name') }}" placeholder="请输入名称">
                 <div class='error'>{{ $errors->first('name') }}</div>
             </div>
-        </div>
 
-        <div class="form-group">
             <label for="category" class ="col-sm-2 control-label">类别</label>
             <div class = "col-sm-10 col-md-9">
                 <input type="text" class="form-control" name="category" id="category" value="{{ old('category') }}" placeholder="请输入类别">
                 <div class='error'>{{ $errors->first('category') }}</div>
             </div>
-        </div>
 
-        <div class="form-group">
             <label for="brand" class ="col-sm-2 control-label">品牌</label>
             <div class = "col-sm-10 col-md-9">
                 <input type="text" class="form-control" name="brand" id="brand" value="{{ old('brand') }}" placeholder="请输入品牌">
                 <div class='error'>{{ $errors->first('brand') }}</div>
             </div>
-        </div>
-
-        <div class="form-group">
             <label for="serial_number" class="col-sm-2 control-label">序列号</label>
             <div class="col-sm-10 col-md-9">
                 <input type="text" class="form-control" name="serial_number" id="serial_number" value="{{ old('serial_number') }}" placeholder="请输入序列号">
                 <div class='error'>{{ $errors->first('serial_number') }}</div>
             </div>
-        </div>
-        <div class="form-group">
             <label for="end_at" class="col-sm-2 control-label">购买日期</label>
             <div class="col-sm-10 col-md-9">
                 <input type="text" class="form-control" name="purchase_day" id="purchase_day" value="{{ old('purchase_day') }}" placeholder="年年年年/月月/日日">
                 <div class='error'>{{ $errors->first('purchase_day') }}</div>
             </div>
-        </div>
 
-        <div class="form-group">
             <label for="purchase_amount" class="col-sm-2 control-label">购买数量</label>
             <div class="col-sm-10 col-md-9">
                 <input type="number" class="form-control" name="purchase_amount" id="spurchase_amount" value="{{ old('purchase_amount') }}" placeholder="购买数量">
                 <div class='error'>{{ $errors->first('purchase_amount') }}</div>
             </div>
-        </div>
-
-        <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-default">创建</button>
             </div>
