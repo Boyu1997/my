@@ -25,9 +25,8 @@ class Produce extends Model
         return $this->belongsTo(\App\Contract::class);
     }
 
-    public function stocks()
-    {
-        return $this->belongsToMany(\App\Stock::class)->withPivot('use_amount')->withTimestamps();
+    public function components() {
+        return $this->belongsToMany('\App\Component')->withPivot('use_amount')->withTimestamps();
     }
 
     public static function recentMonthlySummery($user, $employee, $privilege)

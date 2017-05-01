@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Component extends Model
 {
+    public function produces() {
+        return $this->belongsToMany('\App\Produce')->withPivot('use_amount')->withTimestamps();
+    }
+    
     public function stock() {
         return $this->hasOne('\App\Stock');
     }
