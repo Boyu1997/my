@@ -235,10 +235,18 @@ class ProduceController extends Controller
                 \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
                 return redirect('/');
             }
-            $stocks = \App\Stock::orderBy(\DB::raw('convert(category using gbk)'))->distinct()->get(['id', 'category', 'name', 'serial_number']);
-            return response()->json([
+            $stock_categorys = \App\Stock::distinct('category')->get(['category'])->toArray();
+            $stocks = (object)[];
+            foreach ($stock_categorys as $lable => $stock_category)
+            {
+                $stocks_in_category = \App\Stock::where('category', '=', $stock_category)->distinct()->get(['id', 'category', 'name', 'serial_number'])->toArray();
+                foreach ($stocks_in_category as $key => $value) {
+                    $stocks -> $stock_category -> $key = (object)$value;
+                }
+            }
+            return response()->json(
                 $stocks
-            ]);
+            );
         }
     }
 
