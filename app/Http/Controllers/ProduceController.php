@@ -257,7 +257,7 @@ class ProduceController extends Controller
             }
             $request->session()->push('add_stock.'.$request->stock_id, (int)$request->use_amount);
             return response()->json([
-                'stock' => (object)array('id' => $stock['id'], 'category' => $stock['category'], 'name' => $stock['name'], 'serial_number' => $stock['serial_number']),
+                'stock' => (object)['id' => $stock['id'], 'category' => $stock['category'], 'name' => $stock['name'], 'serial_number' => $stock['serial_number']],
                 'amount' => (int)$request->use_amount
             ]);
         }
