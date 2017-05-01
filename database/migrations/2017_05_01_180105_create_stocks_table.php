@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStockTable extends Migration
+class CreateStocksTable extends Migration
 {
     /**
      * Run the migrations.
