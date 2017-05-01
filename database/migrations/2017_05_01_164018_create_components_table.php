@@ -19,7 +19,7 @@ class CreateComponentsTable extends Migration
             $table->text('name');
             $table->text('category');
             $table->text('brand');
-            $table->text('arriving_date');
+            $table->date('arriving_date');
             $table->text('origin_serial_number');
             $table->text('factory_serial_number');
             $table->integer('amount');
