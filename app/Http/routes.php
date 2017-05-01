@@ -141,5 +141,4 @@ Route::group(['middleware' => 'auth'], function () {
         });
         return 'Basic, plain text email sent.';
     });
-
 });

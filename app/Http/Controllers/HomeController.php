@@ -8,7 +8,8 @@ use App\Http\Requests;
 
 class HomeController extends Controller
 {
-    public function getHome() {
+    public function getHome()
+    {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
         return view('home', compact('user', 'employee', 'privilege'));
     }

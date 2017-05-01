@@ -113,10 +113,5 @@ class InstallsTableSeeder extends Seeder
         $install->person_hour = '5';
         $install->employee_id = '4';
         $install->save();
-
-
-
-
-
     }
 }
