@@ -13,6 +13,6 @@ class Competitor extends Model
 
     public function contacts()
     {
-        return $this->belongsToMany('\App\Contract')->withTimestamps();
+        return $this->belongsToMany(\App\Contract::class)->withTimestamps();
     }
 }

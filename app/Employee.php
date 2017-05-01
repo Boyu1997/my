@@ -8,32 +8,32 @@ class Employee extends Model
 {
     public function user()
     {
-        return $this->hasOne('\App\User');
+        return $this->hasOne(\App\User::class);
     }
 
     public function wage()
     {
-        return $this->belongsTo('\App\Wage');
+        return $this->belongsTo(\App\Wage::class);
     }
 
     public function privilege()
     {
-        return $this->belongsTo('\App\Privilege');
+        return $this->belongsTo(\App\Privilege::class);
     }
 
     public function produces()
     {
-        return $this->hasMany('\App\Produce');
+        return $this->hasMany(\App\Produce::class);
     }
 
     public function installs()
     {
-        return $this->hasMany('\App\Install');
+        return $this->hasMany(\App\Install::class);
     }
 
     public function sales()
     {
-        return $this->hasMany('\App\Sale');
+        return $this->hasMany(\App\Sale::class);
     }
 
     public static function usersLastNameForDropdown()
@@ -49,21 +49,21 @@ class Employee extends Model
 
     public function agents()
     {
-        return $this->belongsToMany('\App\Agent')->withTimestamps();
+        return $this->belongsToMany(\App\Agent::class)->withTimestamps();
     }
 
     public function complements()
     {
-        return $this->belongsToMany('\App\Complement')->withTimestamps();
+        return $this->belongsToMany(\App\Complement::class)->withTimestamps();
     }
 
     public function customers()
     {
-        return $this->belongsToMany('\App\Customer')->withTimestamps();
+        return $this->belongsToMany(\App\Customer::class)->withTimestamps();
     }
 
     public function others()
     {
-        return $this->belongsToMany('\App\Other')->withTimestamps();
+        return $this->belongsToMany(\App\Other::class)->withTimestamps();
     }
 }

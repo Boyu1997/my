@@ -8,7 +8,7 @@ class Privilege extends Model
 {
     public function employee()
     {
-        return $this->hasOne('\App\Employee');
+        return $this->hasOne(\App\Employee::class);
     }
 
     public static function privilegeAuth()

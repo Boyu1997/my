@@ -8,32 +8,32 @@ class Sale extends Model
 {
     public function employee()
     {
-        return $this->belongsTo('\App\Employee');
+        return $this->belongsTo(\App\Employee::class);
     }
 
     public function agent()
     {
-        return $this->belongsTo('\App\Agent');
+        return $this->belongsTo(\App\Agent::class);
     }
 
     public function customer()
     {
-        return $this->belongsTo('\App\Customer');
+        return $this->belongsTo(\App\Customer::class);
     }
 
     public function complement()
     {
-        return $this->belongsTo('\App\Complement');
+        return $this->belongsTo(\App\Complement::class);
     }
 
     public function other()
     {
-        return $this->belongsTo('\App\Other');
+        return $this->belongsTo(\App\Other::class);
     }
 
     public function competitors()
     {
-        return $this->belongsToMany('\App\Competitor')->withTimestamps();
+        return $this->belongsToMany(\App\Competitor::class)->withTimestamps();
     }
 
     public static function employeesNameForDropdown()

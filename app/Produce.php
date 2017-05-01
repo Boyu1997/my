@@ -12,22 +12,22 @@ class Produce extends Model
 
     public function employee()
     {
-        return $this->belongsTo('\App\Employee');
+        return $this->belongsTo(\App\Employee::class);
     }
 
     public function install()
     {
-        return $this->belongsTo('\App\Install');
+        return $this->belongsTo(\App\Install::class);
     }
 
     public function contract()
     {
-        return $this->belongsTo('\App\Contract');
+        return $this->belongsTo(\App\Contract::class);
     }
 
     public function stocks()
     {
-        return $this->belongsToMany('\App\Stock')->withPivot('use_amount')->withTimestamps();
+        return $this->belongsToMany(\App\Stock::class)->withPivot('use_amount')->withTimestamps();
     }
 
     public static function recentMonthlySummery($user, $employee, $privilege)

@@ -8,7 +8,7 @@ class Stock extends Model
 {
     public function produces()
     {
-        return $this->belongsToMany('\App\Produce')->withPivot('use_amount')->withTimestamps();
+        return $this->belongsToMany(\App\Produce::class)->withPivot('use_amount')->withTimestamps();
     }
 
     protected $fillable = [

@@ -12,12 +12,12 @@ class Install extends Model
 
     public function employee()
     {
-        return $this->belongsTo('\App\Employee');
+        return $this->belongsTo(\App\Employee::class);
     }
 
     public function produce()
     {
-        return $this->hasOne('\App\Produce');
+        return $this->hasOne(\App\Produce::class);
     }
 
     public static function recentMonthlySummery($user, $employee, $privilege)
