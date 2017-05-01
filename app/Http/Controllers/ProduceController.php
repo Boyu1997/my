@@ -255,7 +255,7 @@ class ProduceController extends Controller
             }
             $select_html = $select_html."</select>";
             $button_html = 'NA';
-            $data = array('select' => $select_html, 'button' => $button_html);
+            $data = ['select' => $select_html, 'button' => $button_html];
             return $data;
         }
     }
@@ -281,7 +281,7 @@ class ProduceController extends Controller
             $request->session()->push('add_stock.'.$request->stock_id, (int)$request->use_amount);
             $context_html = '<tr><th>'.$stock->category.'</th><th>'.$stock->name.'</th><th>'.$request->use_amount.'</th></tr>';
             $button_html = "<button type='button' class='btn btn-danger del_contact_btn' value='".$stock->id."'>删除</button>";
-            $data = array('context' => $context_html, 'button' => $button_html);
+            $data = ['context' => $context_html, 'button' => $button_html];
             return $data;
         }
     }
