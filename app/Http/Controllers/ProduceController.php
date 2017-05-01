@@ -222,8 +222,9 @@ class ProduceController extends Controller
 
 
     //ajax functions
-    public function ajaxGetCreateStock() {
-        if(\Request::ajax()) {
+    public function ajaxGetCreateStock()
+    {
+        if (\Request::ajax()) {
             list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
             if (sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->produce==0)) {
                 \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
@@ -236,8 +237,9 @@ class ProduceController extends Controller
         }
     }
 
-    public function ajaxPostCreateStock(Request $request) {
-        if(\Request::ajax()) {
+    public function ajaxPostCreateStock(Request $request)
+    {
+        if (\Request::ajax()) {
             list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
             if (sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->produce==0)) {
                 \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
