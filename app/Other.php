@@ -6,15 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Other extends Model
 {
-    public function employees() {
+    public function employees()
+    {
         return $this->belongsToMany('\App\Employee')->withTimestamps();
     }
 
-    public function sales() {
+    public function sales()
+    {
         return $this->hasMany('\App\Sale');
     }
 
-    public function contacts() {
+    public function contacts()
+    {
         return $this->belongsToMany('\App\Contact')->withTimestamps();
     }
 }

@@ -8,11 +8,13 @@ use App\Http\Requests;
 
 class WageController extends Controller
 {
-    public function getOverview() {
+    public function getOverview()
+    {
         return view('wage.overview');
     }
 
-    public function getMonthly($year = null, $month = null) {
+    public function getMonthly($year = null, $month = null)
+    {
         return view('wage.monthly', compact('year', 'month'));
     }
 }

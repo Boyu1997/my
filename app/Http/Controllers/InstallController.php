@@ -8,17 +8,18 @@ use App\Http\Requests;
 
 class InstallController extends Controller
 {
-    public function getOverview() {
+    public function getOverview()
+    {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
         $recent_month = \App\Install::recentMonth();
         $recent_monthly_summery = \App\Install::recentMonthlySummery($user, $employee, $privilege);
         return \View::make('install.overview', compact('user', 'employee', 'privilege', 'recent_month', 'recent_monthly_summery'));
     }
 
-    public function getCreate() {
+    public function getCreate()
+    {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-        if(sizeof($privilege)==0 || $privilege->master_admin==0)
-        {
+        if (sizeof($privilege)==0 || $privilege->master_admin==0) {
             \Session::flash('danger', '403 Forbidden');
             return redirect('/install');
         }
@@ -27,10 +28,10 @@ class InstallController extends Controller
         return view('install.create', compact('user', 'employee', 'privilege', 'produces_for_dropdown', 'employees_for_dropdown'));
     }
 
-    public function postCreate(Request $request) {
+    public function postCreate(Request $request)
+    {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-        if(sizeof($privilege)==0 || $privilege->master_admin==0)
-        {
+        if (sizeof($privilege)==0 || $privilege->master_admin==0) {
             \Session::flash('danger', '403 Forbidden');
             return redirect('/install');
         }
@@ -57,10 +58,10 @@ class InstallController extends Controller
         return redirect('/install');
     }
 
-    public function getSearch() {
+    public function getSearch()
+    {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-        if(sizeof($privilege)==0 || $privilege->master_admin==0)
-        {
+        if (sizeof($privilege)==0 || $privilege->master_admin==0) {
             \Session::flash('danger', '403 Forbidden');
             return redirect('/install');
         }
@@ -68,10 +69,10 @@ class InstallController extends Controller
         return view('install.search', compact('user', 'employee', 'privilege', 'employees_for_dropdown'));
     }
 
-    public function postSearch(Request $request) {
+    public function postSearch(Request $request)
+    {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-        if(sizeof($privilege)==0 || $privilege->master_admin==0)
-        {
+        if (sizeof($privilege)==0 || $privilege->master_admin==0) {
             \Session::flash('danger', '403 Forbidden');
             return redirect('/install');
         }
@@ -82,7 +83,9 @@ class InstallController extends Controller
             'person_hour' => 'max:10',
             'employee_id' => 'integer'
         ]);
-        if($request->employee_id == 0) $request->employee_id = '%';
+        if ($request->employee_id == 0) {
+            $request->employee_id = '%';
+        }
         $installs = \DB::table('installs')
             ->where('specification', 'like', '%'.$request->specification.'%')
             ->where('start_at', 'like', '%'.$request->start_at.'%')
@@ -93,10 +96,10 @@ class InstallController extends Controller
         return view('install.searchResult', compact('user', 'employee', 'privilege', 'installs'));
     }
 
-    public function getEditId($id) {
+    public function getEditId($id)
+    {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-        if(sizeof($privilege)==0 || $privilege->master_admin==0)
-        {
+        if (sizeof($privilege)==0 || $privilege->master_admin==0) {
             \Session::flash('danger', '403 Forbidden');
             return redirect('/install');
         }
@@ -105,10 +108,10 @@ class InstallController extends Controller
         return view('install.edit', compact('user', 'employee', 'privilege', 'install', 'employees_for_dropdown'));
     }
 
-    public function postEditId(Request $request) {
+    public function postEditId(Request $request)
+    {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-        if(sizeof($privilege)==0 || $privilege->master_admin==0)
-        {
+        if (sizeof($privilege)==0 || $privilege->master_admin==0) {
             \Session::flash('danger', '403 Forbidden');
             return redirect('/install');
         }
@@ -132,23 +135,22 @@ class InstallController extends Controller
         return redirect('/install');
     }
 
-    public function getMonthly($year = null, $month = null) {
+    public function getMonthly($year = null, $month = null)
+    {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
         $formated_date = $year.'/'.$month.'%';
-        if(sizeof($privilege)==0 || $privilege->master_admin==0)
-        {
+        if (sizeof($privilege)==0 || $privilege->master_admin==0) {
             $installs = \DB::table('installs')->where('employee_id', '=', $employee->id)->where('start_at', 'like', $formated_date)->select('start_at', 'end_at', 'person_hour')->get();
             $have_id = false;
-        }
-        else
-        {
+        } else {
             $installs = \DB::table('installs')->where('start_at', 'like', $formated_date)->select('start_at', 'end_at', 'person_hour', 'id')->get();
             $have_id = true;
         }
         return view('install.monthly', compact('user', 'employee', 'privilege', 'year', 'month', 'installs', 'have_id'));
     }
 
-    public function getIdRedirect($id) {
+    public function getIdRedirect($id)
+    {
         $produce_id = \App\Produce::where('install_id', '=', $id)->pluck('id')->first();
         $link = '/product/id/'.$produce_id;
         return redirect($link);

@@ -8,10 +8,10 @@ use App\Http\Requests;
 
 class EmployeeController extends Controller
 {
-    public function getOverview() {
+    public function getOverview()
+    {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-        if(sizeof($privilege)==0 || $privilege->master_admin==0)
-        {
+        if (sizeof($privilege)==0 || $privilege->master_admin==0) {
             \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
             return redirect('/');
         }
@@ -19,10 +19,10 @@ class EmployeeController extends Controller
         return \View::make('employee.overview', compact('user', 'employee', 'privilege', 'employees'));
     }
 
-    public function getCreate() {
+    public function getCreate()
+    {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-        if(sizeof($privilege)==0 || $privilege->master_admin==0)
-        {
+        if (sizeof($privilege)==0 || $privilege->master_admin==0) {
             \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
             return redirect('/');
         }
@@ -30,10 +30,10 @@ class EmployeeController extends Controller
         return \View::make('employee.create', compact('user', 'employee', 'privilege', 'users_last_name_for_dropdown'));
     }
 
-    public function postCreate(Request $request) {
+    public function postCreate(Request $request)
+    {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-        if(sizeof($privilege)==0 || $privilege->master_admin==0)
-        {
+        if (sizeof($privilege)==0 || $privilege->master_admin==0) {
             \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
             return redirect('/');
         }
@@ -60,8 +60,7 @@ class EmployeeController extends Controller
             $request->sale = 0;
             $request->contract = 0;
             $request->trip = 0;
-        }
-        else {
+        } else {
             $this->validate($request, [
                 'stock' => 'required|boolean',
                 'produce' => 'required|boolean',
@@ -107,10 +106,10 @@ class EmployeeController extends Controller
         return redirect('/employee');
     }
 
-    public function getEdit($id) {
+    public function getEdit($id)
+    {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-        if(sizeof($privilege)==0 || $privilege->master_admin==0)
-        {
+        if (sizeof($privilege)==0 || $privilege->master_admin==0) {
             \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
             return redirect('/');
         }
@@ -118,10 +117,10 @@ class EmployeeController extends Controller
         return \View::make('employee.edit', compact('user', 'employee', 'privilege', 'the_employee'));
     }
 
-    public function postEdit($id, Request $request) {
+    public function postEdit($id, Request $request)
+    {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-        if(sizeof($privilege)==0 || $privilege->master_admin==0)
-        {
+        if (sizeof($privilege)==0 || $privilege->master_admin==0) {
             \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
             return redirect('/');
         }
@@ -148,8 +147,7 @@ class EmployeeController extends Controller
             $request->sale = 0;
             $request->contract = 0;
             $request->trip = 0;
-        }
-        else {
+        } else {
             $this->validate($request, [
                 'stock' => 'required|boolean',
                 'produce' => 'required|boolean',
@@ -160,8 +158,7 @@ class EmployeeController extends Controller
                 'trip' => 'required|boolean'
             ]);
         }
-        if ($request->id != $id)
-        {
+        if ($request->id != $id) {
             \Session::flash('danger', '危险的操作！(Error: 401 Unauthorized)');
             return redirect('/produce');
         }
@@ -196,8 +193,9 @@ class EmployeeController extends Controller
     }
 
     //ajax functions
-    public function getCreateLastName() {
-        if(\Request::ajax()) {
+    public function getCreateLastName()
+    {
+        if (\Request::ajax()) {
             $users = \App\User::where('employee_id', '=', null)->where('last_name', '=', $_GET["last_name"])->get();
             $data = "<option value='0'>请选择名字</option>";
             foreach ($users as $user) {
@@ -208,8 +206,9 @@ class EmployeeController extends Controller
         }
     }
 
-    public function getCreateFirstName() {
-        if(\Request::ajax()) {
+    public function getCreateFirstName()
+    {
+        if (\Request::ajax()) {
             $users = \App\User::where('employee_id', '=', null)->where('last_name', '=', $_GET["last_name"])->where('first_name', '=', $_GET["first_name"])->get();
             $data = "<option value='0'>请选择用户名</option>";
             foreach ($users as $user) {

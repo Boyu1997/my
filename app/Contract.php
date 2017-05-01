@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Contract extends Model
 {
-    public function produce() {
+    public function produce()
+    {
         return $this->hasOne('\App\Produce');
     }
 
-    public function sale() {
+    public function sale()
+    {
         return $this->hasOne('\App\Sale');
     }
 }

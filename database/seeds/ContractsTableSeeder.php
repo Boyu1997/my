@@ -122,7 +122,5 @@ class ContractsTableSeeder extends Seeder
         $contract->amount = 1;
         $contract->total = 65000;
         $contract->save();
-
-
     }
 }

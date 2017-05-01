@@ -8,10 +8,10 @@ use App\Http\Requests;
 
 class StockController extends Controller
 {
-    public function getOverview() {
+    public function getOverview()
+    {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->stock==0))
-        {
+        if (sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->stock==0)) {
             \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
             return redirect('/');
         }
@@ -22,10 +22,10 @@ class StockController extends Controller
 
 
     // create router
-    public function getCreate(Request $request) {
+    public function getCreate(Request $request)
+    {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->produce==0))
-        {
+        if (sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->produce==0)) {
             \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
             return redirect('/');
         }
@@ -34,10 +34,10 @@ class StockController extends Controller
     }
 
     // create new stock unit
-    public function postCreate(Request $request) {
+    public function postCreate(Request $request)
+    {
         list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-        if(sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->produce==0))
-        {
+        if (sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->produce==0)) {
             \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
             return redirect('/');
         }
