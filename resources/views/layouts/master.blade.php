@@ -24,11 +24,19 @@
                   <li><a href="http://www.aimeikang.cc">艾美康</a></li>
                   <li><a href="#">帮助</a></li>
                   <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $user->username }}<span class="caret"></span></a>
-                      <ul class="dropdown-menu">
-                          <li><a href="/logout">logout</a></li>
-                      </ul>
-                  </li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $user->username }}<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="{{ url('/logout') }}"
+                                    onclick="event.preventDefault();
+                                             document.getElementById('logout-form').submit();">
+                                    Logout</a>
+                            </li>
+                        </ul>
+                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                            {{ csrf_field() }}
+                        </form>
+                    </li>
               </ul>
           </div>
       </div>
