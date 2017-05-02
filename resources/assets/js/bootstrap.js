@@ -7,6 +7,7 @@ window._ = require('lodash');
  * code may be modified to fit the specific needs of your application.
  */
 
+<<<<<<< Updated upstream
 window.$ = window.jQuery = require('jquery');
 
 require('bootstrap-sass');
@@ -18,6 +19,13 @@ require('bootstrap-sass');
  */
 
 window.Vue = require('vue');
+=======
+try {
+    window.$ = window.jQuery = require('jquery');
+
+    require('bootstrap-sass');
+} catch (e) {}
+>>>>>>> Stashed changes
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
