@@ -9,6 +9,11 @@
             @yield('title','艾美康办公系统')
         </title>
 
+        <script>
+          window.Laravel = <?php echo json_encode([
+              'csrfToken' => csrf_token(),
+          ]); ?>
+        </script>
 
         <script src="/js/app.js" charset="utf-8"></script>
         <link href="/css/app.css" type='text/css' rel='stylesheet'>
@@ -19,7 +24,6 @@
     </head>
 
     <body>
-
         @if(Session::get('success')!=null)
             <div class="flash_message alert alert-success" role="alert">
                 {{Session::get('success')}}
@@ -32,7 +36,7 @@
         @endif
 
         @yield('main')
-
+        @yield('body')
     </body>
     @yield('js')
 

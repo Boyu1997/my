@@ -1,4 +1,4 @@
-@extends('app')
+@extends('layouts.base')
 
 @section('style')
   {{-- <link href="/css/libraries/bootstrap.min.css" type='text/css' rel='stylesheet'> --}}
@@ -51,7 +51,7 @@
                   <hr class="nav-hr">
                   <ul class="nav nav-sidebar">
                       @if($privilege->produce)
-                          <li @yield('on_produce')><a href="/produce">生产</a></li>
+                          <li @yield('on_produce')><a href="{{ url('produce') }};">生产</a></li>
                       @endif
                       @if($privilege->install || $produce->maintenance)
                           @if($privilege->install)
