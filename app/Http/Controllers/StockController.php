@@ -15,8 +15,8 @@ class StockController extends Controller
             \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
             return redirect('/');
         }
-        $current_stocks = \App\Stock::where('remain_amount', '>', 0)->get();
-        return \View::make('stock.overview', compact('user', 'employee', 'privilege', 'current_stocks'));
+        $current_stocks = \App\Stock::get();
+        return view('stock.overview', compact('user', 'employee', 'privilege', 'current_stocks'));
     }
 
 
@@ -30,7 +30,17 @@ class StockController extends Controller
             return redirect('/');
         }
 
-        return view('stock.create', compact('user', 'employee', 'privilege'));
+        $form_inputs = (object)array(
+            (object)array("system_name"=>"name", "lable_name"=>"名称", "format"=>"text", "is_required"=>"required"),
+            (object)array("system_name"=>"category", "lable_name"=>"类型", "format"=>"text", "is_required"=>"required"),
+            (object)array("system_name"=>"brand", "lable_name"=>"品牌", "format"=>"text", "is_required"=>"required"),
+            (object)array("system_name"=>"arriving_date", "lable_name"=>"到货时间", "format"=>"date", "is_required"=>"required"),
+            (object)array("system_name"=>"origin_serial_number", "lable_name"=>"厂家序列号", "format"=>"text", "is_required"=>""),
+            (object)array("system_name"=>"factory_serial_number", "lable_name"=>"工厂序列号", "format"=>"text", "is_required"=>"required"),
+            (object)array("system_name"=>"amount", "lable_name"=>"数量", "format"=>"number", "is_required"=>"required"),
+        );
+
+        return view('stock.create', compact('user', 'employee', 'privilege', 'form_inputs'));
     }
 
     // create new stock unit
@@ -47,21 +57,23 @@ class StockController extends Controller
             'name' => 'required',
             'category' => 'required',
             'brand' => 'required',
-            'serial_number' => 'required',
-            'purchase_day' => 'date_format:"Y/m/d"',
-            'purchase_amount' => 'required|integer',
+            'arriving_date' => 'required|date_format:"Y-m-d"',
+            'origin_serial_number' => 'required',
+            'factory_serial_number' => 'required',
+            'amount' => 'required|integer'
         ]);
 
         # data stripping
-        $data = $request->only('name', 'category', 'brand', 'serial_number', 'purchase_day', 'purchase_amount');
+        $data = $request->only('name', 'category', 'brand', 'arriving_date', 'origin_serial_number', 'factory_serial_number', 'amount');
 
         # additional data field edit privilege for admin
-
-
-        $stock = \App\Stock::create($data);
-        $stock->remain_amount = $stock->purchase_amount;
+        $component = \App\component::create($data);
+        $stock = new \App\Stock;
+        $stock->remain_amount = $component->amount;
+        $stock->component_id = $component->id;
         $stock->save();
         \Session::flash('success', '成功创建了新的库存单元。');
+
         return redirect('/stock');
     }
 }

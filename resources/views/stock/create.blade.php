@@ -14,39 +14,14 @@
 
 
         <div class="form-group">
-            <label for="name" class ="col-sm-2 control-label">名称</label>
-            <div class = "col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="name" id="name" value="{{ old('name') }}" placeholder="请输入名称" required>
-                <div class='error'>{{ $errors->first('name') }}</div>
-            </div>
-
-            <label for="category" class ="col-sm-2 control-label">类别</label>
-            <div class = "col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="category" id="category" value="{{ old('category') }}" placeholder="请输入类别" required>
-                <div class='error'>{{ $errors->first('category') }}</div>
-            </div>
-
-            <label for="brand" class ="col-sm-2 control-label">品牌</label>
-            <div class = "col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="brand" id="brand" value="{{ old('brand') }}" placeholder="请输入品牌" required>
-                <div class='error'>{{ $errors->first('brand') }}</div>
-            </div>
-            <label for="serial_number" class="col-sm-2 control-label">序列号</label>
-            <div class="col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="serial_number" id="serial_number" value="{{ old('serial_number') }}" placeholder="请输入序列号" required>
-                <div class='error'>{{ $errors->first('serial_number') }}</div>
-            </div>
-            <label for="end_at" class="col-sm-2 control-label">购买日期</label>
-            <div class="col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="purchase_day" id="purchase_day" value="{{ old('purchase_day') }}" placeholder="年年年年/月月/日日" required>
-                <div class='error'>{{ $errors->first('purchase_day') }}</div>
-            </div>
-
-            <label for="purchase_amount" class="col-sm-2 control-label">购买数量</label>
-            <div class="col-sm-10 col-md-9">
-                <input type="number" class="form-control" name="purchase_amount" id="spurchase_amount" value="{{ old('purchase_amount') }}" placeholder="购买数量" required>
-                <div class='error'>{{ $errors->first('purchase_amount') }}</div>
-            </div>
+            @foreach($form_inputs as $form_input)
+                <label for="{{ $form_input->system_name }}" class ="col-sm-2 control-label">{{ $form_input->lable_name }}</label>
+                <div class = "col-sm-10 col-md-9">
+                    <input type="{{ $form_input->format }}" class="form-control" name="{{ $form_input->system_name }}" id="{{ $form_input->system_name }}"
+                        value="{!! old('{{ $form_input->system_name }}') !!}" {{ $form_input->is_required }}>
+                    <div class='error'>{!! $errors->first('{{ $form_input->system_name }}') !!}</div>
+                </div>
+            @endforeach
             <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-default">创建</button>
             </div>

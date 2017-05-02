@@ -13,4 +13,8 @@ class Component extends Model
     public function stock() {
         return $this->hasOne(\App\Stock::class);
     }
+
+    protected $fillable = [
+        'name', 'category', 'brand', 'arriving_date', 'origin_serial_number', 'factory_serial_number', 'amount'
+    ];
 }
