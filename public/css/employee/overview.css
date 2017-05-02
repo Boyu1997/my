@@ -1,0 +1,23 @@
+.panel-heading h4, .panel-heading p {
+    display: inline;
+    vertical-align: bottom;
+    font-family: 'Open Sans', sans-serif;
+}
+
+div.not_found_text {
+    margin:15px;
+}
+
+#info_table {
+    text-align:center;
+    margin: 0px;
+}
+
+#info_table thead tr th div {
+    text-align:center;
+}
+
+.panel-body {
+    height: 500px;
+    padding: 0px;
+}

@@ -1,0 +1,25 @@
+#nation, #province, #city {
+    width: 25%;
+    display: inline-block;
+}
+
+#input_nation, #input_province, #input_city {
+    width: 25%;
+    display: inline-block;
+}
+
+#text_after_input, #cellphone {
+    margin-top: 10px;
+}
+
+#name {
+    margin-top: 10px;
+}
+
+.table_head {
+    width: 30%;
+}
+
+.del_contact_btn {
+    margin-top: 2px;
+}
