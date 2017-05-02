@@ -7,3 +7,4 @@ Homestead.json
 .DS_store
 yarn.lock
 yarn-error.log
+/public
