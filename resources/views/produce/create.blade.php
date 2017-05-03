@@ -108,7 +108,7 @@
             var self = this;
             $.ajax({
                 method: "POST",
-                url: "postDeleteStock",
+                url: "/ajax/produce/create/postDeleteStock",
                 data: {_token: '{{ csrf_token() }}', stock_id: this.value},
                 statusCode: {
                     200: function() {
@@ -122,22 +122,16 @@
         $(document).ready(function() {
             $("#stock_category").on("click", function() {
                 $("#stock_category").html("<option value='0'>加载中...</option>");
-                $.get("ajaxGetCreateStock", function(data) {
+                $.get("/ajax/produce/create/getCreateStock", function(data) {
                     $("#stock_category").html(data);
                 });
                 $("#stock_id").html("<option value='0'>请选择零件</option>");
             });
 
-            $("#stock_category").on("change", function() {
-                $.get("getCreateStockId", {category: $("#stock_category").val()}, function(data) {
-                    $("#stock_id").html(data['select']);
-                });
-            });
-
             $("#create_stock_submit").click(function() {
                 $.ajax({
                     method: "POST",
-                    url: "ajaxPostCreateStock",
+                    url: "/ajax/produce/create/postCreateStock",
                     data: {_token: '{{ csrf_token() }}', stock_id: $("#stock_id").val(), use_amount: $("#use_amount").val()},
                     statusCode: {
                         200: function(data) {
