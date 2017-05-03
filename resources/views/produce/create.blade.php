@@ -1,4 +1,5 @@
 @extends('layouts.master')
+@extends('app')
 
 
 @section('on_produce')
@@ -59,43 +60,10 @@
                 <label for="{{ $form_input->system_name }}" class ="col-sm-2 control-label">{{ $form_input->lable_name }}</label>
                 <div class = "col-sm-10 col-md-9">
                     <input type="{{ $form_input->format }}" class="form-control" name="{{ $form_input->system_name }}" id="{{ $form_input->system_name }}"
-                        value="{!! old('{{ $form_input->system_name }}') !!}" {{ $form_input->others }}>
+                        {{ $form_input->others }} value="{!! old('{{ $form_input->system_name }}') !!}">
                     <div class='error'>{!! $errors->first('{{ $form_input->system_name }}') !!}</div>
                 </div>
             @endforeach
-            <label for="model" class ="col-sm-2 control-label">型号</label>
-            <div class = "col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="model" id="model" value="{{ old('model') }}" placeholder="请输入型号" required>
-                <div class='error'>{{ $errors->first('model') }}</div>
-            </div>
-
-            <label for="serial_number" class="col-sm-2 control-label">序列号</label>
-            <div class="col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="serial_number" id="serial_number" value="{{ old('serial_number') }}" placeholder="请输入序列号" required>
-                <div class='error'>{{ $errors->first('serial_number') }}</div>
-            </div>
-
-            <label for="end_at" class="col-sm-2 control-label">开始时间</label>
-            <div class="col-sm-10 col-md-9">
-                <input type="date" class="form-control" name="start_at" id="start_at" placeholder="年年年年/月月/日日"
-                    @if(!$privilege->master_admin)
-                        value="{{ date('Y/m/d') }}" disabled
-                    @else
-                        value="{{ old('start_at') }}"
-                    @endif>
-                <div class='error'>{{ $errors->first('end_at') }}</div>
-            </div>
-
-            <label for="end_at" class="col-sm-2 control-label">结束时间</label>
-            <div class="col-sm-10 col-md-9">
-                <input type="text" class="form-control" name="end_at" id="end_at" value="{{ old('end_at') }}"
-                    @if(!$privilege->master_admin)
-                        placeholder="请在完成后填写" disabled
-                    @else
-                        placeholder="年年年年/月月/日日"
-                    @endif>
-                <div class='error'>{{ $errors->first('end_at') }}</div>
-            </div>
 
             <label for="employee_name" class="col-sm-2 control-label">生产者</label>
             <div class="col-sm-10 col-md-9">
@@ -135,7 +103,7 @@
     </form>
 @stop
 
-@section('body')
+@section('js')
     <script type="text/javascript">
         function deleteStock() {
             var self = this;

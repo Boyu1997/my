@@ -71,9 +71,8 @@ class ProduceController extends Controller
         $form_inputs = (object)array(
             (object)array("system_name"=>"model", "lable_name"=>"型号", "format"=>"text", "others"=>"required"),
             (object)array("system_name"=>"serial_number", "lable_name"=>"序列号", "format"=>"text", "others"=>"required"),
-            (object)array("system_name"=>"start_at", "lable_name"=>"开始时间", "format"=>"text", "others"=>"required"),
+            (object)array("system_name"=>"start_at", "lable_name"=>"开始时间", "format"=>"text", "others"=>($privilege->master_admin ? "required" : "value=".(string)date('Y-m-d')." required disabled")),
             (object)array("system_name"=>"end_at", "lable_name"=>"完成时间", "format"=>"date", "others"=>($privilege->master_admin ? "" : "disabled")),
-            (object)array("system_name"=>"employee_name", "lable_name"=>"生产人", "format"=>"text", "others"=>"required"),
         );
         $employees_for_dropdown = \App\Produce::employeesNameForDropdown();
 
@@ -90,8 +89,8 @@ class ProduceController extends Controller
         $this->validate($request, [
             'model' => 'required',
             'serial_number' => 'required',
-            'start_at' => 'date_format:"Y/m/d"',
-            'end_at' => 'date_format:"Y/m/d"',
+            'start_at' => 'date_format:"Y-m-d"',
+            'end_at' => 'date_format:"Y-m-d"',
             'employee_id' => 'not_in:0'
         ]);
         $data = $request->only('model', 'serial_number', 'start_at', 'end_at', 'employee_id');
@@ -100,17 +99,14 @@ class ProduceController extends Controller
                 \Session::flash('danger', '危险的操作！(Error: 401 Unauthorized)');
                 return redirect('/produce');
             }
-            $data['start_at'] = date('Y/m/d');
-            $data['end_at'] = "";
-            $data['employee_id'] = $employee->id;
         }
         $produce = \App\Produce::create($data);
         $add_stocks = $request->session()->get('add_stock');
         $request->session()->forget('add_stock');
         if (sizeof($add_stocks)) {
             foreach ($add_stocks as $stock_id => $use_amount) {
-                $stock = \App\Stock::where('id', '=', $stock_id)->first();
-                $produce->stocks()->save($stock, ['use_amount' => $use_amount[0]]);
+                $stock = \App\Stock::with('component')->find($stock_id);
+                $produce->components()->save($stock->component, ['use_amount' => $use_amount[0]]);
             }
         }
         \Session::flash('success', '成功创建了新的生产记录。');
@@ -241,9 +237,20 @@ class ProduceController extends Controller
                 \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
                 return redirect('/');
             }
-            $stocks = \App\Stock::distinct()->get(['id', 'category', 'name', 'serial_number']);
+            $stocks = \App\Stock::with('component')->get();
+            $components = array();
+            foreach ($stocks as $stock) {
+                array_push($components, (object)array(
+                    'name' => $stock->component->name,
+                    'category' => $stock->component->category,
+                    'brand' => $stock->component->brand,
+                    'origin_serial_number' => $stock->component->origin_serial_number,
+                    'factory_serial_number' => $stock->component->factory_serial_number,
+                    'remain_amount' => $stock->remain_amount,
+                ));
+            }
             return response()->json(
-                $stocks
+                $components
             );
         }
     }
