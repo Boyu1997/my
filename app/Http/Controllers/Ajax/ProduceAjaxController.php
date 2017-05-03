@@ -19,7 +19,8 @@ class ProduceAjaxController extends Controller
             $components = array();
             foreach ($stocks as $stock) {
                 array_push($components, (object)array(
-                    'name' => $stock->component->name,
+                    'stock_id' => $stock->id,
+                    'model' => $stock->component->name,
                     'category' => $stock->component->category,
                     'brand' => $stock->component->brand,
                     'origin_serial_number' => $stock->component->origin_serial_number,
