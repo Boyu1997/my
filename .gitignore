@@ -7,3 +7,5 @@ Homestead.json
 .DS_store
 yarn.lock
 yarn-error.log
+/public/js/app.js
+/public/css/app.css
