@@ -8,29 +8,32 @@
 require('./bootstrap');
 
 import Vue from 'vue'
+
+window.Vue = Vue
+
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-default/index.css';
 
 Vue.use(ElementUI);
 
-import App from './App.vue';
-import navBar from './components/navBar.vue'
-import sideBar from './components/sideBar.vue'
+// import App from './App.vue';
+import NavBar from './components/navBar.vue'
+import SideBar from './components/sideBar.vue'
 
 // const app = new Vue({
 //   el: '#app',
 //   render: h => h(App)
 // });
 
-const sidebar = new Vue({
-  el: '#sidebar',
-  render: h => h(sideBar)
+const sideBar = new Vue({
+  el: '#side-bar',
+  render: h => h(SideBar)
 })
 
-const navbar = new Vue({
-  el: '#navbar',
+const navBar = new Vue({
+  el: '#nav-bar',
   components: {
-  'nav-bar': navBar
+  'nav-bar': NavBar
   },
   template: "<nav-bar :title='app.title' :username='app.username'></nav-bar>",
   data: {
