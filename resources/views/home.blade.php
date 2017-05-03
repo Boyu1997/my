@@ -6,6 +6,4 @@
 
 @section('content')
     <h1 class="page-header">Home</h1>
-
-
 @stop

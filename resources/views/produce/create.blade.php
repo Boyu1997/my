@@ -1,6 +1,4 @@
 @extends('layouts.master')
-@extends('app')
-
 
 @section('on_produce')
     class="active"
@@ -104,6 +102,7 @@
 @stop
 
 @section('js')
+  @parent
     <script type="text/javascript">
         function deleteStock() {
             var self = this;

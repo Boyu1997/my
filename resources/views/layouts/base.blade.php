@@ -15,12 +15,10 @@
           ]); ?>
         </script>
 
-        <script src="/js/app.js" charset="utf-8"></script>
         <link href="/css/app.css" type='text/css' rel='stylesheet'>
         {{-- <link rel="stylesheet" href="/css/layouts/master.css"> --}}
         @yield('style')
         @yield('head')
-
     </head>
 
     <body>
@@ -38,6 +36,7 @@
         @yield('main')
         @yield('body')
     </body>
+    @yield('state')
+    <script src="/js/app.js" charset="utf-8"></script>
     @yield('js')
-
 </html>
