@@ -3,7 +3,10 @@ import AddParts from './components/addParts.vue'
 const addParts = new Vue({
   el: '#add-parts',
   components: {
-  'add-parts-btn': AddParts
+  'add-parts': AddParts
   },
-  template: "<add-parts-btn></add-parts-btn>",
+  template: "<add-parts :datasource='datasource'></add-parts>",
+  data: {
+    datasource: '/ajax/produce/create/getCreateStock'
+  }
 })
