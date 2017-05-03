@@ -54,8 +54,15 @@
     <form class="form-horizontal" method='POST' action='/produce/create'>
         {!! csrf_field() !!}
 
-
         <div class="form-group">
+            @foreach($form_inputs as $form_input)
+                <label for="{{ $form_input->system_name }}" class ="col-sm-2 control-label">{{ $form_input->lable_name }}</label>
+                <div class = "col-sm-10 col-md-9">
+                    <input type="{{ $form_input->format }}" class="form-control" name="{{ $form_input->system_name }}" id="{{ $form_input->system_name }}"
+                        value="{!! old('{{ $form_input->system_name }}') !!}" {{ $form_input->others }}>
+                    <div class='error'>{!! $errors->first('{{ $form_input->system_name }}') !!}</div>
+                </div>
+            @endforeach
             <label for="model" class ="col-sm-2 control-label">型号</label>
             <div class = "col-sm-10 col-md-9">
                 <input type="text" class="form-control" name="model" id="model" value="{{ old('model') }}" placeholder="请输入型号" required>

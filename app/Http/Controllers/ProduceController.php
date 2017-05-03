@@ -64,9 +64,20 @@ class ProduceController extends Controller
             \Session::flash('danger', '请先完成当前生产，再创建新的生产。');
             return redirect('/produce/edit/id/'.\App\Produce::where('employee_id', '=', $employee->id)->where('end_at', '=', '')->pluck('id')->first());
         }
-        $employees_for_dropdown = \App\Produce::employeesNameForDropdown();
+        # empty session
         $request->session()->forget('add_stock');
-        return view('produce.create', compact('user', 'employee', 'privilege', 'employees_for_dropdown'));
+
+        # input form data
+        $form_inputs = (object)array(
+            (object)array("system_name"=>"model", "lable_name"=>"型号", "format"=>"text", "others"=>"required"),
+            (object)array("system_name"=>"serial_number", "lable_name"=>"序列号", "format"=>"text", "others"=>"required"),
+            (object)array("system_name"=>"start_at", "lable_name"=>"开始时间", "format"=>"text", "others"=>"required"),
+            (object)array("system_name"=>"end_at", "lable_name"=>"完成时间", "format"=>"date", "others"=>($privilege->master_admin ? "" : "disabled")),
+            (object)array("system_name"=>"employee_name", "lable_name"=>"生产人", "format"=>"text", "others"=>"required"),
+        );
+        $employees_for_dropdown = \App\Produce::employeesNameForDropdown();
+
+        return view('produce.create', compact('user', 'employee', 'privilege', 'form_inputs', 'employees_for_dropdown'));
     }
 
     public function postCreate(Request $request)
