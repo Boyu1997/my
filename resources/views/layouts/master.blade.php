@@ -7,16 +7,19 @@
   {{-- <link rel="stylesheet" href="/css/layouts/master.css"> --}}
 @endsection
 
+@section('state')
+  <script charset="utf-8">
+    const appstate = {
+      title: "艾美康办公系统",
+      username: "{{ $user->username }}"
+    }
+  </script>
+@endsection
+
 @section('main')
-  <nav class="navbar navbar-inverse navbar-fixed-top">
+  <nav id='navbar' class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
           <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                  <span class="sr-only">Toggle navigation</span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-                  <span class="icon-bar"></span>
-              </button>
               <a class="navbar-brand" href="http://my.aimeikang.cc">艾美康办公系统</a>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
@@ -24,19 +27,11 @@
                   <li><a href="http://www.aimeikang.cc">艾美康</a></li>
                   <li><a href="#">帮助</a></li>
                   <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $user->username }}<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="{{ url('/logout') }}"
-                                    onclick="event.preventDefault();
-                                             document.getElementById('logout-form').submit();">
-                                    Logout</a>
-                            </li>
-                        </ul>
-                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-                            {{ csrf_field() }}
-                        </form>
-                    </li>
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ $user->username }}<span class="caret"></span></a>
+                      <ul class="dropdown-menu">
+                          <li><a href="/logout">logout</a></li>
+                      </ul>
+                  </li>
               </ul>
           </div>
       </div>
@@ -44,7 +39,7 @@
 
   <div class="container-fluid">
       <div class="row">
-          <div class="col-sm-3 col-md-2 sidebar">
+          <div id='sidebar' class="col-sm-3 col-md-2 sidebar">
               <ul class="nav nav-sidebar">
                   <li @yield('on_home')>
                       <a href="/">首页<span class="sr-only">(current)</span></a>
@@ -112,11 +107,9 @@
 
           </div>
           <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-
           <section>
                   @yield('content')
           </section>
-
           </div>
       </div>
   </div>
