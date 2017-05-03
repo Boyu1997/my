@@ -30,6 +30,7 @@ class StockController extends Controller
             return redirect('/');
         }
 
+        # input form data
         $form_inputs = (object)array(
             (object)array("system_name"=>"name", "lable_name"=>"名称", "format"=>"text", "is_required"=>"required"),
             (object)array("system_name"=>"category", "lable_name"=>"类型", "format"=>"text", "is_required"=>"required"),
@@ -52,7 +53,7 @@ class StockController extends Controller
             return redirect('/');
         }
 
-        #data validation
+        # data validation
         $this->validate($request, [
             'name' => 'required',
             'category' => 'required',
