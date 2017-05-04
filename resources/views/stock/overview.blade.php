@@ -10,7 +10,7 @@
 @stop
 
 @section('content')
-    <h1 class="page-header">库存概览</h1>
+    {{-- <h1 class="page-header">库存概览</h1>
 
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -68,11 +68,12 @@
             <a class="btn btn-default" href="/produce/current">正在生产</a>
             <a class="btn btn-default" href="/produce/search">搜索</a>
         @endif
-    </div>
+    </div> --}}
 @stop
 
-@section('body')
-    <script>
+@section('js')
+  <script src="/js/stockOverview.js" charset="utf-8"></script>
+    {{-- <script>
         $(document).ready(function () {
             $("table.sortable").addClass("tablesorter");
             $('table.tablesorter').tablesorter({
@@ -81,5 +82,5 @@
                 'sortList' : [[0,0]]
             });
         });
-    </script>
+    </script> --}}
 @stop

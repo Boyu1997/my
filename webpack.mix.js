@@ -11,6 +11,15 @@ const { mix } = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/app.js', 'public/js')
+mix.js('resources/assets/js/app.js', 'public/js').sourceMaps()
    .js('resources/assets/js/createProduce.js', 'public/js').sourceMaps()
+   .js('resources/assets/js/stockOverview.js', 'public/js').sourceMaps()
    .sass('resources/assets/sass/app.scss', 'public/css').sourceMaps();
+
+ // mix.webpackConfig({
+ //     resolve: {
+ //         modules: [
+ //             path.resolve(__dirname, 'resources/assets/js')
+ //         ]
+ //     }
+ // });
