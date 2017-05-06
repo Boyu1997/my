@@ -1,6 +1,8 @@
 {
+  "/js/vendor.js": "/js/vendor.js",
+  "/js/stockOverview.js": "/js/stockOverview.js",
+  "/js/createProduce.js": "/js/createProduce.js",
   "/js/app.js": "/js/app.js",
   "/css/app.css": "/css/app.css",
-  "/js/stockOverview.js": "/js/stockOverview.js",
-  "/js/createProduce.js": "/js/createProduce.js"
+  "/js/manifest.js": "/js/manifest.js"
 }

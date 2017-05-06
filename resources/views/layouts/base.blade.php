@@ -32,8 +32,9 @@
                 {{Session::get('danger')}}
             </div>
         @endif
-
+        <div id='app'>
         @yield('main')
+        <div>
         @yield('body')
     </body>
     @yield('state')

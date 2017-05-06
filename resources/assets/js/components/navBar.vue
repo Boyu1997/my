@@ -1,8 +1,9 @@
 <template>
   <el-menu theme="dark" default-active='1' mode="horizontal" @select="handleSelect">
-    <el-row type='flex' justify="space-between">
+    <el-row type='flex' justify="end">
       <el-col>
         <el-menu-item index="1" disabled>{{ title }}</el-menu-item>
+      </el-col>
       </el-col>
       <el-submenu index="2">
         <template slot="title">{{ username }}</template>
@@ -11,6 +12,7 @@
           <input name="_token" :value='csrfToken'></input>
         </form>
       </el-submenu>
+      </el-col>
     </el-row>
   </el-menu>
 </template>

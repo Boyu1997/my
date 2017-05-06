@@ -1,5 +1,10 @@
 <template>
-
+  <div>
+  <h1>库存概览</h1>
+  <el-button type="text" icon="document">新建记录</el-button>
+  <el-button type="text" icon="date">按月查看</el-button>
+  <el-button type="text" icon="check">正在生产</el-button>
+  <el-button type="text" icon="search">搜索</el-button>
   <el-table
     :data="data"
     stripe
@@ -35,11 +40,12 @@
       label=""
       width="100">
       <template scope="scope">
-        <el-button type="text" size="small">查看</el-button>
-        <el-button type="text" size="small">编辑</el-button>
+        <el-button type="text" icon='view' size="small"></el-button>
+        <el-button type="text" icon='edit' size="small"></el-button>
       </template>
     </el-table-column>
   </el-table>
+</div>
 </template>
 
 <script>
