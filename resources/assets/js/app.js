@@ -19,7 +19,7 @@ Vue.use(ElementUI);
 // import App from './App.vue';
 import NavBar from './components/navBar.vue'
 import SideBar from './components/sideBar.vue'
-import Frame from './components/frame.vue'
+// import Frame from './components/frame.vue'
 
 // const app = new Vue({
 //   el: '#app',
@@ -45,10 +45,10 @@ const navBar = new Vue({
   }
 })
 
-const frame = new Vue({
-  el: '#frame',
-  render: h => h(Frame)
-})
+// const frame = new Vue({
+//   el: '#frame',
+//   render: h => h(Frame)
+// })
 
 
 /**
