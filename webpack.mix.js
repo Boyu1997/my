@@ -12,14 +12,14 @@ const { mix } = require('laravel-mix');
  */
 
 mix
-   .autoload({
+  .autoload({
   jquery: ['$', 'window.jQuery', 'jQuery'],
   bootstrap: ['bootstrap'],
   tether: ['window.tether','tether']})
-   .js('resources/assets/js/app.js', 'public/js').sourceMaps().extract(['jquery', 'tether', 'bootstrap', 'lodash', 'axios', 'vue', 'element-ui'])
-   .js('resources/assets/js/createProduce.js', 'public/js').sourceMaps()
-   .js('resources/assets/js/stockOverview.js', 'public/js').sourceMaps()
-   .sass('resources/assets/sass/app.scss', 'public/css').sourceMaps()
+  .js('resources/assets/js/app.js', 'public/js').sourceMaps().extract(['jquery', 'tether', 'bootstrap', 'lodash', 'axios', 'vue', 'element-ui'])
+  .js('resources/assets/js/createProduce.js', 'public/js').sourceMaps()
+  .js('resources/assets/js/stockOverview.js', 'public/js').sourceMaps()
+  .sass('resources/assets/sass/app.scss', 'public/css').sourceMaps()
 
  // mix.webpackConfig({
  //     resolve: {
