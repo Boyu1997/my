@@ -16,18 +16,28 @@ class ProduceAjaxController extends Controller
                 return redirect('/');
             }
             $stocks = \App\Stock::with('component')->get();
-            $components = array();
+
+
+            $components = collect(array());
             foreach ($stocks as $stock) {
-                array_push($components, (object)array(
+                $components->push(array(
                     'stock_id' => $stock->id,
                     'model' => $stock->component->name,
                     'category' => $stock->component->category,
                     'brand' => $stock->component->brand,
-                    'origin_serial_number' => $stock->component->origin_serial_number,
                     'factory_serial_number' => $stock->component->factory_serial_number,
                     'remain_amount' => $stock->remain_amount,
                 ));
             }
+
+            $components = $components->groupBy('category')->transform(function($item) {
+                return $item->groupBy('brand')->transform(function($item) {
+                    return $item->groupBy('model')->transform(function($item) {
+                        return collect($item->first())->only(['stock_id', 'factory_serial_number', 'remain_amount']);
+                    });
+                });
+            });
+
             return response()->json(
                 $components
             );
