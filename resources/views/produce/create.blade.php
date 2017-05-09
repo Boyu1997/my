@@ -90,7 +90,7 @@
                     <div class='col-md-2' id="stock_button">
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create_stock">添加零件</button>
+                <button id='add-parts' type="button" class="btn btn-primary" data-toggle="modal" data-target="#create_stock">添加零件</button>
             </div>
         <hr>
 
@@ -103,6 +103,7 @@
 
 @section('js')
   @parent
+    <script src="/js/createProduce.js" charset="utf-8"></script>
     <script type="text/javascript">
         function deleteStock() {
             var self = this;

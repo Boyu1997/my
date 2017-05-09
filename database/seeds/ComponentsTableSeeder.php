@@ -52,6 +52,26 @@ class ComponentsTableSeeder extends Seeder
         $component->save();
 
         $component = new \App\Component();
+        $component->name = 'KK57-SR';
+        $component->category = '压缩机';
+        $component->brand = 'CKK';
+        $component->origin_serial_number = 'udrtyjfkjh,';
+        $component->factory_serial_number = 'f8i7gyubhj';
+        $component->arriving_date = '2017-03-05';
+        $component->amount = 50;
+        $component->save();
+
+        $component = new \App\Component();
+        $component->name = '4502';
+        $component->category = '压缩机';
+        $component->brand = 'K7C4';
+        $component->origin_serial_number = '68gyiuhjkn,';
+        $component->factory_serial_number = '8uhinjk';
+        $component->arriving_date = '2016-11-30';
+        $component->amount = 80;
+        $component->save();
+
+        $component = new \App\Component();
         $component->name = 'CF6100';
         $component->category = '压缩机';
         $component->brand = 'SIKE';

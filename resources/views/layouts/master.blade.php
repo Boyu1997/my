@@ -17,7 +17,7 @@
 @endsection
 
 @section('main')
-  <nav id='navbar' class="navbar navbar-inverse navbar-fixed-top">
+  <nav id='nav-bar' class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
           <div class="navbar-header">
               <a class="navbar-brand" href="http://my.aimeikang.cc">艾美康办公系统</a>
@@ -39,7 +39,7 @@
 
   <div class="container-fluid">
       <div class="row">
-          <div id='sidebar' class="col-sm-3 col-md-2 sidebar">
+          <div id='side-bar' class="col-sm-3 col-md-2 sidebar">
               <ul class="nav nav-sidebar">
                   <li @yield('on_home')>
                       <a href="/">首页<span class="sr-only">(current)</span></a>
