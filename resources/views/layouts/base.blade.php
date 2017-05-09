@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>
-            @yield('title','艾美康办公系统')
+            {{ env('APP_NAME', "Application") }}
         </title>
 
         <script>
@@ -34,8 +34,8 @@
             </div>
         @endif
         <div id='app'>
-        @yield('main')
-        <div>
+          @yield('app')
+        </div>
         @yield('body')
     </body>
     @yield('state')

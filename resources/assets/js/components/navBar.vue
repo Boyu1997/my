@@ -20,9 +20,6 @@
 <script>
     export default {
       props: ['title','username'],
-      mounted() {
-          console.log('Component mounted.')
-      },
       data(){
         return {
           csrfToken: window.Laravel.csrfToken

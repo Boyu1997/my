@@ -19,36 +19,14 @@ Vue.use(ElementUI);
 // import App from './App.vue';
 import NavBar from './components/navBar.vue'
 import SideBar from './components/sideBar.vue'
-// import Frame from './components/frame.vue'
 
-// const app = new Vue({
-//   el: '#app',
-//   render: h => h(App)
-// });
-
-const sideBar = new Vue({
-  el: '#side-bar',
-  render: h => h(SideBar)
-})
-
-const navBar = new Vue({
-  el: '#nav-bar',
+const app = new Vue({
+  el: '#app',
   components: {
-  'nav-bar': NavBar
+  'nav-bar': NavBar,
+  'side-bar': SideBar
   },
-  template: "<nav-bar :title='app.title' :username='app.username'></nav-bar>",
-  data: {
-    app: {
-      'title': appstate.title,
-      'username': appstate.username,
-    }
-  }
 })
-
-// const frame = new Vue({
-//   el: '#frame',
-//   render: h => h(Frame)
-// })
 
 
 /**
