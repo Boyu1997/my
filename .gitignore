@@ -4,3 +4,11 @@
 Homestead.yaml
 Homestead.json
 .env
+.DS_store
+yarn.lock
+yarn-error.log
+/public/js/*.js
+/public/js/*.json
+/public/css/app.css
+/public/mix-manifest.json
+/public/hot
