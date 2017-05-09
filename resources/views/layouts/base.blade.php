@@ -14,8 +14,9 @@
               'csrfToken' => csrf_token(),
           ]); ?>
         </script>
-
-        <link href="/css/app.css" type='text/css' rel='stylesheet'>
+        <script src="{{ mix('js/manifest.js') }}" charset="utf-8"></script>
+        <script src="{{ mix('js/vendor.js') }}" charset="utf-8"></script>
+        <link href=" {{ mix('css/app.css') }}" type='text/css' rel='stylesheet'>
         {{-- <link rel="stylesheet" href="/css/layouts/master.css"> --}}
         @yield('style')
         @yield('head')
@@ -29,14 +30,15 @@
         @endif
         @if(Session::get('danger')!=null)
             <div class="flash_message alert alert-danger" role="alert">
-                {{Session::get('danger')}}
+                {{ Session::get('danger') }}
             </div>
         @endif
-
+        <div id='app'>
         @yield('main')
+        <div>
         @yield('body')
     </body>
     @yield('state')
-    <script src="/js/app.js" charset="utf-8"></script>
+    <script src= {{ mix('js/app.js') }} charset="utf-8"></script>
     @yield('js')
 </html>

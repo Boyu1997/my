@@ -18,7 +18,7 @@
 
 @section('main')
   <nav id='nav-bar' class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid">
+      {{-- <div class="container-fluid">
           <div class="navbar-header">
               <a class="navbar-brand" href="http://my.aimeikang.cc">艾美康办公系统</a>
           </div>
@@ -34,13 +34,13 @@
                   </li>
               </ul>
           </div>
-      </div>
+      </div> --}}
   </nav>
 
   <div class="container-fluid">
       <div class="row">
           <div id='side-bar' class="col-sm-3 col-md-2 sidebar">
-              <ul class="nav nav-sidebar">
+              {{-- <ul class="nav nav-sidebar">
                   <li @yield('on_home')>
                       <a href="/">首页<span class="sr-only">(current)</span></a>
                   </li>
@@ -103,13 +103,12 @@
               <hr class="nav-hr">
               <ul class="nav nav-sidebar">
                   <li @yield('on_account')><a href="/account">Account</a></li>
-              </ul>
-
+              </ul> --}}
           </div>
           <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <section>
+          <main id='main'>
                   @yield('content')
-          </section>
+          </main id='main'>
           </div>
       </div>
   </div>
