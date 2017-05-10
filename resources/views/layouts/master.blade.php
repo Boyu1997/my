@@ -10,7 +10,7 @@
 @section('app')
   <nav-bar title="{{ env('APP_NAME', "Application") }}" username="{{ $user->username }}">
   </nav-bar>
-  <el-row type='flex' :gutter="20">
+  <el-row type='flex' :gutter="40">
     <el-col :span='4'>
       <side-bar></side-bar>
     </el-col>
