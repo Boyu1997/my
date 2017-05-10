@@ -18,7 +18,7 @@
             <el-button type="text" icon="check">正在生产</el-button>
             <el-button type="text" icon="search">搜索</el-button>
         </div>
-        <overview-table :url='url'></overview-table>
+        <overview-table url='/ajax/stock/getInfo'></overview-table>
     </div>
 @stop
 

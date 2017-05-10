@@ -19,7 +19,7 @@ class PrivilegeAjaxController extends Controller
             }
             else if ($privilege->master_admin) {
                 $navigation['group_2'] = collect(array('采购' => '/purchase', '工资' => '/wage', '出差' => '/travel'));
-                $navigation['group_3'] = collect(array('库存' => '/stock', '生产' => 'produce', '安装' => 'install', '维护' => '/maintenance'));
+                $navigation['group_3'] = collect(array('库存' => '/stock', '生产' => '/produce', '安装' => '/install', '维护' => '/maintenance'));
                 $navigation['group_4'] = collect(array('销售' => '/sale', '顾客' => '/customer', '合同' => '/contract'));
                 $navigation['group_5'] = collect(array('员工' => '/employee', '用户' => '/user', '账户' => '/account'));
             }
