@@ -134,10 +134,13 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::post('/postDeleteStock', 'Ajax\ProduceAjaxController@postDeleteStock');
             });
         });
+        Route::group(['prefix' => '/stock'], function () {
+            Route::get('/getInfo', 'Ajax\StockAjaxController@getInfo');
+        });
+        Route::group(['prefix' => '/privilege'], function () {
+            Route::get('/getNavigation', 'Ajax\PrivilegeAjaxController@getNavigation');
+        });
     });
-
-    Route::get('/ajax', 'Ajax\PrivilegeAjaxController@getNavigation');
-    //Route::get('to get stock information', 'Ajax\StockAjaxController@getInfo');
 
 
 
