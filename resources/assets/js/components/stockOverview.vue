@@ -51,7 +51,7 @@
 <script>
   // import stockOverviewTable from './stockOverviewTable.vue'
   export default {
-    props: ['datasource'],
+    props: ['url'],
     // components: {
     //   'table-overview': stockOverviewTable
     // },
@@ -79,7 +79,7 @@
       }
     },
     created() {
-      axios.get(this.datasource)
+      axios.get(this.url)
       .then(response => {
         // JSON responses are automatically parsed.
         this.data = response.data
