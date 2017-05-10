@@ -136,8 +136,8 @@ Route::group(['middleware' => 'auth'], function () {
         });
     });
 
-
-
+    Route::get('/ajax', 'Ajax\PrivilegeAjaxController@getNavigation');
+    //Route::get('to get stock information', 'Ajax\StockAjaxController@getInfo');
 
 
 
