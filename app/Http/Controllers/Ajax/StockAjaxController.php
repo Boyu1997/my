@@ -17,6 +17,15 @@ class StockAjaxController extends Controller
             }
             $stocks = \App\Stock::with('component')->get();
 
+
+            $components_header = array(
+                collect(array('prop' => 'model', 'lable' => '型号')),
+                collect(array('prop' => 'category', 'lable' => '类型')),
+                collect(array('prop' => 'brand', 'lable' => '品牌')),
+                collect(array('prop' => 'factory_serial_number', 'lable' => '工厂序列号')),
+                collect(array('prop' => 'remain_amount', 'lable' => '剩余数量'))
+            );
+
             $components = collect(array());
             foreach ($stocks as $stock) {
                 $components->push(array(
@@ -25,13 +34,14 @@ class StockAjaxController extends Controller
                     'category' => $stock->component->category,
                     'brand' => $stock->component->brand,
                     'factory_serial_number' => $stock->component->factory_serial_number,
-                    'remain_amount' => $stock->remain_amount,
+                    'remain_amount' => $stock->remain_amount
                 ));
-            }
+            };
 
-            return response()->json(
-                $components
-            );
+            return response()->json([
+                'headers' => $components_header,
+                'data' => $components
+            ]);
         }
     }
 }

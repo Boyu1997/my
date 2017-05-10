@@ -1,12 +1,11 @@
-import StockOverview from './components/stockOverview.vue'
+import OverviewTable from './components/overviewTable.vue';
 
-const addParts = new Vue({
+new Vue({
     el: '#main',
     components: {
-        'stock-overview': StockOverview
+        'overview-table': OverviewTable
     },
-    template: "<stock-overview :url='datasource'></stock-overview>",
     data: {
-        datasource: '/ajax/produce/create/getCreateStock'
+        url: '/ajax/stock/getInfo'
     }
-})
+});
