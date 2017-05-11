@@ -1,10 +1,6 @@
 @extends('layouts.base')
 
 @section('style')
-  {{-- <link href="/css/libraries/bootstrap.min.css" type='text/css' rel='stylesheet'> --}}
-  {{-- <link href="/css/libraries/chartist.min.css" type='text/css' rel='stylesheet'> --}}
-  {{-- <link href="/css/libraries/theme.metro-dark.min.css" type='text/css' rel='stylesheet'> --}}
-  {{-- <link rel="stylesheet" href="/css/layouts/master.css"> --}}
 @endsection
 
 @section('app')
@@ -16,6 +12,7 @@
     </el-col>
     <el-col :span='20'>
       <main id='main'>
+        @yield('main')
         @yield('content')
       </main id='main'>
     </el-col>

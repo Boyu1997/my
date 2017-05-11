@@ -1,4 +1,3 @@
-
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
@@ -12,20 +11,22 @@ import Vue from 'vue'
 window.Vue = Vue
 
 import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-default/index.css';
+import 'element-ui/lib/theme-default/index.css'
 
 Vue.use(ElementUI);
 
 // import App from './App.vue';
 import NavBar from './components/navBar.vue'
 import SideBar from './components/sideBar.vue'
+import OverviewTable from './components/overviewTable.vue'
 
 const app = new Vue({
-  el: '#app',
-  components: {
-  'nav-bar': NavBar,
-  'side-bar': SideBar
-  },
+    el: '#app',
+    components: {
+        'nav-bar': NavBar,
+        'side-bar': SideBar,
+        'overview-table': OverviewTable
+    },
 })
 
 

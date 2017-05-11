@@ -6,8 +6,8 @@
           label=""
           width="100">
           <template scope="scope">
-            <el-button type="text" icon='view' size="small"></el-button>
-            <el-button type="text" icon='edit' size="small"></el-button>
+            <!--<el-button type="text" icon='view' size="small"></el-button>-->
+            <el-button type="text" icon='edit' size="small">编辑</el-button>
           </template>
         </el-table-column>
     </el-table>
