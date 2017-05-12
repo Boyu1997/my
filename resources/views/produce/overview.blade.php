@@ -16,7 +16,11 @@
             <div class="col-md-8">
     @endif
     <el-row>
-        <chartjs-line :datalabel="'Recent Overview'" :labels="{{json_encode($recent_month)}}" :data="{{json_encode($recent_monthly_summery)}}"></chartjs-line>
+        @if(!$privilege->master_admin && $recent_monthly_summery[2]<7)
+            <chartjs-line :datalabel="'Recent Overview'" :labels="{{json_encode($recent_month)}}" :data="[{{json_encode($recent_monthly_summery[2])}}, 0, 7-{{json_encode($recent_monthly_summery[2])}}]"></chartjs-line>
+        @else
+            <chartjs-line :datalabel="'Recent Overview'" :labels="{{json_encode($recent_month)}}" :data="{{json_encode($recent_monthly_summery)}}"></chartjs-line>
+        @endif
     </el-row>
     @if(!$privilege->master_admin)
             </div>
