@@ -66,7 +66,7 @@
       axios.get(this.url)
       .then(response => {
         // JSON responses are automatically parsed.
-        this.rawData = response.data
+        this.rawData = response.data.data
         console.log(this.rawData)
       })
       .catch(e => {

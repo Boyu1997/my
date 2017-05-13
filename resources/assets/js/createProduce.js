@@ -7,6 +7,6 @@ const addParts = new Vue({
     },
     template: "<add-parts :url='url'></add-parts>",
     data: {
-        url: '/ajax/produce/create/getCreateStock'
+        url: '/ajax/stock/overview'
     }
 })

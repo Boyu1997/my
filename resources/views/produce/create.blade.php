@@ -10,44 +10,6 @@
 
 
 @section('content')
-    <!-- Modal -->
-    <div class="modal fade" id="create_stock" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <br>
-                <form class="form-horizontal">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="stock_id" class="col-sm-2 control-label">零件</label>
-                            <div class="col-sm-10 col-md-9">
-                                <select class = "form-control" id="stock_category">
-                                    <option value='0' required>请选择分类</option>
-                                </select>
-                                <select class = "form-control" id="stock_id">
-                                    <option value='0' required>请选择零件</option>
-                                </select>
-                                <div class="error stock_id_error"></div>
-                            </div>
-                            <label for="use_amount" class="col-sm-2 control-label" required>使用数量</label>
-                            <div class="col-sm-10 col-md-9">
-                                <input type="number" class="form-control" name="use_amount" id="use_amount" value="{{ old('use_amount') }}" placeholder="请输入使用数量">
-                                <div class="error use_amount_error"></div>
-                                <p class="text_after_input">没有您在找的零件 ？请与库管人员联系或联系网站管理员。</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                        <button type="button" class="btn btn-primary" id="create_stock_submit">确认</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-
-
-    <!-- HTML -->
     <h1 class="page-header">新记录</h1>
 
     <form class="form-horizontal" method='POST' action='/produce/create'>
@@ -99,58 +61,12 @@
             </div>
         </div>
     </form>
+
+    <small-modal title="选择零件">
+        <drop-down url="/ajax/produce/create/getCreateStock"></drop-down>
+
+    </small-modal>
 @stop
 
 @section('js')
-  @parent
-    <script src="/js/createProduce.js" charset="utf-8"></script>
-    <script type="text/javascript">
-        function deleteStock() {
-            var self = this;
-            $.ajax({
-                method: "POST",
-                url: "/ajax/produce/create/postDeleteStock",
-                data: {_token: '{{ csrf_token() }}', stock_id: this.value},
-                statusCode: {
-                    200: function() {
-                        $("#create_contact").modal("hide");
-                        $(self).parent().remove();
-                    },
-                }
-            });
-        }
-
-        $(document).ready(function() {
-            $("#stock_category").on("click", function() {
-                $("#stock_category").html("<option value='0'>加载中...</option>");
-                $.get("/ajax/produce/create/getCreateStock", function(data) {
-                    $("#stock_category").html(data);
-                });
-                $("#stock_id").html("<option value='0'>请选择零件</option>");
-            });
-
-            $("#create_stock_submit").click(function() {
-                $.ajax({
-                    method: "POST",
-                    url: "/ajax/produce/create/postCreateStock",
-                    data: {_token: '{{ csrf_token() }}', stock_id: $("#stock_id").val(), use_amount: $("#use_amount").val()},
-                    statusCode: {
-                        200: function(data) {
-                            $("#stock_table").append(data['context']);
-                            $("#stock_button").append(data['button']);
-                            $("#create_stock").modal("hide");
-                            $(".del_contact_btn").click(function() {
-                                deleteContact.call(this);
-                            });
-                        },
-                        422: function(data) {
-                            var errors = jQuery.parseJSON(data.responseText);
-                            if($(errors.stock_id).length) $("#create_stock .stock_id_error").html(errors.stock_id);
-                            else $("#create_stock .error stock_id_error").empty();
-                        }
-                    }
-                });
-            });
-        });
-    </script>
 @stop

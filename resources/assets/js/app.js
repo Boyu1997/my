@@ -19,13 +19,17 @@ Vue.use(ElementUI);
 import NavBar from './components/navBar.vue'
 import SideBar from './components/sideBar.vue'
 import OverviewTable from './components/overviewTable.vue'
+import SmallModal from './components/smallModal.vue'
+import DropDown from './components/dropDown.vue'
 
 const app = new Vue({
     el: '#app',
     components: {
         'nav-bar': NavBar,
         'side-bar': SideBar,
-        'overview-table': OverviewTable
+        'overview-table': OverviewTable,
+        'drop-down': DropDown,
+        'small-modal': SmallModal
     },
 })
 

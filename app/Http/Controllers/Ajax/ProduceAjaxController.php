@@ -30,10 +30,17 @@ class ProduceAjaxController extends Controller
                 ));
             }
 
-            $components = $components->groupBy('category')->transform(function($item) {
-                return $item->groupBy('brand')->transform(function($item) {
-                    return $item->groupBy('model')->transform(function($item) {
-                        return collect($item->first())->only(['stock_id', 'factory_serial_number', 'remain_amount']);
+            $components = $components->groupBy('category')->transform(function($items) {
+                return $items->groupBy('brand')->transform(function($items) {
+                    return $items->groupBy('model')->transform(function($items) {
+                        $ac = collect(array());
+                        foreach ($items as $item) {
+                            $ac->push(collect(array(
+                                'lable' => $item['factory_serial_number'],
+                                'value' => [$item['stock_id'], $item['remain_amount']]
+                            )));
+                        };
+                        return $ac->toArray();
                     });
                 });
             });

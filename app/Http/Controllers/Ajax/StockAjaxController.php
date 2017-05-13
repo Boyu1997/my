@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 
 class StockAjaxController extends Controller
 {
-    public function getInfo()
+    public function getOverview()
     {
         if (\Request::ajax()) {
             list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();

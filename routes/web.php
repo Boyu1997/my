@@ -135,7 +135,7 @@ Route::group(['middleware' => 'auth'], function () {
             });
         });
         Route::group(['prefix' => '/stock'], function () {
-            Route::get('/getInfo', 'Ajax\StockAjaxController@getInfo');
+            Route::get('/overview', 'Ajax\StockAjaxController@getOverview');
         });
         Route::group(['prefix' => '/privilege'], function () {
             Route::get('/getNavigation', 'Ajax\PrivilegeAjaxController@getNavigation');

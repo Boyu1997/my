@@ -20,7 +20,7 @@
         <el-button type="text" icon="search">搜索</el-button>
     </el-row>
     <el-row>
-        <overview-table url="/ajax/stock/getInfo"></overview-table>
+        <overview-table url="/ajax/stock/overview"></overview-table>
     </el-row>
 @stop
 
