@@ -4,24 +4,32 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require('./bootstrap');
+// # load environment
+require('./bootstrap')
 
 import Vue from 'vue'
-
 window.Vue = Vue
 
-import ElementUI from 'element-ui';
+// # load plugins
+// ## load element ui
+import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
+Vue.use(ElementUI)
 
-Vue.use(ElementUI);
+//## load vue-charts
+import 'chart.js'
+import 'hchs-vue-charts'
+Vue.use(VueCharts)
 
-// import App from './App.vue';
+
+// load app files
 import NavBar from './components/navBar.vue'
 import SideBar from './components/sideBar.vue'
 import OverviewTable from './components/overviewTable.vue'
 import SmallModal from './components/smallModal.vue'
 import DropDown from './components/dropDown.vue'
 
+// initialize Vue environment
 const app = new Vue({
     el: '#app',
     components: {

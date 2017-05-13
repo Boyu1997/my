@@ -15,7 +15,13 @@
         <div class="row">
             <div class="col-md-8">
     @endif
-        <div id="overview_chart" class="ct-chart ct-golden-section"></div>
+    <el-row>
+        @if(!$privilege->master_admin && $recent_monthly_summery[2]<7)
+            <chartjs-line :datalabel="'Recent Overview'" :labels="{{json_encode($recent_month)}}" :data="[{{json_encode($recent_monthly_summery[2])}}, 0, 7-{{json_encode($recent_monthly_summery[2])}}]"></chartjs-line>
+        @else
+            <chartjs-line :datalabel="'Recent Overview'" :labels="{{json_encode($recent_month)}}" :data="{{json_encode($recent_monthly_summery)}}"></chartjs-line>
+        @endif
+    </el-row>
     @if(!$privilege->master_admin)
             </div>
             <div class="col-md-4">
@@ -88,51 +94,21 @@
 
 @stop
 
-@section('body')
+@section('js')
     <script>
         var data = {
             labels:
-                {{json_encode($recent_month)}},
+                ,
             series: [
-                {{json_encode($recent_monthly_summery)}}
+                
             ]
         };
-        var options = {
-            low: 0,
-            showPoint: false,
-            lineSmooth: Chartist.Interpolation.simple({
-                divisor: 3
-            }),
-            axisX: {
-                showGrid: true,
-                showLabel: true,
-                labelInterpolationFnc: function(value) {
-                    return value + '月';
-                }
-            },
-            axisY: {
-                offset: 80,
-                onlyInteger: true,
-                labelInterpolationFnc: function(value) {
-                    return value + '台';
-                }
-            }
-        };
-        new Chartist.Line('#overview_chart', data, options);
     </script>
     @if(!$privilege->master_admin && $recent_monthly_summery[2]<7)
         <script>
             var data = {
                 series: [{{json_encode($recent_monthly_summery[2])}}, 0, 7-{{json_encode($recent_monthly_summery[2])}}]
             };
-            var options = {
-                donut: true,
-                donutWidth: 60,
-                startAngle: 270,
-                total: 14,
-                showLabel: false
-            };
-            new Chartist.Pie('#monthly_pie', data, options);
         </script>
     @endif
 @stop
