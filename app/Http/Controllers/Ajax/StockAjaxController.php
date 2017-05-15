@@ -19,11 +19,11 @@ class StockAjaxController extends Controller
 
 
             $components_header = array(
-                collect(array('prop' => 'model', 'lable' => '型号')),
-                collect(array('prop' => 'category', 'lable' => '类型')),
-                collect(array('prop' => 'brand', 'lable' => '品牌')),
-                collect(array('prop' => 'factory_serial_number', 'lable' => '工厂序列号')),
-                collect(array('prop' => 'remain_amount', 'lable' => '剩余数量'))
+                collect(array('prop' => 'model', 'label' => '型号')),
+                collect(array('prop' => 'category', 'label' => '类型')),
+                collect(array('prop' => 'brand', 'label' => '品牌')),
+                collect(array('prop' => 'factory_serial_number', 'label' => '工厂序列号')),
+                collect(array('prop' => 'remain_amount', 'label' => '剩余数量'))
             );
 
             $components = collect(array());

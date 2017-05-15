@@ -32,13 +32,13 @@ class StockController extends Controller
 
         # input form data
         $form_inputs = (object)array(
-            (object)array("system_name"=>"name", "lable_name"=>"名称", "format"=>"text", "is_required"=>"required"),
-            (object)array("system_name"=>"category", "lable_name"=>"类型", "format"=>"text", "is_required"=>"required"),
-            (object)array("system_name"=>"brand", "lable_name"=>"品牌", "format"=>"text", "is_required"=>"required"),
-            (object)array("system_name"=>"arriving_date", "lable_name"=>"到货时间", "format"=>"date", "is_required"=>"required"),
-            (object)array("system_name"=>"origin_serial_number", "lable_name"=>"厂家序列号", "format"=>"text", "is_required"=>""),
-            (object)array("system_name"=>"factory_serial_number", "lable_name"=>"工厂序列号", "format"=>"text", "is_required"=>"required"),
-            (object)array("system_name"=>"amount", "lable_name"=>"数量", "format"=>"number", "is_required"=>"required"),
+            (object)array("system_name"=>"name", "label_name"=>"名称", "format"=>"text", "is_required"=>"required"),
+            (object)array("system_name"=>"category", "label_name"=>"类型", "format"=>"text", "is_required"=>"required"),
+            (object)array("system_name"=>"brand", "label_name"=>"品牌", "format"=>"text", "is_required"=>"required"),
+            (object)array("system_name"=>"arriving_date", "label_name"=>"到货时间", "format"=>"date", "is_required"=>"required"),
+            (object)array("system_name"=>"origin_serial_number", "label_name"=>"厂家序列号", "format"=>"text", "is_required"=>""),
+            (object)array("system_name"=>"factory_serial_number", "label_name"=>"工厂序列号", "format"=>"text", "is_required"=>"required"),
+            (object)array("system_name"=>"amount", "label_name"=>"数量", "format"=>"number", "is_required"=>"required"),
         );
 
         return view('stock.create', compact('user', 'employee', 'privilege', 'form_inputs'));

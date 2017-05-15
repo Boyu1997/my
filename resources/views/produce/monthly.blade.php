@@ -1,15 +1,10 @@
 @extends('layouts.master')
 
-
-@section('on_produce')
-    class="active"
-@stop
-
 @section('head')
-    <link href="/css/produce/monthly.css" type='text/css' rel='stylesheet'>
+    {{-- <link href="/css/produce/monthly.css" type='text/css' rel='stylesheet'> --}}
 @stop
 
-@section('content')
+@section('main')
     <h1 class="page-header">按月查看</h1>
 
     <div aria-label="Justified button group" role="group" class="btn-group btn-group-justified">
@@ -66,15 +61,5 @@
 
 @stop
 
-@section('body')
-    <script>
-        $(document).ready(function () {
-            $("table.sortable").addClass("tablesorter");
-            $('table.tablesorter').tablesorter({
-                'theme': 'metro-dark',
-                'widgets':['zebra'],
-                'sortList' : [[0,0]]
-            });
-        });
-    </script>
+@section('js')
 @stop

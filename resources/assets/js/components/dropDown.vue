@@ -1,30 +1,13 @@
 <template>
-    <el-cascader placeholder="请搜索" :options="options" v-model="value" filterable ></el-cascader>
+    <el-cascader 
+    placeholder="请搜索" 
+    :options="options"
+    ref="cascader"
+    :value="currentValue"
+    expand-trigger="hover"
+    @change="updateValue($event)"
+    filterable />
 </template>
-
-<script>
-export default {
-    //props: ['url'],
-    data () {
-        return {
-            url: "ajax/produce/create/getCreateStock",
-            options: [],
-            data:[],
-        }
-    },
-    created() {
-        axios.get(this.url)
-        .then(response => {
-            // JSON responses are automatically parsed.
-            this.headers = response.data.headers;
-            this.data = response.data.data;
-        })
-        .catch(e => {
-            console.error(e)
-        })
-    }
-}
-</script>
 
 <script>
 export default {
@@ -33,14 +16,23 @@ export default {
             type: String,
             default: ""
         },
+        value: {
+        }
     },
     data () {
         return {
-            value: [],
             rawData:[]
         }
     },
+    methods: {
+        updateValue ($event){
+            this.$emit('input', $event)
+        }
+    },
     computed: {
+        currentValue (){
+            return []
+        },
         options () {
             const map = function(d){
                 var ac = []
@@ -60,7 +52,7 @@ export default {
                 if (last_layer) {
                     for (var v in d) {
                         ac.push({
-                            label: d[v]['lable'],
+                            label: d[v]['label'],
                             value: d[v]['value']
                         })
                     }
@@ -71,9 +63,6 @@ export default {
             return map(this.rawData)
         }
     },
-    // methods: {
-    //   getData
-    // }
     created() {
         axios.get(this.url)
         .then(response => {
