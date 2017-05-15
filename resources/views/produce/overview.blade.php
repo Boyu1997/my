@@ -17,12 +17,12 @@
     @endif
     <el-row>
         @if(!$privilege->master_admin && $recent_monthly_summery[2]<7)
-            <chartjs-line :datalabel="'Recent Overview'" :labels="{{json_encode($recent_month)}}" :data="[{{json_encode($recent_monthly_summery[2])}}, 0, 7-{{json_encode($recent_monthly_summery[2])}}]"></chartjs-line>
+            <chartjs-line :beginzero="true" :datalabel="'月生产件数'" :labels="{{json_encode($recent_month)}}" :data="[{{json_encode($recent_monthly_summery[2])}}, 0, 7-{{json_encode($recent_monthly_summery[2])}}]"></chartjs-line>
         @else
-            <chartjs-line :datalabel="'Recent Overview'" :labels="{{json_encode($recent_month)}}" :data="{{json_encode($recent_monthly_summery)}}"></chartjs-line>
+            <chartjs-line :beginzero="true" :datalabel="'月生产件数'" :labels="{{json_encode($recent_month)}}" :data="{{json_encode($recent_monthly_summery)}}"></chartjs-line>
         @endif
     </el-row>
-    @if(!$privilege->master_admin)
+       @if(!$privilege->master_admin)
             </div>
             <div class="col-md-4">
                 <div id="last_month_info">
@@ -95,20 +95,4 @@
 @stop
 
 @section('js')
-    <script>
-        var data = {
-            labels:
-                ,
-            series: [
-                
-            ]
-        };
-    </script>
-    @if(!$privilege->master_admin && $recent_monthly_summery[2]<7)
-        <script>
-            var data = {
-                series: [{{json_encode($recent_monthly_summery[2])}}, 0, 7-{{json_encode($recent_monthly_summery[2])}}]
-            };
-        </script>
-    @endif
 @stop

@@ -1,10 +1,5 @@
 @extends('layouts.master')
 
-
-@section('on_stock')
-    class="active"
-@stop
-
 @section('head')
     <link href="/css/stock/overview.css" type='text/css' rel='stylesheet'>
 @stop

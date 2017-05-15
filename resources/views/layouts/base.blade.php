@@ -16,7 +16,6 @@
         </script>
         <script src="{{ mix('js/manifest.js') }}" charset="utf-8"></script>
         <script src="{{ mix('js/vendor.js') }}" charset="utf-8"></script>
-        <link href=" {{ mix('css/app.css') }}" type='text/css' rel='stylesheet'>
         @yield('style')
         @yield('head')
     </head>
