@@ -5,12 +5,13 @@
 @stop
 
 @section('head')
-    <link href="/css/produce/create.css" type='text/css' rel='stylesheet'>
+    {{-- <link href="/css/produce/create.css" type='text/css' rel='stylesheet'> --}}
 @stop
 
 
 @section('content')
-    <h1 class="page-header">新记录</h1>
+    <produce-create></produce-create>
+    {{-- <h1 class="page-header">新记录</h1>
 
     <form class="form-horizontal" method='POST' action='/produce/create'>
         {!! csrf_field() !!}
@@ -64,8 +65,7 @@
 
     <small-modal title="选择零件">
         <drop-down url="/ajax/produce/create/getCreateStock"></drop-down>
-
-    </small-modal>
+    </small-modal> --}}
 @stop
 
 @section('js')

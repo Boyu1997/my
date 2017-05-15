@@ -1,6 +1,6 @@
 <template>
     <el-table :data="data" border style="width: 100%">
-        <el-table-column v-for="header in headers" :key="header.id" :prop="header.prop" :label="header.lable" sortable>
+        <el-table-column v-for="header in headers" :key="header.id" :prop="header.prop" :label="header.label" sortable>
         </el-table-column>
         <el-table-column
           label=""
@@ -19,7 +19,7 @@
         data () {
             return {
                 headers: [],
-                data:[],
+                data: [],
             }
         },
         created() {

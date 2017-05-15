@@ -16,8 +16,7 @@ mix.autoload({
         bootstrap: ['bootstrap'],
         tether: ['window.tether', 'tether', 'Tether']
     })
-    .js('resources/assets/js/app.js', 'public/js').sourceMaps().extract(['jquery', 'tether', 'bootstrap', 'lodash', 'axios', 'vue', 'element-ui'])
-    .js('resources/assets/js/createProduce.js', 'public/js').sourceMaps()
+    .js('resources/assets/js/app.js', 'public/js').sourceMaps().extract(['jquery', 'tether', 'bootstrap', 'lodash', 'axios', 'vue', 'element-ui', 'chart.js', 'hchs-vue-charts'])
     .sass('resources/assets/sass/app.scss', 'public/css').sourceMaps()
 
 // mix.webpackConfig({

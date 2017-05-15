@@ -36,8 +36,8 @@ class ProduceAjaxController extends Controller
                         $ac = collect(array());
                         foreach ($items as $item) {
                             $ac->push(collect(array(
-                                'lable' => $item['factory_serial_number'],
-                                'value' => [$item['stock_id'], $item['remain_amount']]
+                                'label' => $item['factory_serial_number'],
+                                'value' => $item
                             )));
                         };
                         return $ac->toArray();

@@ -5,9 +5,11 @@ Homestead.yaml
 Homestead.json
 .env
 .DS_store
+.vscode
 yarn.lock
 yarn-error.log
 /public/js/*.js
+/public/js/*.css
 /public/js/*.json
 /public/css/app.css
 /public/mix-manifest.json

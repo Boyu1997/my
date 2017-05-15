@@ -28,6 +28,7 @@ import SideBar from './components/sideBar.vue'
 import OverviewTable from './components/overviewTable.vue'
 import SmallModal from './components/smallModal.vue'
 import DropDown from './components/dropDown.vue'
+import ProduceCreate from './components/produceCreate.vue'
 
 // initialize Vue environment
 const app = new Vue({
@@ -37,7 +38,8 @@ const app = new Vue({
         'side-bar': SideBar,
         'overview-table': OverviewTable,
         'drop-down': DropDown,
-        'small-modal': SmallModal
+        'small-modal': SmallModal,
+        'produce-create': ProduceCreate
     },
 })
 
