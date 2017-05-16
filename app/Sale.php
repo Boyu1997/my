@@ -11,6 +11,11 @@ class Sale extends Model
         return $this->belongsTo(\App\Employee::class);
     }
 
+    public function organizations()
+    {
+        return $this->belongsToMany(\App\Organization::class)->withTimestamps();
+    }
+
     public function agent()
     {
         return $this->belongsTo(\App\Agent::class);
