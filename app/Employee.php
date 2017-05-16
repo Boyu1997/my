@@ -36,6 +36,11 @@ class Employee extends Model
         return $this->hasMany(\App\Sale::class);
     }
 
+    public function organizations()
+    {
+        return $this->belongsToMany(\App\Organization::class)->withTimestamps();
+    }
+
     public static function usersLastNameForDropdown()
     {
         $users = \App\User::where('employee_id', '=', null)->orderBy('last_name', 'ASC')->get();

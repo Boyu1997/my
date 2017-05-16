@@ -130,9 +130,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::group(['prefix' => '/produce'], function () {
             Route::group(['prefix' => '/create'], function () {
                 Route::get('/getCreateStock', 'Ajax\ProduceAjaxController@getCreateStock');
-                Route::post('/postCreateStock', 'Ajax\ProduceAjaxController@postCreateStock');
-                Route::post('/postDeleteStock', 'Ajax\ProduceAjaxController@postDeleteStock');
             });
+            Route::get('/employee', 'Ajax\ProduceAjaxController@employee');
         });
         Route::group(['prefix' => '/stock'], function () {
             Route::get('/overview', 'Ajax\StockAjaxController@getOverview');

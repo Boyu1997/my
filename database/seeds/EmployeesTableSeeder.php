@@ -38,7 +38,7 @@ class EmployeesTableSeeder extends Seeder
         $employee->position = 'engineer';
         $employee->company_email = 'Lisa@company.com';
         $employee->company_cellphone = '6170509423';
-        $employee->privilege_id = '2';
+        $employee->privilege_id = '4';
         $employee->wage_id = '3';
         $employee->save();
     }
