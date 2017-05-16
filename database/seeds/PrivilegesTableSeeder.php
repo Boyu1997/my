@@ -37,5 +37,14 @@ class PrivilegesTableSeeder extends Seeder
         $privilege->maintenance = '1';
         $privilege->trip = '0';
         $privilege->save();
+
+        $privilege = new \App\Privilege();
+        $privilege->master_admin = '0';
+        $privilege->stock = '0';
+        $privilege->produce = '1';
+        $privilege->install = '1';
+        $privilege->maintenance = '1';
+        $privilege->trip = '0';
+        $privilege->save();
     }
 }

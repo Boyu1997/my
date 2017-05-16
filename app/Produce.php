@@ -47,15 +47,15 @@ class Produce extends Model
                 $recent_year[$i] = $recent_year[4];
             }
             if ($recent_month[$i]<10) {
-                $recent_month[$i] = $recent_year[$i].'/0'.$recent_month[$i];
+                $recent_month[$i] = $recent_year[$i].'-0'.$recent_month[$i];
             } else {
-                $recent_month[$i] = $recent_year[$i].'/'.$recent_month[$i];
+                $recent_month[$i] = $recent_year[$i].'-'.$recent_month[$i];
             }
         }
         if (sizeof($privilege) && $privilege->master_admin) {
             $produces = \App\Produce::all();
             foreach ($produces as $produce) {
-                $month = date('Y/m', strtotime($produce->end_at));
+                $month = date('Y-m', strtotime($produce->end_at));
                 foreach ($recent_month as $key => $the_month) {
                     if ($month==$the_month) {
                         $recent_monthly_summery[$key]++;
@@ -65,7 +65,7 @@ class Produce extends Model
         } else {
             $produces = \App\Produce::where('employee_id', '=', $employee->id)->get();
             foreach ($produces as $produce) {
-                $month = date('Y/m', strtotime($produce->end_at));
+                $month = date('Y-m', strtotime($produce->end_at));
                 foreach ($recent_month as $key => $the_month) {
                     if ($month==$the_month) {
                         $recent_monthly_summery[$key]++;

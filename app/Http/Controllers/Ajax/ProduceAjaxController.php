@@ -51,7 +51,7 @@ class ProduceAjaxController extends Controller
         }
     }
 
-    public function postCreateStock(Request $request)
+    public function employee()
     {
         if (\Request::ajax()) {
             list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
@@ -59,37 +59,23 @@ class ProduceAjaxController extends Controller
                 \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
                 return redirect('/');
             }
-            $this->validate($request, [
-                'stock_id' => 'required|numeric',
-            ]);
-            $stock = \App\Stock::find($request->stock_id);
-            $this->validate($request, [
-                'use_amount' => 'required|numeric|max:'.$stock->remain_amount,
-            ]);
-            if ($request->session()->has('add_stock')) {
-                $request->session()->regenerate();
-            }
-            $request->session()->push('add_stock.'.$request->stock_id, (int)$request->use_amount);
-            return response()->json([
-                'stock' => $stock->id,
-                'amount' => (int)$request->use_amount
-            ]);
-        }
-    }
+            if ($privilege->master_admin) {
+                $employees=\App\Privilege::where('produce', '=', '1')->with('employee.user')->get()->transform(function($items) {
+                    return collect(array(
+                        'employee_id' => $items->employee->id,
+                        'last_name' => $items->employee->user->last_name,
+                        'first_name' => $items->employee->user->first_name
+                    ));
+                });
 
-    public function postDeleteStock(Request $request)
-    {
-        if (\Request::ajax()) {
-            list($user, $employee, $privilege) = \App\Privilege::privilegeAuth();
-            if (sizeof($privilege)==0 || ($privilege->master_admin==0 && $privilege->produce==0)) {
-                \Session::flash('danger', '您没有权限访问此页面！(Error: 403 Forbidden)');
-                return redirect('/');
             }
-            $this->validate($request, [
-                'stock_id' => 'required|numeric',
-            ]);
-            $request->session()->regenerate();
-            $request->session()->forget('add_stock.'.$request->stock_id);
+            else {
+
+            }
+
+            return response()->json(
+                $employees
+            );
         }
     }
 }
