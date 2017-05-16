@@ -15,10 +15,10 @@ class CreateComponentProduceTable extends Migration
          Schema::create('component_produce', function (Blueprint $table) {
              $table->increments('id');
              $table->timestamps();
-             $table->integer('complement_id')->unsigned();
+             $table->integer('component_id')->unsigned();
              $table->integer('produce_id')->unsigned();
 
-             $table->foreign('complement_id')->references('id')->on('complements');
+             $table->foreign('component_id')->references('id')->on('components');
              $table->foreign('produce_id')->references('id')->on('produces');
          });
      }

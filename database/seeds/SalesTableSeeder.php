@@ -24,8 +24,6 @@ class SalesTableSeeder extends Seeder
         $sale->sold_model = 'M-1';
         $sale->sold_amount = 2;
         $sale->sold_price = 75000;
-        $sale->agent_id = 1;
-        $sale->customer_id = 2;
         $sale->employee_id = 3;
         $sale->save();
 
@@ -33,7 +31,6 @@ class SalesTableSeeder extends Seeder
         $sale->status = 'new';
         $sale->classification = 'regular';
         $sale->specification = 'bvndmrnhos';
-        $sale->customer_id = 2;
         $sale->employee_id = 3;
         $sale->save();
 
@@ -45,9 +42,6 @@ class SalesTableSeeder extends Seeder
         $sale->expect_amount = 2;
         $sale->expect_price = 80000;
         $sale->expect_sold_date = '2016/02/17';
-        $sale->agent_id = 1;
-        $sale->complement_id = 2;
-        $sale->customer_id = 2;
         $sale->employee_id = 3;
         $sale->save();
     }

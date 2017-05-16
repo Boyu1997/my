@@ -15,4 +15,9 @@ class Organization extends Model
     {
         return $this->belongsToMany(\App\Employee::class)->withTimestamps();
     }
+
+    public function contacts()
+    {
+        return $this->belongsToMany(\App\Contact::class)->withTimestamps();
+    }
 }

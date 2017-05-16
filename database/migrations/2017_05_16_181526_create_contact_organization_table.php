@@ -1,9 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateComplementContactTable extends Migration
+class CreateContactOrganizationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,14 +13,14 @@ class CreateComplementContactTable extends Migration
      */
     public function up()
     {
-        Schema::create('complement_contact', function (Blueprint $table) {
+        Schema::create('contact_organization', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->integer('complement_id')->unsigned();
             $table->integer('contact_id')->unsigned();
+            $table->integer('organization_id')->unsigned();
 
-            $table->foreign('complement_id')->references('id')->on('complements');
             $table->foreign('contact_id')->references('id')->on('contacts');
+            $table->foreign('organization_id')->references('id')->on('organizations');
         });
     }
 
@@ -30,6 +31,6 @@ class CreateComplementContactTable extends Migration
      */
     public function down()
     {
-        Schema::drop('complement_contact');
+        Schema::drop('contact_organization');
     }
 }

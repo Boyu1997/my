@@ -16,31 +16,6 @@ class Sale extends Model
         return $this->belongsToMany(\App\Organization::class)->withTimestamps();
     }
 
-    public function agent()
-    {
-        return $this->belongsTo(\App\Agent::class);
-    }
-
-    public function customer()
-    {
-        return $this->belongsTo(\App\Customer::class);
-    }
-
-    public function complement()
-    {
-        return $this->belongsTo(\App\Complement::class);
-    }
-
-    public function other()
-    {
-        return $this->belongsTo(\App\Other::class);
-    }
-
-    public function competitors()
-    {
-        return $this->belongsToMany(\App\Competitor::class)->withTimestamps();
-    }
-
     public static function employeesNameForDropdown()
     {
         $employees = \App\User::whereNotNull('employee_id')->orderBy('last_name', 'ASC')->with('employee.privilege')->get();
